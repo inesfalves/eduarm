@@ -17,7 +17,6 @@ class ControlValues {
     if (this.opcodeValues[opcode] !== undefined) {
       return this.opcodeValues[opcode];
     } else {
-      console.log("This is an R-type instruction");
       return this.opcodeValues["R"];
     }
   }

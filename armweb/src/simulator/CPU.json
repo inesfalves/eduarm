@@ -4,5 +4,15 @@
         "1984": { "Reg2Loc": 1, "ALUSrc": 1, "MemtoReg": 0, "RegWrite": 0, "MemRead": 0, "MemWrite": 1, "Branch": 0, "ALUOp1": 0, "ALUOp0": 0},
         "1986": { "Reg2Loc": 0, "ALUSrc": 1, "MemtoReg": 1, "RegWrite": 1, "MemRead": 1, "MemWrite": 0, "Branch": 0, "ALUOp1": 0, "ALUOp0": 0},
         "R": {"Reg2Loc": 0, "ALUSrc": 0, "MemtoReg": 0, "RegWrite": 1, "MemRead": 0, "MemWrite": 0, "Branch": 0, "ALUOp1": 1, "ALUOp0": 0}
+    },
+    "ALUcontrol": {
+        "control": [
+			{"ALUOp0": 0, "ALUOp1": 0, "CtrlALU": 2, "operation": "LDUR/STUR"},
+			{"ALUOp0": 1, "ALUOp1": 0, "CtrlALU": 7, "operation": "CBZ"},
+			{"ALUOp0": 0, "ALUOp1": 1, "opcode": 1112, "CtrlALU": 2},
+			{"ALUOp0": 0, "ALUOp1": 1, "opcode": 1624, "CtrlALU": 6},
+			{"ALUOp0": 0, "ALUOp1": 1, "opcode": 1104, "CtrlALU": 0},
+			{"ALUOp0": 0, "ALUOp1": 1, "opcode": 1360, "CtrlALU": 1, "operation": "ORR"}
+		]
     }
 }

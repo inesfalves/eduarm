@@ -12,7 +12,7 @@ class RegBank {
     this.readReg2 = component.addInput("reg2", 0);
     this.writeReg = component.addInput("wReg", 0);
     this.writeData = component.addInput("wData", 0);
-    this.regWrite = component.addInput("regW", 0);
+    this.regWrite = component.addInput("RegWrite", 0);
 
     //Register Bank outputs
     this.readData1 = component.addOutput("rData1", 0);
@@ -25,7 +25,7 @@ class RegBank {
   }
 
   //allocating the register values
-  execute() {
+  execute(ctrl) {
     // li $5, 3
     // li $7, 8
     // add $4, $5, $7
@@ -33,6 +33,11 @@ class RegBank {
     this.readReg2.value = 7;
     this.writeReg.value = 4;
 
+    for (let i = 0; i < ctrl.outputValues.length; i++) {
+      if (ctrl.outputValues[i].id === this.regWrite.id) {
+        this.regWrite.value = ctrl.outputValues[i].value;
+      }
+    }
     registers[5] = 3;
     registers[7] = 8;
 
@@ -41,6 +46,7 @@ class RegBank {
   }
 
   printValues() {
+    console.log("\n");
     console.log("REGISTER BANK");
 
     console.log("Register Bank: " + registers);

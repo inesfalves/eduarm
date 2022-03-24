@@ -16,17 +16,32 @@ class ALU {
     this.aluResult = component.addOutput("aluResult", 0);
   }
 
-  execute(regbank, operation) {
+  execute(regbank, aluctrl) {
     //Takes as input the register bank output values
     this.input1.value = regbank.readData1.value;
     this.input2.value = regbank.readData2.value;
+    this.controlOp.value = aluctrl.ctrlALU.value;
 
     //ignoring ALU control for now
-    switch (operation) {
-      case "ADD":
+    switch (this.controlOp.value) {
+      case 2:
+        console.log("ADD");
         this.aluResult.value = this.input1.value + this.input2.value;
         break;
+      case 6:
+        console.log("SUB");
+        this.aluResult.value = this.input1.value - this.input2.value;
+        break;
+      case 0:
+        console.log("AND");
+        this.aluResult.value = this.input1.value && this.input2.value;
+        break;
+      case 6:
+        console.log("ORR");
+        this.aluResult.value = this.input1.value || this.input2.value;
+        break;
       default:
+        console.log("Other operation");
         this.aluResult.value = 0;
         break;
     }
@@ -42,10 +57,7 @@ class ALU {
     console.log("=======INPUTS======= ");
     console.log("Input 1: " + this.input1.value);
     console.log("Input 2: " + this.input2.value);
-
-    console.log("=======INPUTS IN BINARY======= ");
-    console.log("Input 1: " + this.input1.value.toString(2));
-    console.log("Input 2: " + this.input2.value.toString(2));
+    console.log("Control Op: " + this.controlOp.value);
 
     console.log("=======OUTPUTS======= ");
     console.log("ALU Result: " + this.aluResult.value);

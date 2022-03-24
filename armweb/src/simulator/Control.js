@@ -10,8 +10,8 @@ class Control {
     this.id = id;
 
     //Control input values
-    //Instructions 31 to 21 or 31 to 24
-    this.controlInput = component.addInput("controlInput", 108);
+    //Bits 31 to 21 or 31 to 24
+    this.controlInput = component.addInput("controlInput", 1112);
 
     //Control output values
     this.outputValues = [
@@ -35,12 +35,11 @@ class Control {
     for (let i = 0; i < this.outputValues.length; i++) {
       this.outputValues[i].value = jsonOutputValues[this.outputValues[i].id];
     }
-
-    //Set the outputs on the outputValues map to the correct values for this input
   }
 
   printValues() {
-    console.log("Control");
+    console.log("\n");
+    console.log("CONTROL UNIT");
 
     console.log("=======INPUTS======= ");
     console.log("Input 1: " + this.controlInput.value);
