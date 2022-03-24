@@ -9,14 +9,6 @@ class Component {
     this.id = id;
   }
 
-  get id() {
-    return this._id;
-  }
-
-  set id(newId) {
-    this._id = newId;
-  }
-
   addInput(id, value) {
     let input = new Input(id, this, value);
     inputs.set(id, input);

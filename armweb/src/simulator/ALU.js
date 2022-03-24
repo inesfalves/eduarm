@@ -9,6 +9,7 @@ class ALU {
     //ALU input values
     this.input1 = component.addInput("aluInput1", 0);
     this.input2 = component.addInput("aluInput2", 0);
+    this.controlOp = component.addInput("controlOp", 0);
 
     //ALU output values
     this.zero = component.addOutput("aluZero", 0);
@@ -41,6 +42,10 @@ class ALU {
     console.log("=======INPUTS======= ");
     console.log("Input 1: " + this.input1.value);
     console.log("Input 2: " + this.input2.value);
+
+    console.log("=======INPUTS IN BINARY======= ");
+    console.log("Input 1: " + this.input1.value.toString(2));
+    console.log("Input 2: " + this.input2.value.toString(2));
 
     console.log("=======OUTPUTS======= ");
     console.log("ALU Result: " + this.aluResult.value);

@@ -31,6 +31,7 @@ class RegBank {
     // add $4, $5, $7
     this.readReg1.value = 5;
     this.readReg2.value = 7;
+    this.writeReg.value = 4;
 
     registers[5] = 3;
     registers[7] = 8;
