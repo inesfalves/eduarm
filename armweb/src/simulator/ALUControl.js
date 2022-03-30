@@ -1,24 +1,23 @@
 const Component = require("./Component.js");
 const ALUControlValues = require("./control/ALUControlValues.js");
 
-let component = new Component(1);
 let aluctrlValues = new ALUControlValues();
 aluctrlValues.initializeALUControl();
 
-class ALUControl {
+class ALUControl extends Component {
   constructor(id) {
-    this.id = id;
+    super(id);
 
     //ALUControl input values
-    this.opcode = component.addInput("opcode", 1112);
+    this.opcode = super().addInput("opcode", 1112);
 
-    //this.ALUOp = component.addInput("ALUOp", 0);
+    //this.ALUOp = super().addInput("ALUOp", 0);
 
-    this.ALUOp0 = component.addInput("ALUOp0", 1);
-    this.ALUOp1 = component.addInput("ALUOp1", 0);
+    this.ALUOp0 = super().addInput("ALUOp0", 1);
+    this.ALUOp1 = super().addInput("ALUOp1", 0);
 
     //ALUControl output values
-    this.ctrlALU = component.addOutput("ALUControlSignal", 0);
+    this.ctrlALU = super().addOutput("ALUControlSignal", 0);
   }
 
   execute(controlUnit) {

@@ -1,22 +1,20 @@
 const Component = require("./Component.js");
 
-let component = new Component(0);
-
 let registers = [];
-class RegBank {
+class RegBank extends Component {
   constructor(id) {
-    this.id = id;
+    super(id);
 
     //Register Bank inputs
-    this.readReg1 = component.addInput("reg1", 0);
-    this.readReg2 = component.addInput("reg2", 0);
-    this.writeReg = component.addInput("wReg", 0);
-    this.writeData = component.addInput("wData", 0);
-    this.regWrite = component.addInput("RegWrite", 0);
+    this.readReg1 = super().addInput("reg1", 0);
+    this.readReg2 = super().addInput("reg2", 0);
+    this.writeReg = super().addInput("wReg", 0);
+    this.writeData = super().addInput("wData", 0);
+    this.regWrite = super().addInput("RegWrite", 0);
 
     //Register Bank outputs
-    this.readData1 = component.addOutput("rData1", 0);
-    this.readData2 = component.addOutput("rData2", 0);
+    this.readData1 = super().addOutput("rData1", 0);
+    this.readData2 = super().addOutput("rData2", 0);
 
     //Initialize registers -> assuming 32 registers
     for (let i = 0; i < 32; i++) {

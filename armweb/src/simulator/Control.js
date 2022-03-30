@@ -1,29 +1,28 @@
 const Component = require("./Component.js");
 const ControlValues = require("./control/ControlValues.js");
 
-let component = new Component(1);
 let controlValues = new ControlValues();
 controlValues.initializeControl();
 
-class Control {
+class Control extends Component {
   constructor(id) {
-    this.id = id;
+    super(id);
 
     //Control input values
     //Bits 31 to 21 or 31 to 24
-    this.controlInput = component.addInput("controlInput", 1112);
+    this.controlInput = super().addInput("controlInput", 0);
 
     //Control output values
     this.outputValues = [
-      component.addOutput("Reg2Loc", 0),
-      component.addOutput("ALUSrc", 0),
-      component.addOutput("MemtoReg", 0),
-      component.addOutput("RegWrite", 0),
-      component.addOutput("MemRead", 0),
-      component.addOutput("MemWrite", 0),
-      component.addOutput("Branch", 0),
-      component.addOutput("ALUOp1", 0),
-      component.addOutput("ALUOp0", 0),
+      super().addOutput("Reg2Loc", 0),
+      super().addOutput("ALUSrc", 0),
+      super().addOutput("MemtoReg", 0),
+      super().addOutput("RegWrite", 0),
+      super().addOutput("MemRead", 0),
+      super().addOutput("MemWrite", 0),
+      super().addOutput("Branch", 0),
+      super().addOutput("ALUOp1", 0),
+      super().addOutput("ALUOp0", 0),
     ];
   }
 

@@ -1,18 +1,16 @@
 const Component = require("./Component.js");
 
-let component = new Component(2);
-
-class MUX {
+class MUX extends Component {
   constructor(id) {
-    this.id = id;
+    super(id);
 
     //MUX input values
-    this.zero = component.addInput("mux0", 0);
-    this.one = component.addInput("mux1", 0);
-    this.selector = component.addInput("muxS", 0);
+    this.zero = super().addInput("mux0", 0);
+    this.one = super().addInput("mux1", 0);
+    this.selector = super().addInput("muxS", 0);
 
     //MUX output values
-    this.muxOut = component.addOutput("muxOut", 0);
+    this.muxOut = super().addOutput("muxOut", 0);
   }
 
   execute(regbank, alu) {

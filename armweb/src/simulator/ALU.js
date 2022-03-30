@@ -1,19 +1,17 @@
 const Component = require("./Component.js");
 
-let component = new Component(1);
-
-class ALU {
+class ALU extends Component {
   constructor(id) {
-    this.id = id;
+    super(id);
 
     //ALU input values
-    this.input1 = component.addInput("aluInput1", 0);
-    this.input2 = component.addInput("aluInput2", 0);
-    this.controlOp = component.addInput("controlOp", 0);
+    this.input1 = super().addInput("aluInput1", 0);
+    this.input2 = super().addInput("aluInput2", 0);
+    this.controlOp = super().addInput("controlOp", 0);
 
     //ALU output values
-    this.zero = component.addOutput("aluZero", 0);
-    this.aluResult = component.addOutput("aluResult", 0);
+    this.zero = super().addOutput("aluZero", 0);
+    this.aluResult = super().addOutput("aluResult", 0);
   }
 
   execute(regbank, aluctrl) {
@@ -36,7 +34,7 @@ class ALU {
         console.log("AND");
         this.aluResult.value = this.input1.value && this.input2.value;
         break;
-      case 6:
+      case 1:
         console.log("ORR");
         this.aluResult.value = this.input1.value || this.input2.value;
         break;

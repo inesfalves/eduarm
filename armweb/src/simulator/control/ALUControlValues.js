@@ -1,4 +1,4 @@
-const json = require("../CPU.json");
+const json = require("../Control.json");
 
 const jsonFile = JSON.parse(JSON.stringify(json));
 
