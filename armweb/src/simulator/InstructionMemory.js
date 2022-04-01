@@ -1,16 +1,16 @@
 const Component = require("./Component.js");
 
 class InstructionMemory extends Component {
-  constructor(id) {
-    super(id);
+  constructor(id, json) {
+    super(id, json);
 
     //Instruction memory input values
     //instruction address from the program counter
-    this.address = super().addInput("inAddr", 0);
+    this.address = super.addInput(json.input, 0);
 
     //Instruction memory output values
     //Instruction in machine code
-    this.instruction = super().addOutput("instruction", 0);
+    this.instruction = super.addOutput(json.output, 0);
 
     //Array with the assembled instructions
     this.assembledInstructions = [];

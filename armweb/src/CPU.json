@@ -2,7 +2,7 @@
     "cpuComponents": {
       "PC": {
         "componentType": "ProgramCounter",
-        "input":"updatedPC",
+        "input": "updatedPC",
         "output":"PC"
       },
       "PCounterFork": {
@@ -23,6 +23,7 @@
       "ShiftLeft": {
         "componentType": "ShiftLeft",
         "input": "shiftLeftInput",
+        "amount": 2,
         "output": "shiftLeftOutput"
       },
       "AddBranch": {
@@ -103,7 +104,7 @@
       "ALU": {
         "componentType": "ALU",
         "input": ["ALUInput1", "ALUInput2", "ctrlALU"],
-        "output": "aluResult"
+        "output": ["aluZero", "aluResult"]
       },
       "ALUControl": {
         "componentType": "ALUControl",

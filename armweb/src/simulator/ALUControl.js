@@ -5,19 +5,20 @@ let aluctrlValues = new ALUControlValues();
 aluctrlValues.initializeALUControl();
 
 class ALUControl extends Component {
-  constructor(id) {
-    super(id);
+  constructor(id, json) {
+    super(id, json);
 
     //ALUControl input values
-    this.opcode = super().addInput("opcode", 1112);
 
-    //this.ALUOp = super().addInput("ALUOp", 0);
+    //this.ALUOp = super.addInput("ALUOp", 0);
 
-    this.ALUOp0 = super().addInput("ALUOp0", 1);
-    this.ALUOp1 = super().addInput("ALUOp1", 0);
+    this.ALUOp0 = super.addInput(json.input[0], 1);
+    this.ALUOp1 = super.addInput(json.input[0], 0);
+
+    this.opcode = super.addInput(json.input[1], 1112);
 
     //ALUControl output values
-    this.ctrlALU = super().addOutput("ALUControlSignal", 0);
+    this.ctrlALU = super.addOutput(json.output, 0);
   }
 
   execute(controlUnit) {

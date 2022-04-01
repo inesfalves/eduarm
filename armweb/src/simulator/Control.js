@@ -5,24 +5,24 @@ let controlValues = new ControlValues();
 controlValues.initializeControl();
 
 class Control extends Component {
-  constructor(id) {
-    super(id);
+  constructor(id, json) {
+    super(id, json);
 
     //Control input values
     //Bits 31 to 21 or 31 to 24
-    this.controlInput = super().addInput("controlInput", 0);
+    this.controlInput = super.addInput(json.input, 0);
 
     //Control output values
     this.outputValues = [
-      super().addOutput("Reg2Loc", 0),
-      super().addOutput("ALUSrc", 0),
-      super().addOutput("MemtoReg", 0),
-      super().addOutput("RegWrite", 0),
-      super().addOutput("MemRead", 0),
-      super().addOutput("MemWrite", 0),
-      super().addOutput("Branch", 0),
-      super().addOutput("ALUOp1", 0),
-      super().addOutput("ALUOp0", 0),
+      super.addOutput(json.output[0], 0),
+      super.addOutput(json.output[1], 0),
+      super.addOutput(json.output[2], 0),
+      super.addOutput(json.output[3], 0),
+      super.addOutput(json.output[4], 0),
+      super.addOutput(json.output[4], 0),
+      super.addOutput(json.output[5], 0),
+      super.addOutput(json.output[6], 0),
+      super.addOutput(json.output[7], 0),
     ];
   }
 

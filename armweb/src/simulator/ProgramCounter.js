@@ -2,14 +2,12 @@ const Component = require("./Component.js");
 
 //The register containing the address of the instruction in the program being executed
 class ProgramCounter extends Component {
-  constructor(id) {
-    super(id);
+  constructor(id, json) {
+    super(id, json);
 
-    //Program counter input values
-    this.updatedPC = super().addInput("updatedPC", 0);
+    this.updatedPC = super.addInput(json.input, 0);
 
-    //Program counter output values
-    this.pcValue = super().addOutput("PC", 0);
+    this.pcValue = super.addOutput(json.output, 0);
   }
 
   execute() {

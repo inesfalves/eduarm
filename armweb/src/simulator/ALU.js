@@ -1,17 +1,17 @@
 const Component = require("./Component.js");
 
 class ALU extends Component {
-  constructor(id) {
-    super(id);
+  constructor(id, json) {
+    super(id, json);
 
     //ALU input values
-    this.input1 = super().addInput("aluInput1", 0);
-    this.input2 = super().addInput("aluInput2", 0);
-    this.controlOp = super().addInput("controlOp", 0);
+    this.input1 = super.addInput(json.input[0], 0);
+    this.input2 = super.addInput(json.input[1], 0);
+    this.controlOp = super.addInput(json.input[2], 0);
 
     //ALU output values
-    this.zero = super().addOutput("aluZero", 0);
-    this.aluResult = super().addOutput("aluResult", 0);
+    this.zero = super.addOutput(json.output[0], 0);
+    this.aluResult = super.addOutput(json.output[1], 0);
   }
 
   execute(regbank, aluctrl) {

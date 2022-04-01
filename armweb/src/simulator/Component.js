@@ -5,8 +5,9 @@ const inputs = new Map();
 const outputs = new Map();
 
 class Component {
-  constructor(id) {
+  constructor(id, json) {
     this.id = id;
+    this.json = json;
   }
 
   addInput(id, value) {
