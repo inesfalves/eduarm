@@ -1,24 +1,24 @@
 const Input = require("./Input.js");
 const Output = require("./Output.js");
 
-const inputs = new Map();
-const outputs = new Map();
-
 class Component {
   constructor(id, json) {
     this.id = id;
     this.json = json;
+
+    this.inputs = new Map();
+    this.outputs = new Map();
   }
 
   addInput(id, value) {
     let input = new Input(id, this, value);
-    inputs.set(id, input);
+    this.inputs.set(id, input);
     return input;
   }
 
   addOutput(id, value) {
     let output = new Output(id, this, value);
-    outputs.set(id, output);
+    this.outputs.set(id, output);
     return output;
   }
 }

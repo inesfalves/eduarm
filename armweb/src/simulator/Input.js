@@ -3,6 +3,7 @@ class Input {
     this.id = id;
     this.component = component;
     this.value = value;
+    this.connectedTo = null;
   }
 }
 

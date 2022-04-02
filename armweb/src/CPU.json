@@ -118,7 +118,7 @@
       },
       "MuxMem": {
         "componentType": "MUX",
-        "input": ["ALUSrc", "muxMemValue1", "muxMemValue2"],
+        "input": ["muxMemValue1", "muxMemValue2", "memToReg"],
         "output": "muxMemResult"
       }
     },
@@ -130,7 +130,7 @@
         {"origin": "AddPC", "dest": "MuxTop", "output": "addedPCValue", "input": "topMuxValue1"},
         {"origin": "AddBranch", "dest": "MuxTop", "output": "addBranchResult", "input": "topMuxValue2"},
         {"origin": "MuxTop", "dest": "PC", "output": "topMuxResult", "input": "updatedPC"},
-        {"origin": "PCounterFork", "dest": "InsMem", "output": "pcForkOutput", "input": "instruction"},
+        {"origin": "PCounterFork", "dest": "InsMem", "output": "pcForkOutput", "input": "address"},
         {"origin": "InsMem", "dest": "InsDistributor", "output": "instruction", "input": "distributorInput"},
         {"origin": "InsDistributor", "dest": "Control", "output": "dist3121", "input": "controlInput"},
         {"origin": "InsDistributor", "dest": "RegBank", "output": "dist95", "input": "readReg1"},

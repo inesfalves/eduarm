@@ -6,8 +6,11 @@ module.exports = {
   inmem: require("./simulator/InstructionMemory"),
   mux: require("./simulator/MUX"),
   pc: require("./simulator/ProgramCounter"),
+  fork: require("./simulator/Fork"),
+  dist: require("./simulator/Distributor"),
   regbank: require("./simulator/RegBank"),
   shiftleft: require("./simulator/ShiftLeft"),
   signextend: require("./simulator/SignExtend"),
+  and: require("./simulator/And"),
   datamem: require("./simulator/DataMemory"),
 };

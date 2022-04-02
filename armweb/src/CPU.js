@@ -17,15 +17,17 @@ class CPU {
     //Read JSON file
     let jsonComponents = Object.entries(jsonFile.cpuComponents);
     let componentClasses = Object.values(modules);
+    let componentType,
+      component = null;
 
     for (let i = 0; i < jsonComponents.length; i++) {
-      let componentType = jsonComponents[i][1].componentType;
+      componentType = jsonComponents[i][1].componentType;
 
       //Find corresponding class
       for (let j = 0; j < componentClasses.length; j++) {
         if (componentType === componentClasses[j].name) {
           //Initialize component
-          let component = new modules[Object.keys(modules)[j]](
+          component = new modules[Object.keys(modules)[j]](
             jsonComponents[i][0],
             jsonComponents[i][1]
           );
@@ -36,7 +38,30 @@ class CPU {
       }
     }
 
-    console.log(this.cpuComponents);
+    this.connectComponents();
+  }
+
+  connectComponents() {
+    //Read JSON file
+    let cpuConnections = jsonFile.cpuConnections;
+    let originComponent,
+      destComponent,
+      output,
+      input = null;
+
+    for (let i = 0; i < cpuConnections.length; i++) {
+      originComponent = this.cpuComponents.find(
+        (e) => e.id === cpuConnections[i].origin
+      );
+      destComponent = this.cpuComponents.find(
+        (e) => e.id === cpuConnections[i].dest
+      );
+
+      output = originComponent.outputs.get(cpuConnections[i].output);
+      input = destComponent.inputs.get(cpuConnections[i].input);
+
+      output.createConnection(input);
+    }
   }
 }
 

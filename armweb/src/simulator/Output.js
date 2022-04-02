@@ -3,6 +3,7 @@ class Output {
     this.id = id;
     this.component = component;
     this.value = value;
+    this.connectedTo = null;
   }
 
   get value() {
@@ -11,6 +12,13 @@ class Output {
 
   set value(newValue) {
     this._value = newValue;
+  }
+
+  createConnection(input) {
+    //Connect the output and input
+    this.connectedTo = input;
+    input.connectedTo = this;
+    this.connectedTo.value = this.value;
   }
 }
 
