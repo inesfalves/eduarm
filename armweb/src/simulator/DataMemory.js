@@ -14,9 +14,23 @@ class DataMemory extends Component {
     this.readData = super.addOutput(json.output, 0);
   }
 
-  execute() {}
+  execute() {
+    //TO DO
+  }
 
-  printValues() {}
+  printValues() {
+    console.log("\n");
+    console.log("DATA MEMORY");
+
+    console.log("=======INPUTS======= ");
+    console.log("Address: " + this.address.value);
+    console.log("writeData: " + this.writeData.value);
+    console.log("memRead: " + this.memRead.value);
+    console.log("memWrite: " + this.memWrite.value);
+
+    console.log("=======OUTPUTS======= ");
+    console.log("readData: " + this.readData.value);
+  }
 }
 
 module.exports = DataMemory;

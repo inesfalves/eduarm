@@ -15,7 +15,16 @@ class ProgramCounter extends Component {
     this.pcValue.value = this.updatedPC.value;
   }
 
-  printValues() {}
+  printValues() {
+    console.log("\n");
+    console.log("PROGRAM COUNTER");
+
+    console.log("=======INPUTS======= ");
+    console.log("Updated PC: " + this.updatedPC.value);
+
+    console.log("=======OUTPUTS======= ");
+    console.log("PC: " + this.pcValue.value);
+  }
 }
 
 module.exports = ProgramCounter;

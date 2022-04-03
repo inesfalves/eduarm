@@ -14,12 +14,7 @@ class ALU extends Component {
     this.aluResult = super.addOutput(json.output[1], 0);
   }
 
-  execute(regbank, aluctrl) {
-    //Takes as input the register bank output values
-    this.input1.value = regbank.readData1.value;
-    this.input2.value = regbank.readData2.value;
-    this.controlOp.value = aluctrl.ctrlALU.value;
-
+  execute() {
     //ignoring ALU control for now
     switch (this.controlOp.value) {
       case 2:

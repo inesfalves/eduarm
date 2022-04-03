@@ -21,17 +21,7 @@ class ALUControl extends Component {
     this.ctrlALU = super.addOutput(json.output, 0);
   }
 
-  execute(controlUnit) {
-    this.opcode.value = controlUnit.controlInput.value;
-    for (let i = 0; i < controlUnit.outputValues.length; i++) {
-      if (controlUnit.outputValues[i].id === this.ALUOp0.id) {
-        this.ALUOp0.value = controlUnit.outputValues[i].value;
-      }
-      if (controlUnit.outputValues[i].id === this.ALUOp1.id) {
-        this.ALUOp1.value = controlUnit.outputValues[i].value;
-      }
-    }
-
+  execute() {
     let jsonOutputValues = aluctrlValues.getALUControlValues(
       this.ALUOp0.value,
       this.ALUOp1.value,

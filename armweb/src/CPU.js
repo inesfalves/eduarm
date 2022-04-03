@@ -63,6 +63,13 @@ class CPU {
       output.createConnection(input);
     }
   }
+
+  executeCPU() {
+    for (let i = 0; i < this.cpuComponents.length; i++) {
+      this.cpuComponents[i].execute();
+      this.cpuComponents[i].printValues();
+    }
+  }
 }
 
 module.exports = CPU;

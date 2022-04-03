@@ -49,7 +49,7 @@
       "InsDistributor": {
         "componentType": "Distributor",
         "input": "distributorInput",
-        "output": ["dist3121", "dist95", "dist2016", "dist40", "dist310"]
+        "output": [{"id": "dist3121", "from": 31, "to": 21} , {"id": "dist95", "from": 9, "to": 5}, {"id": "dist2016", "from": 20, "to": 16}, {"id": "dist40", "from": 4, "to": 0}, {"id": "dist310", "from": 31, "to": 0}]
       },
       "InsFork": {
         "componentType": "Fork",
@@ -59,7 +59,7 @@
       "SignExtendDist": {
         "componentType": "Distributor",
         "input": "signExtendDistInput",
-        "output": ["signExtendDistOutput1", "signExtendDistOutput2"]
+        "output": [{"id": "signextend310", "from": 31, "to": 0}, {"id": "signextend3121", "from": 31, "to": 21}]
       },
       "RegMuxFork1": {
         "componentType": "Fork",
@@ -139,8 +139,8 @@
         {"origin": "InsFork", "dest": "MuxIns", "output": "insForkOutput", "input": "insMuxValue2"},
         {"origin": "InsFork", "dest": "RegBank", "output": "insForkOutput", "input": "writeReg"},
         {"origin": "InsDistributor", "dest": "SignExtendDist", "output": "dist310", "input": "signExtendDistInput"},
-        {"origin": "SignExtendDist", "dest": "SignExtend", "output": "signExtendDistOutput1", "input": "signExtendIn"},
-        {"origin": "SignExtendDist", "dest": "ALUControl", "output": "signExtendDistOutput2", "input": "opcode"},
+        {"origin": "SignExtendDist", "dest": "SignExtend", "output": "signextend310", "input": "signExtendIn"},
+        {"origin": "SignExtendDist", "dest": "ALUControl", "output": "signextend3121", "input": "opcode"},
         {"origin": "SignExtend", "dest": "RegMuxFork2", "output": "signExtendResult", "input": "regMuxFork2Input"},
         {"origin": "RegMuxFork2", "dest": "MuxReg", "output": "regMuxFork2Output", "input": "regMuxInput2"},
         {"origin": "RegMuxFork1", "dest": "MuxReg", "output": "regMuxFork1Output", "input": "regMuxInput1"},

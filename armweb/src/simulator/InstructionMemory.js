@@ -10,19 +10,29 @@ class InstructionMemory extends Component {
 
     //Instruction memory output values
     //Instruction in machine code
-    this.instruction = super.addOutput(json.output, 0);
+    this.instruction = super.addOutput(json.output, "10952736");
 
     //Array with the assembled instructions
-    this.assembledInstructions = [];
+    this.assembledInstructions = ["10952736"];
   }
 
   execute() {
     //Fetch the instruction using the PC value
     let instructionPos = this.address.value / 4;
-    this.instruction = this.assembledInstructions[instructionPos];
+
+    this.instruction.value = this.assembledInstructions[instructionPos];
   }
 
-  printValues() {}
+  printValues() {
+    console.log("\n");
+    console.log("INSTRUCTION MEMORY");
+
+    console.log("=======INPUTS======= ");
+    console.log("Address: " + this.address.value);
+
+    console.log("=======OUTPUTS======= ");
+    console.log("Instruction: " + this.instruction.value);
+  }
 }
 
 module.exports = InstructionMemory;

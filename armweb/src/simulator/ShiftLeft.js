@@ -18,7 +18,16 @@ class ShiftLeft extends Component {
     this.shiftOutput.value = this.shiftInput.value << this.amount;
   }
 
-  printValues() {}
+  printValues() {
+    console.log("\n");
+    console.log("SHIFT LEFT");
+
+    console.log("=======INPUTS======= ");
+    console.log("Value to shift: " + this.shiftInput.value);
+
+    console.log("=======OUTPUTS======= ");
+    console.log("Shift: " + this.shiftOutput.value);
+  }
 }
 
 module.exports = ShiftLeft;

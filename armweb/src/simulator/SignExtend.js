@@ -15,7 +15,16 @@ class SignExtend extends Component {
     //sign extend
   }
 
-  printValues() {}
+  printValues() {
+    console.log("\n");
+    console.log("SIGN EXTEND");
+
+    console.log("=======INPUTS======= ");
+    console.log("Value to extend: " + this.signExtendIn.value);
+
+    console.log("=======OUTPUTS======= ");
+    console.log("Result: " + this.signExtendOut.value);
+  }
 }
 
 module.exports = SignExtend;

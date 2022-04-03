@@ -13,17 +13,10 @@ class MUX extends Component {
     this.muxOut = super.addOutput(json.output, 0);
   }
 
-  execute(regbank, alu) {
-    //Input
-    this.zero.value = alu.aluResult.value;
-    //Should be, in this case, the data memory value
-    this.one.value = 0;
-
+  execute() {
     //Output
     //"the selector is a single signal that selects one of the inputs if it is true (1) and the other if it is false (0)"
     this.muxOut.value = this.selector.value ? this.one.value : this.zero.value;
-
-    regbank.writeData.value = this.muxOut.value;
   }
 
   printValues() {

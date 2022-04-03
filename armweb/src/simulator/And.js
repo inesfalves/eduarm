@@ -16,7 +16,17 @@ class And extends Component {
     this.result.value = this.value1.value && this.value2.value;
   }
 
-  printValues() {}
+  printValues() {
+    console.log("\n");
+    console.log("AND");
+
+    console.log("=======INPUTS======= ");
+    console.log("Value 1: " + this.value1.value);
+    console.log("Value 2: " + this.value2.value);
+
+    console.log("=======OUTPUTS======= ");
+    console.log("Result: " + this.result.value);
+  }
 }
 
 module.exports = And;

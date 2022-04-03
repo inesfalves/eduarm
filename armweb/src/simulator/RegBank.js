@@ -20,24 +20,16 @@ class RegBank extends Component {
     for (let i = 0; i < 32; i++) {
       registers[i] = 0;
     }
+
+    registers[5] = 3;
+    registers[7] = 8;
   }
 
   //allocating the register values
-  execute(ctrl) {
+  execute() {
     // li $5, 3
     // li $7, 8
     // add $4, $5, $7
-    this.readReg1.value = 5;
-    this.readReg2.value = 7;
-    this.writeReg.value = 4;
-
-    for (let i = 0; i < ctrl.outputValues.length; i++) {
-      if (ctrl.outputValues[i].id === this.regWrite.id) {
-        this.regWrite.value = ctrl.outputValues[i].value;
-      }
-    }
-    registers[5] = 3;
-    registers[7] = 8;
 
     this.readData1.value = registers[this.readReg1.value];
     this.readData2.value = registers[this.readReg2.value];

@@ -8,6 +8,8 @@ const CPU = require("./CPU");
 var cpu = new CPU("basicCPU");
 
 cpu.initializeCPU();
+console.log("CPU INITIALIZED");
+cpu.executeCPU();
 
 ReactDOM.render(
   <React.StrictMode>
