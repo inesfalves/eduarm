@@ -1,17 +1,17 @@
 class Input {
-  constructor(id, component, value) {
+  constructor(id, component, data) {
     this.id = id;
     this.component = component;
-    this.value = value;
+    this.data = data;
     this.connectedTo = null;
   }
 
   get value() {
-    return this._value;
+    return this.data.value;
   }
 
   set value(newValue) {
-    this._value = newValue;
+    this.data.value = newValue;
   }
 }
 

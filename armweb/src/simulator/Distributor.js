@@ -1,18 +1,19 @@
 const Component = require("./Component.js");
+const Data = require("./Data.js");
 
 class Distributor extends Component {
   constructor(id, json) {
     super(id, json);
 
     //Distributor input
-    this.input = super.addInput(json.input, 0);
+    this.input = super.addInput(json.input, new Data(0, 0));
     this.output = [];
     this.from = [];
     this.to = [];
 
     //Distributor output
     for (let i = 0; i < json.output.length; i++) {
-      this.output[i] = super.addOutput(json.output[i].id, 0);
+      this.output[i] = super.addOutput(json.output[i].id, new Data(0, 0));
       this.from[i] = json.output[i].from;
       this.to[i] = json.output[i].to;
     }

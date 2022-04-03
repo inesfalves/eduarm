@@ -1,19 +1,19 @@
 class Output {
-  constructor(id, component, value) {
+  constructor(id, component, data) {
     this.id = id;
     this.component = component;
     this.isConnected = false;
-    this.value = value;
+    this.data = data;
     this.connectedTo = null;
   }
 
   get value() {
-    return this._value;
+    return this.data.value;
   }
 
   set value(newValue) {
     let oldValue = this.value;
-    this._value = newValue;
+    this.data.value = newValue;
     if (this.isConnected && this.value !== oldValue) {
       this.connectedTo.value = newValue;
     }

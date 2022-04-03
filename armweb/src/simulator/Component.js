@@ -10,14 +10,14 @@ class Component {
     this.outputs = new Map();
   }
 
-  addInput(id, value) {
-    let input = new Input(id, this, value);
+  addInput(id, data) {
+    let input = new Input(id, this, data);
     this.inputs.set(id, input);
     return input;
   }
 
-  addOutput(id, value) {
-    let output = new Output(id, this, value);
+  addOutput(id, data) {
+    let output = new Output(id, this, data);
     this.outputs.set(id, output);
     return output;
   }

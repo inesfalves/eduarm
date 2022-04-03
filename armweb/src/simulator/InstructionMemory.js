@@ -1,4 +1,5 @@
 const Component = require("./Component.js");
+const Data = require("./Data.js");
 
 class InstructionMemory extends Component {
   constructor(id, json) {
@@ -6,11 +7,11 @@ class InstructionMemory extends Component {
 
     //Instruction memory input values
     //instruction address from the program counter
-    this.address = super.addInput(json.input, 0);
+    this.address = super.addInput(json.input, new Data(0, 0));
 
     //Instruction memory output values
     //Instruction in machine code
-    this.instruction = super.addOutput(json.output, 0);
+    this.instruction = super.addOutput(json.output, new Data(0, 0));
 
     //Array with the assembled instructions
     this.assembledInstructions = ["1124073867"];

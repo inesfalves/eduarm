@@ -1,14 +1,15 @@
 const Component = require("./Component.js");
+const Data = require("./Data.js");
 
 class Fork extends Component {
   constructor(id, json) {
     super(id, json);
 
     //Fork input
-    this.input = super.addInput(json.input, 0);
+    this.input = super.addInput(json.input, new Data(0, 0));
 
     //Fork output
-    this.output = super.addOutput(json.output, 0);
+    this.output = super.addOutput(json.output, new Data(0, 0));
   }
 
   execute() {

@@ -1,18 +1,19 @@
 const Component = require("./Component.js");
+const Data = require("./Data.js");
 
 class SignExtend extends Component {
   constructor(id, json) {
     super(id, json);
 
     //SignExtend input value
-    this.signExtendIn = super.addInput(json.input, 0);
+    this.signExtendIn = super.addInput(json.input, new Data(0, 0));
 
     //SignExtend output value
-    this.signExtendOut = super.addOutput(json.output, 0);
+    this.signExtendOut = super.addOutput(json.output, new Data(0, 0));
   }
 
   execute() {
-    //sign extend
+    this.signExtendOut.data = this.signExtendIn.data.getExtendedValue(64);
   }
 
   printValues() {
@@ -25,9 +26,7 @@ class SignExtend extends Component {
     );
 
     console.log("=======OUTPUTS======= ");
-    console.log(
-      "Result: " + (this.signExtendOut.value.value >>> 0).toString(2)
-    );
+    console.log("Result: " + this.signExtendOut.data.value);
   }
 }
 

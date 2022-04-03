@@ -1,17 +1,18 @@
 const Component = require("./Component.js");
+const Data = require("./Data.js");
 
 class ShiftLeft extends Component {
   constructor(id, json) {
     super(id, json);
 
     //ShiftLeft input value
-    this.shiftInput = super.addInput(json.input, 0);
+    this.shiftInput = super.addInput(json.input, new Data(0, 0));
 
     //Amount to shift
     this.amount = json.amount;
 
     //ShiftLeft output value
-    this.shiftOutput = super.addOutput(json.output, 0);
+    this.shiftOutput = super.addOutput(json.output, new Data(0, 0));
   }
 
   execute() {

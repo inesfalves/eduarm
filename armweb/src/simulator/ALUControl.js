@@ -1,5 +1,6 @@
 const Component = require("./Component.js");
 const ALUControlValues = require("./control/ALUControlValues.js");
+const Data = require("./Data.js");
 
 let aluctrlValues = new ALUControlValues();
 aluctrlValues.initializeALUControl();
@@ -12,13 +13,13 @@ class ALUControl extends Component {
 
     //this.ALUOp = super.addInput("ALUOp", 0);
 
-    this.ALUOp0 = super.addInput(json.input[0], 0);
-    this.ALUOp1 = super.addInput(json.input[1], 0);
+    this.ALUOp0 = super.addInput(json.input[0], new Data(0, 0));
+    this.ALUOp1 = super.addInput(json.input[1], new Data(0, 0));
 
-    this.opcode = super.addInput(json.input[2], 0);
+    this.opcode = super.addInput(json.input[2], new Data(0, 0));
 
     //ALUControl output values
-    this.ctrlALU = super.addOutput(json.output, 0);
+    this.ctrlALU = super.addOutput(json.output, new Data(0, 0));
   }
 
   execute() {
