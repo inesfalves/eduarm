@@ -39,16 +39,15 @@ class Distributor extends Component {
   }
 
   printValues() {
-    //00000000 10100111 00100000 00100000
-    //31-21: 00000000 101
-    //9-5: 00 001
-    //20-16: 00111
-    //4-0: 0000
-    //31-0: 00000000 10100111 00100000 00100000
+    //01000011000000000000000110001011
+    console.log("\n");
     console.log("=== DISTRIBUTOR ===");
     for (let i = 0; i < this.output.length; i++) {
       console.log(
-        "id: " + this.output[i].id + " value: " + this.output[i].value
+        "id: " +
+          this.output[i].id +
+          "  value: " +
+          (this.output[i].value >>> 0).toString(2)
       );
     }
   }

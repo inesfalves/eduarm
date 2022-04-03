@@ -12,10 +12,10 @@ class ALUControl extends Component {
 
     //this.ALUOp = super.addInput("ALUOp", 0);
 
-    this.ALUOp0 = super.addInput(json.input[0], 1);
-    this.ALUOp1 = super.addInput(json.input[0], 0);
+    this.ALUOp0 = super.addInput(json.input[0], 0);
+    this.ALUOp1 = super.addInput(json.input[1], 0);
 
-    this.opcode = super.addInput(json.input[1], 1112);
+    this.opcode = super.addInput(json.input[2], 0);
 
     //ALUControl output values
     this.ctrlALU = super.addOutput(json.output, 0);

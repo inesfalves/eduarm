@@ -8,7 +8,10 @@ const CPU = require("./CPU");
 var cpu = new CPU("basicCPU");
 
 cpu.initializeCPU();
+console.log("\n");
 console.log("CPU INITIALIZED");
+console.log("\n");
+console.log("RUN FIRST TIME");
 cpu.executeCPU();
 
 ReactDOM.render(

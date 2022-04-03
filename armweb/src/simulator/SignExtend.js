@@ -20,10 +20,14 @@ class SignExtend extends Component {
     console.log("SIGN EXTEND");
 
     console.log("=======INPUTS======= ");
-    console.log("Value to extend: " + this.signExtendIn.value);
+    console.log(
+      "Value to extend: " + (this.signExtendIn.value >>> 0).toString(2)
+    );
 
     console.log("=======OUTPUTS======= ");
-    console.log("Result: " + this.signExtendOut.value);
+    console.log(
+      "Result: " + (this.signExtendOut.value.value >>> 0).toString(2)
+    );
   }
 }
 

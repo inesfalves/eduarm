@@ -32,7 +32,8 @@ class CPU {
             jsonComponents[i][1]
           );
 
-          //Add components to component array
+          //Execute once to initialize the values and add components to component array
+          //component.execute();
           this.cpuComponents.push(component);
         }
       }
@@ -67,6 +68,9 @@ class CPU {
   executeCPU() {
     for (let i = 0; i < this.cpuComponents.length; i++) {
       this.cpuComponents[i].execute();
+    }
+
+    for (let i = 0; i < this.cpuComponents.length; i++) {
       this.cpuComponents[i].printValues();
     }
   }

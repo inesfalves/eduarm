@@ -5,6 +5,14 @@ class Input {
     this.value = value;
     this.connectedTo = null;
   }
+
+  get value() {
+    return this._value;
+  }
+
+  set value(newValue) {
+    this._value = newValue;
+  }
 }
 
 module.exports = Input;

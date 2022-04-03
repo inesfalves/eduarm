@@ -19,10 +19,10 @@ class Control extends Component {
       super.addOutput(json.output[2], 0),
       super.addOutput(json.output[3], 0),
       super.addOutput(json.output[4], 0),
-      super.addOutput(json.output[4], 0),
       super.addOutput(json.output[5], 0),
       super.addOutput(json.output[6], 0),
       super.addOutput(json.output[7], 0),
+      super.addOutput(json.output[8], 0),
     ];
   }
 

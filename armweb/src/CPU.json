@@ -5,6 +5,11 @@
         "input": "updatedPC",
         "output":"PC"
       },
+      "InsMem": {
+        "componentType": "InstructionMemory",
+        "input": "address",
+        "output": "instruction"
+      },
       "PCounterFork": {
         "componentType": "Fork",
         "input": "pcForkInput",
@@ -41,11 +46,6 @@
         "input": ["andInput1", "andInput2"],
         "output": "andResult"
       },
-      "InsMem": {
-        "componentType": "InstructionMemory",
-        "input": "address",
-        "output": "instruction"
-      },
       "InsDistributor": {
         "componentType": "Distributor",
         "input": "distributorInput",
@@ -55,6 +55,21 @@
         "componentType": "Fork",
         "input": "insForkInput",
         "output": "insForkOutput"
+      },
+      "Control": {
+        "componentType": "Control",
+        "input": "controlInput",
+        "output": ["reg2Loc", "branch", "memRead", "memToReg", "ALUOp0", "ALUOp1", "memWrite", "ALUSrc", "regWrite"]
+      },
+      "ALUControl": {
+        "componentType": "ALUControl",
+        "input": ["ALUOp0", "ALUOp1", "opcode"],
+        "output": "ctrlALU"
+      },
+      "ALU": {
+        "componentType": "ALU",
+        "input": ["ALUInput1", "ALUInput2", "ctrlALU"],
+        "output": ["aluZero", "aluResult"]
       },
       "SignExtendDist": {
         "componentType": "Distributor",
@@ -95,21 +110,6 @@
         "componentType": "SignExtend",
         "input": "signExtendIn",
         "output": "signExtendResult"
-      },
-      "Control": {
-        "componentType": "Control",
-        "input": "controlInput",
-        "output": ["reg2Loc", "branch", "memRead", "memToReg", "ALUOp", "memWrite", "ALUSrc", "regWrite"]
-      },
-      "ALU": {
-        "componentType": "ALU",
-        "input": ["ALUInput1", "ALUInput2", "ctrlALU"],
-        "output": ["aluZero", "aluResult"]
-      },
-      "ALUControl": {
-        "componentType": "ALUControl",
-        "input": ["ALUOp", "opcode"],
-        "output": "ctrlALU"
       },
       "DataMemory": {
         "componentType": "DataMemory",
@@ -161,7 +161,8 @@
         {"origin": "And", "dest": "MuxTop", "output": "andResult", "input": "topMuxControl"},
         {"origin": "Control", "dest": "DataMemory", "output": "memRead", "input": "memRead"},
         {"origin": "Control", "dest": "MuxMem", "output": "memToReg", "input": "memToReg"},
-        {"origin": "Control", "dest": "ALUControl", "output": "ALUOp", "input": "ALUOp"},
+        {"origin": "Control", "dest": "ALUControl", "output": "ALUOp0", "input": "ALUOp0"},
+        {"origin": "Control", "dest": "ALUControl", "output": "ALUOp1", "input": "ALUOp1"},
         {"origin": "ALUControl", "dest": "ALU", "output": "ctrlALU", "input": "ctrlALU"},
         {"origin": "ALU", "dest": "And", "output": "aluZero", "input": "andInput2"},
         {"origin": "Control", "dest": "DataMemory", "output": "memWrite", "input": "memWrite"},

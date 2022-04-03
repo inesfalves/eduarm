@@ -13,7 +13,7 @@ class RegBank extends Component {
     this.regWrite = super.addInput(json.input[4], 0);
 
     //Register Bank outputs
-    this.readData1 = super.addOutput(json.output[0], 5);
+    this.readData1 = super.addOutput(json.output[0], 0);
     this.readData2 = super.addOutput(json.output[1], 0);
 
     //Initialize registers -> assuming 32 registers
@@ -31,6 +31,7 @@ class RegBank extends Component {
     // li $7, 8
     // add $4, $5, $7
 
+    // add x3, x2, x1
     this.readData1.value = registers[this.readReg1.value];
     this.readData2.value = registers[this.readReg2.value];
   }
