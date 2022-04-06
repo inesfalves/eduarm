@@ -20,7 +20,6 @@ class Distributor extends Component {
   }
 
   execute() {
-    //Change this in the future
     for (let i = 0; i < this.output.length; i++) {
       this.output[i].value = this.bitMasking(
         this.input.value,

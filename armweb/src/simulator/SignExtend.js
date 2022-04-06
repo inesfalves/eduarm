@@ -13,7 +13,9 @@ class SignExtend extends Component {
   }
 
   execute() {
-    this.signExtendOut.data = this.signExtendIn.data.getExtendedValue(64);
+    this.signExtendOut.value = this.signExtendIn.data.getExtendedValue(
+      64
+    ).value;
   }
 
   printValues() {

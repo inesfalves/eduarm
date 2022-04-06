@@ -5,20 +5,15 @@
         "input": "updatedPC",
         "output":"PC"
       },
-      "InsMem": {
-        "componentType": "InstructionMemory",
-        "input": "address",
-        "output": "instruction"
-      },
       "PCounterFork": {
         "componentType": "Fork",
         "input": "pcForkInput",
-        "output": "pcForkOutput"
+        "output": ["pcForkOutput1", "pcForkOutput2"]
       },
       "PCAddFork": {
         "componentType": "Fork",
         "input": "pcAddForkInput",
-        "output": "pcAddForkOutput"
+        "output": ["pcAddForkOutput1", "pcAddForkOutput2"]
       },
       "AddPC": {
         "componentType": "Adder",
@@ -46,6 +41,11 @@
         "input": ["andInput1", "andInput2"],
         "output": "andResult"
       },
+      "InsMem": {
+        "componentType": "InstructionMemory",
+        "input": "address",
+        "output": "instruction"
+      },
       "InsDistributor": {
         "componentType": "Distributor",
         "input": "distributorInput",
@@ -54,42 +54,7 @@
       "InsFork": {
         "componentType": "Fork",
         "input": "insForkInput",
-        "output": "insForkOutput"
-      },
-      "Control": {
-        "componentType": "Control",
-        "input": "controlInput",
-        "output": ["reg2Loc", "branch", "memRead", "memToReg", "ALUOp0", "ALUOp1", "memWrite", "ALUSrc", "regWrite"]
-      },
-      "ALUControl": {
-        "componentType": "ALUControl",
-        "input": ["ALUOp0", "ALUOp1", "opcode"],
-        "output": "ctrlALU"
-      },
-      "ALU": {
-        "componentType": "ALU",
-        "input": ["ALUInput1", "ALUInput2", "ctrlALU"],
-        "output": ["aluZero", "aluResult"]
-      },
-      "SignExtendDist": {
-        "componentType": "Distributor",
-        "input": "signExtendDistInput",
-        "output": [{"id": "signextend310", "from": 31, "to": 0}, {"id": "signextend3121", "from": 31, "to": 21}]
-      },
-      "RegMuxFork1": {
-        "componentType": "Fork",
-        "input": "regMuxFork1Input",
-        "output": "regMuxFork1Output"
-      },
-      "RegMuxFork2": {
-        "componentType": "Fork",
-        "input": "regMuxFork2Input",
-        "output": "regMuxFork2Output"
-      },
-      "ALUFork": {
-        "componentType": "Fork",
-        "input": "aluForkInput",
-        "output": "aluForkOutput"
+        "output": ["insForkOutput1", "insForkOutput2"]
       },
       "MuxIns": {
         "componentType": "MUX",
@@ -101,15 +66,50 @@
         "input": ["readReg1", "readReg2", "writeReg", "writeData", "regWrite"],
         "output": ["readData1", "readData2"]
       },
-      "MuxReg": {
-        "componentType": "MUX",
-        "input": ["regMuxInput1", "regMuxInput2", "ALUSrc"],
-        "output": "regMuxResult"
+      "SignExtendDist": {
+        "componentType": "Distributor",
+        "input": "signExtendDistInput",
+        "output": [{"id": "signextend310", "from": 31, "to": 0}, {"id": "signextend3121", "from": 31, "to": 21}]
       },
       "SignExtend": {
         "componentType": "SignExtend",
         "input": "signExtendIn",
         "output": "signExtendResult"
+      },
+      "RegMuxFork1": {
+        "componentType": "Fork",
+        "input": "regMuxFork1Input",
+        "output": ["regMuxFork1Output1", "regMuxFork1Output2"]
+      },
+      "RegMuxFork2": {
+        "componentType": "Fork",
+        "input": "regMuxFork2Input",
+        "output": ["regMuxFork2Output1", "regMuxFork2Output2"]
+      },
+      "Control": {
+        "componentType": "Control",
+        "input": "controlInput",
+        "output": ["reg2Loc", "branch", "memRead", "memToReg", "ALUOp0", "ALUOp1", "memWrite", "ALUSrc", "regWrite"]
+      },
+      "MuxReg": {
+        "componentType": "MUX",
+        "input": ["regMuxInput1", "regMuxInput2", "ALUSrc"],
+        "output": "regMuxResult"
+      },
+      "ALUControl": {
+        "componentType": "ALUControl",
+        "input": ["ALUOp0", "ALUOp1", "opcode"],
+        "output": "ctrlALU"
+      },
+      "ALU": {
+        "componentType": "ALU",
+        "input": ["ALUInput1", "ALUInput2", "ctrlALU"],
+        "output": ["aluZero", "aluResult"]
+      },
+      "ALUFork": {
+        "componentType": "Fork",
+        "input": "aluForkInput",
+        "output": ["aluForkOutput1", "aluForkOutput2"]
       },
       "DataMemory": {
         "componentType": "DataMemory",
@@ -124,35 +124,35 @@
     },
     "cpuConnections": [
         {"origin": "PC", "dest": "PCounterFork", "output": "PC", "input": "pcForkInput"},
-        {"origin": "PCounterFork", "dest": "PCAddFork", "output": "pcForkOutput", "input": "pcAddForkInput"},
-        {"origin": "PCAddFork", "dest": "AddPC", "output": "pcAddForkOutput", "input": "pcValue"},
-        {"origin": "PCAddFork", "dest": "AddBranch", "output": "pcAddForkOutput", "input": "addBranchValue1"},
+        {"origin": "PCounterFork", "dest": "PCAddFork", "output": "pcForkOutput1", "input": "pcAddForkInput"},
+        {"origin": "PCAddFork", "dest": "AddPC", "output": "pcAddForkOutput1", "input": "pcValue"},
+        {"origin": "PCAddFork", "dest": "AddBranch", "output": "pcAddForkOutput2", "input": "addBranchValue1"},
         {"origin": "AddPC", "dest": "MuxTop", "output": "addedPCValue", "input": "topMuxValue1"},
         {"origin": "AddBranch", "dest": "MuxTop", "output": "addBranchResult", "input": "topMuxValue2"},
         {"origin": "MuxTop", "dest": "PC", "output": "topMuxResult", "input": "updatedPC"},
-        {"origin": "PCounterFork", "dest": "InsMem", "output": "pcForkOutput", "input": "address"},
+        {"origin": "PCounterFork", "dest": "InsMem", "output": "pcForkOutput2", "input": "address"},
         {"origin": "InsMem", "dest": "InsDistributor", "output": "instruction", "input": "distributorInput"},
         {"origin": "InsDistributor", "dest": "Control", "output": "dist3121", "input": "controlInput"},
         {"origin": "InsDistributor", "dest": "RegBank", "output": "dist95", "input": "readReg1"},
         {"origin": "InsDistributor", "dest": "MuxIns", "output": "dist2016", "input": "insMuxValue1"},
         {"origin": "InsDistributor", "dest": "InsFork", "output": "dist40", "input": "insForkInput"},
-        {"origin": "InsFork", "dest": "MuxIns", "output": "insForkOutput", "input": "insMuxValue2"},
-        {"origin": "InsFork", "dest": "RegBank", "output": "insForkOutput", "input": "writeReg"},
+        {"origin": "InsFork", "dest": "MuxIns", "output": "insForkOutput1", "input": "insMuxValue2"},
+        {"origin": "InsFork", "dest": "RegBank", "output": "insForkOutput2", "input": "writeReg"},
         {"origin": "InsDistributor", "dest": "SignExtendDist", "output": "dist310", "input": "signExtendDistInput"},
         {"origin": "SignExtendDist", "dest": "SignExtend", "output": "signextend310", "input": "signExtendIn"},
         {"origin": "SignExtendDist", "dest": "ALUControl", "output": "signextend3121", "input": "opcode"},
         {"origin": "SignExtend", "dest": "RegMuxFork2", "output": "signExtendResult", "input": "regMuxFork2Input"},
-        {"origin": "RegMuxFork2", "dest": "MuxReg", "output": "regMuxFork2Output", "input": "regMuxInput2"},
-        {"origin": "RegMuxFork1", "dest": "MuxReg", "output": "regMuxFork1Output", "input": "regMuxInput1"},
-        {"origin": "RegMuxFork1", "dest": "DataMemory", "output": "regMuxFork1Output", "input": "writeData"},
-        {"origin": "RegMuxFork2", "dest": "ShiftLeft", "output": "regMuxFork2Output", "input": "shiftLeftInput"},
+        {"origin": "RegMuxFork2", "dest": "MuxReg", "output": "regMuxFork2Output1", "input": "regMuxInput2"},
+        {"origin": "RegMuxFork1", "dest": "MuxReg", "output": "regMuxFork1Output1", "input": "regMuxInput1"},
+        {"origin": "RegMuxFork1", "dest": "DataMemory", "output": "regMuxFork1Output2", "input": "writeData"},
+        {"origin": "RegMuxFork2", "dest": "ShiftLeft", "output": "regMuxFork2Output2", "input": "shiftLeftInput"},
         {"origin": "ShiftLeft", "dest": "AddBranch", "output": "shiftLeftOutput", "input": "addBranchValue2"},
         {"origin": "RegBank", "dest": "ALU", "output": "readData1", "input": "ALUInput1"},
         {"origin": "RegBank", "dest": "RegMuxFork1", "output": "readData2", "input": "regMuxFork1Input"},
         {"origin": "MuxReg", "dest": "ALU", "output": "regMuxResult", "input": "ALUInput2"},
         {"origin": "ALU", "dest": "ALUFork", "output": "aluResult", "input": "aluForkInput"},
-        {"origin": "ALUFork", "dest": "DataMemory", "output": "aluForkOutput", "input": "memoryAddress"},
-        {"origin": "ALUFork", "dest": "MuxMem", "output": "aluForkOutput", "input": "muxMemValue2"},
+        {"origin": "ALUFork", "dest": "DataMemory", "output": "aluForkOutput1", "input": "memoryAddress"},
+        {"origin": "ALUFork", "dest": "MuxMem", "output": "aluForkOutput2", "input": "muxMemValue2"},
         {"origin": "DataMemory", "dest": "MuxMem", "output": "readData", "input": "muxMemValue1"},
         {"origin": "MuxMem", "dest": "RegBank", "output": "muxMemResult", "input": "writeData"},
         {"origin": "Control", "dest": "MuxIns", "output": "reg2Loc", "input": "reg2Loc"},

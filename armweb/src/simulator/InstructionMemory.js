@@ -14,7 +14,7 @@ class InstructionMemory extends Component {
     this.instruction = super.addOutput(json.output, new Data(0, 0));
 
     //Array with the assembled instructions
-    this.assembledInstructions = ["1124073867"];
+    this.assembledInstructions = ["0x45820023"];
   }
 
   execute() {

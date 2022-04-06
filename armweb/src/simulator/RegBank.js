@@ -22,16 +22,12 @@ class RegBank extends Component {
       registers[i] = 0;
     }
 
-    registers[5] = 3;
-    registers[7] = 8;
+    registers[1] = 3;
+    registers[2] = 8;
   }
 
   //allocating the register values
   execute() {
-    // li $5, 3
-    // li $7, 8
-    // add $4, $5, $7
-
     // add x3, x2, x1
     this.readData1.value = registers[this.readReg1.value];
     this.readData2.value = registers[this.readReg2.value];

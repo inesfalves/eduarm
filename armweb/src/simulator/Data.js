@@ -8,22 +8,6 @@ class Data {
     this.MSB = this.dataSize - 1;
   }
 
-  get value() {
-    return this._value;
-  }
-
-  set value(newValue) {
-    this._value = newValue;
-  }
-
-  get size() {
-    return this._size;
-  }
-
-  set size(newValue) {
-    this._size = newValue;
-  }
-
   getExtendedValue(size) {
     return new Data(size, this.signExtend(size));
   }

@@ -9,10 +9,10 @@ function App() {
       <Navbar></Navbar>
       <div className="container-fluid">
         <div className="row">
-          <div className="col-7 px-0">
+          <div className="col-8 px-0">
             <ViewTab></ViewTab>
           </div>
-          <div className="registersArea col-5">
+          <div className="registersArea col-4">
             <p className="text-uppercase text-center fw-normal mt-2">
               Registers
             </p>
