@@ -1,5 +1,5 @@
 function ButtonArea() {
-  return <div>fdgjkdf</div>;
+  return <div></div>;
 }
 
 export default ButtonArea;

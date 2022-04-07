@@ -10,4 +10,98 @@
   border-top: 1px solid rgb(211, 211, 211);
 }
 
+.custom-node {
+  height: 50px;
+  border: 1px solid black;
+  padding: 5px;
+  border-radius: 5px;
+  background: white;
+}
+
+.custom-node label, .regbank-node label, .alu-node label, .datamemory-node label,.add-node label {
+  display: block;
+  text-align: center;
+  color: black;
+  font-size: 12px;
+}
+
+.fork-node {
+  height: 10px;
+  width: 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+  background: black;
+}
+
+.distributor-node {
+  height: 80px;
+  width: 10px;
+  border: 1px solid black;
+  background: black;
+}
+
+.mux-node {
+  height: 60px;
+  width: 20px;
+  border: 1px solid black;
+  border-radius: 5px;
+  background: white;
+}
+
+.regbank-node {
+  height: 150px;
+  width: 100px;
+  border: 1px solid black;
+  padding: 5px;
+  border-radius: 5px;
+  background: white;
+}
+
+.datamemory-node {
+  height: 120px;
+  width: 80px;
+  border: 1px solid black;
+  padding: 5px;
+  border-radius: 5px;
+  background: white;
+}
+
+.alu-node, .add-node {
+  height: 70px;
+  width: 60px;
+  border: 1px solid black;
+  padding: 5px;
+  border-radius: 5px;
+  background: white;
+}
+
+.alucontrol-node {
+  height: 50px;
+  width: 50px;
+  border: 1px solid #00ADEE;
+  padding: 5px;
+  border-radius: 15px;
+  background: white;
+}
+
+.alucontrol-node label, .control-node label {
+  display: block;
+  text-align: center;
+  color: #00ADEE;
+  font-size: 12px;
+}
+
+.control-node {
+  height:100px;
+  width: 75px;
+  border: 1px solid #00ADEE;
+  padding: 5px;
+  border-radius: 15px;
+  background: white;
+}
+
+
+
+
+
 
