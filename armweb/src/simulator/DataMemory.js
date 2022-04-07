@@ -13,10 +13,18 @@ class DataMemory extends Component {
 
     //Data memory output
     this.readData = super.addOutput(json.output, new Data(0, 0));
+
+    this.memory = [];
   }
 
   execute() {
-    //TO DO
+    if (this.memRead.value === 1) {
+      //Reading from memory
+      this.readData.value = this.memory[this.address.value/4];
+    } else if (this.memWrite.value === 1) {
+      //Writing on memory -> this needs to be synchronous?
+      this.memory[this.address.value/4] = this.writeData.value;
+    }
   }
 
   printValues() {

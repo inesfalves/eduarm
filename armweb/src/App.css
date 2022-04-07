@@ -1,3 +1,13 @@
 .registersArea {
   border-left: 1px solid rgb(211, 211, 211);
 }
+
+.react-flow__attribution a{
+  display: none;
+}
+
+.buttonsArea {
+  border-top: 1px solid rgb(211, 211, 211);
+}
+
+

@@ -1,6 +1,7 @@
 import Navbar from "./Navbar.js";
 import Registers from "./Registers.js";
 import ViewTab from "./ViewTab.js";
+import ButtonArea from "./ButtonArea.js";
 import "./App.css";
 
 function App() {
@@ -11,6 +12,9 @@ function App() {
         <div className="row">
           <div className="col-8 px-0">
             <ViewTab></ViewTab>
+            <div className="buttonsArea">
+              <ButtonArea></ButtonArea>
+            </div>
           </div>
           <div className="registersArea col-4">
             <p className="text-uppercase text-center fw-normal mt-2">
