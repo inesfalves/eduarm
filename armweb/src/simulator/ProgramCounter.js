@@ -6,14 +6,23 @@ class ProgramCounter extends Component {
   constructor(id, json) {
     super(id, json);
 
+    super.isSynchronous = true;
+
     this.updatedPC = super.addInput(json.input, new Data(0, 0));
 
     this.pcValue = super.addOutput(json.output, new Data(0, 0));
+
+    this.auxAddress = new Data(0, 0);
   }
 
   execute() {
     //Send the new pc to the instruction memory
-    this.pcValue.value = this.updatedPC.value;
+    this.pcValue.value = this.auxAddress.value;
+  }
+
+  executeClockTransition() {
+    //If pipeline, will only this if control signal is active
+    this.auxAddress.value = this.updatedPC.value;
   }
 
   printValues() {

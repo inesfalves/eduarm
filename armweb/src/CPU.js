@@ -67,6 +67,9 @@ class CPU {
 
   executeCPU() {
     for (let i = 0; i < this.cpuComponents.length; i++) {
+      if (this.cpuComponents[i].isSynchronous) {
+        this.cpuComponents[i].executeClockTransition();
+      }
       this.cpuComponents[i].execute();
     }
 

@@ -8,6 +8,7 @@ class Component {
 
     this.inputs = new Map();
     this.outputs = new Map();
+    this.isSynchronous = false;
   }
 
   addInput(id, data) {

@@ -9,6 +9,9 @@ var cpu = new CPU("basicCPU");
 
 // cpu.initializeCPU();
 // console.log("CPU INITIALIZED");
+// console.log("FIRST CYCLE");
+// cpu.executeCPU();
+// console.log("SECOND CYCLE");
 // cpu.executeCPU();
 
 ReactDOM.render(

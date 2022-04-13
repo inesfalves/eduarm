@@ -6,6 +6,8 @@ class RegBank extends Component {
   constructor(id, json) {
     super(id, json);
 
+    super.isSynchronous = true;
+
     //Register Bank inputs
     this.readReg1 = super.addInput(json.input[0], new Data(0, 0));
     this.readReg2 = super.addInput(json.input[1], new Data(0, 0));
@@ -33,11 +35,17 @@ class RegBank extends Component {
     this.readData2.value = registers[this.readReg2.value];
   }
 
+  executeClockTransition() {
+    //Write the result of the operation on the intended register
+    if (this.regWrite.value === 1) {
+      registers[this.writeReg.value] = this.writeData.value;
+    }
+  }
+
   printValues() {
     console.log("\n");
     console.log("REGISTER BANK");
 
-    console.log("Register Bank: " + registers);
     console.log("=======INPUTS======= ");
     console.log("Read Register 1: " + this.readReg1.value);
     console.log("Read Register 2: " + this.readReg2.value);
@@ -48,6 +56,8 @@ class RegBank extends Component {
     console.log("=======OUTPUTS======= ");
     console.log("Read Data 1: " + this.readData1.value);
     console.log("Read Data 2: " + this.readData2.value);
+
+    console.log("Register Bank: " + registers);
   }
 }
 
