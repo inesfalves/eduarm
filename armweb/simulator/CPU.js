@@ -1,6 +1,6 @@
 const modules = require("./modules.js");
 
-const json = require("./CPU.json");
+const json = require("../src/CPU.json");
 
 const jsonFile = JSON.parse(JSON.stringify(json));
 

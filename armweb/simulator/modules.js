@@ -1,0 +1,16 @@
+module.exports = {
+  pc: require("./ProgramCounter"),
+  fork: require("./Fork"),
+  adder: require("./Adder"),
+  aluctrl: require("./ALUControl"),
+  ctrl: require("./Control"),
+  alu: require("./ALU"),
+  inmem: require("./InstructionMemory"),
+  dist: require("./Distributor"),
+  mux: require("./MUX"),
+  regbank: require("./RegBank"),
+  shiftleft: require("./ShiftLeft"),
+  signextend: require("./SignExtend"),
+  and: require("./And"),
+  datamem: require("./DataMemory"),
+};

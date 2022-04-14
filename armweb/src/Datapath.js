@@ -1,6 +1,7 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import ReactFlow from "react-flow-renderer";
 import { Handle, Position } from "react-flow-renderer";
+const axios = require("axios");
 
 const handleStyle = { top: 10 };
 
@@ -795,6 +796,16 @@ const initialEdges = [
 ];
 
 function Datapath() {
+  useEffect(() => {
+    getData();
+  });
+
+  const getData = async () => {
+    await axios.get("http://localhost:3001/").then(function (res) {
+      console.log(res);
+    });
+  };
+
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
 
