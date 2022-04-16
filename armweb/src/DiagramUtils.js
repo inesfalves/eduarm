@@ -190,8 +190,13 @@ function AddNode({ data }) {
 function DistributorNode({ data }) {
   return (
     <div className="distributor-node">
-      <Handle type="target" position={Position.Left} />
-      <Handle type="source" position={Position.Top} id="a" />
+      <Handle type="target" className="side-node" position={Position.Left} />
+      <Handle
+        type="source"
+        className="top-node"
+        position={Position.Top}
+        id="a"
+      />
       <Handle
         type="source"
         position={Position.Right}
@@ -210,7 +215,12 @@ function DistributorNode({ data }) {
         id="d"
         style={{ top: 60 }}
       />
-      <Handle type="source" position={Position.Bottom} id="e" />
+      <Handle
+        type="source"
+        className="top-node"
+        position={Position.Bottom}
+        id="e"
+      />
     </div>
   );
 }

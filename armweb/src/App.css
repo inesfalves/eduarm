@@ -33,7 +33,7 @@
   background: black;
 }
 
-.fork-node .top-node {
+.fork-node .top-node, .distributor-node .top-node {
   height: 5px;
   width: 1px;
   border: 0;
@@ -41,7 +41,7 @@
   border-radius: 0;
 }
 
-.fork-node .side-node {
+.fork-node .side-node, .distributor-node .side-node {
   height: 1px;
   width: 5px;
   border: 0;
@@ -51,9 +51,8 @@
 
 .distributor-node {
   height: 80px;
-  width: 10px;
-  border: 1px solid black;
-  background: black;
+  width: 1px;
+  background: #a4a4a9;
 }
 
 .mux-node {
