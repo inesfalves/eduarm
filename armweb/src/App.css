@@ -25,6 +25,34 @@
   font-size: 12px;
 }
 
+.aux-node {
+  height: 1px;
+  width: 1px; 
+  background: #a4a4a9;
+}
+
+.control-aux-node {
+  height: 1px;
+  width: 1px; 
+  background: #00ADEE;
+}
+
+.control-aux-node .top-node {
+  height: 5px;
+  width: 1px;
+  border: 0;
+  background: #00ADEE;
+  border-radius: 0;
+}
+
+.control-aux-node .side-node {
+  height: 1px;
+  width: 5px;
+  border: 0;
+  background: #00ADEE;
+  border-radius: 0;
+}
+
 .fork-node {
   height: 5px;
   width: 5px;
@@ -33,7 +61,7 @@
   background: black;
 }
 
-.fork-node .top-node, .distributor-node .top-node {
+.fork-node .top-node, .distributor-node .top-node, .aux-node .top-node {
   height: 5px;
   width: 1px;
   border: 0;
@@ -41,7 +69,7 @@
   border-radius: 0;
 }
 
-.fork-node .side-node, .distributor-node .side-node {
+.fork-node .side-node, .distributor-node .side-node, .aux-node .side-node {
   height: 1px;
   width: 5px;
   border: 0;

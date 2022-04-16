@@ -20,6 +20,51 @@ function ForkNode({ data }) {
   );
 }
 
+function PCAuxNode({ data }) {
+  return (
+    <div className="aux-node">
+      <Handle className="side-node" type="source" position={Position.Left} />
+      <Handle className="top-node" type="target" position={Position.Bottom} />
+    </div>
+  );
+}
+
+function PCTopAuxNode({ data }) {
+  return (
+    <div className="aux-node">
+      <Handle className="top-node" type="source" position={Position.Bottom} />
+      <Handle className="side-node" type="target" position={Position.Right} />
+    </div>
+  );
+}
+
+function MemAuxNode({ data }) {
+  return (
+    <div className="aux-node">
+      <Handle className="side-node" type="source" position={Position.Left} />
+      <Handle className="top-node" type="target" position={Position.Top} />
+    </div>
+  );
+}
+
+function MemLeftAuxNode({ data }) {
+  return (
+    <div className="aux-node">
+      <Handle className="top-node" type="source" position={Position.Top} />
+      <Handle className="side-node" type="target" position={Position.Right} />
+    </div>
+  );
+}
+
+function ControlMemAuxNode({ data }) {
+  return (
+    <div className="control-aux-node">
+      <Handle className="top-node" type="target" position={Position.Top} />
+      <Handle className="side-node" type="source" position={Position.Right} />
+    </div>
+  );
+}
+
 function ForkNodeSecond({ data }) {
   return (
     <div className="fork-node">
@@ -54,26 +99,6 @@ function SignExtendDist({ data }) {
         type="source"
         className="top-node"
         position={Position.Bottom}
-        id="b"
-      />
-    </div>
-  );
-}
-
-function RegBankFork({ data }) {
-  return (
-    <div className="fork-node">
-      <Handle type="target" className="side-node" position={Position.Left} />
-      <Handle
-        type="source"
-        className="side-node"
-        position={Position.Right}
-        id="a"
-      />
-      <Handle
-        type="source"
-        className="top-node"
-        position={Position.Top}
         id="b"
       />
     </div>
@@ -213,7 +238,7 @@ function DistributorNode({ data }) {
         type="source"
         position={Position.Right}
         id="d"
-        style={{ top: 60 }}
+        style={{ top: 95 }}
       />
       <Handle
         type="source"
@@ -361,14 +386,24 @@ export function DiagramUtils() {
     {
       id: "PC",
       data: { label: "PC" },
-      position: { x: 20, y: 300 },
+      position: { x: 20, y: 300.5 },
       style: { height: 70 + "px", width: 70 + "px" },
       targetPosition: "left",
       sourcePosition: "right",
     },
     {
+      id: "PCAuxNode",
+      position: { x: 930, y: 10 },
+      type: "pcAuxNode",
+    },
+    {
+      id: "PCTopAuxNode",
+      position: { x: 12, y: 10 },
+      type: "pcTopAuxNode",
+    },
+    {
       id: "PCounterFork",
-      position: { x: 101, y: 332.5 },
+      position: { x: 101, y: 333 },
       type: "forkNode",
     },
     {
@@ -403,7 +438,7 @@ export function DiagramUtils() {
     },
     {
       id: "And",
-      position: { x: 799, y: 14 },
+      position: { x: 799, y: 18 },
       data: { label: "And" },
       type: "andNode",
     },
@@ -438,13 +473,13 @@ export function DiagramUtils() {
     },
     {
       id: "SignExtendDist",
-      position: { x: 402, y: 471.5 },
+      position: { x: 402, y: 467.5 },
       type: "signExtendDist",
     },
     {
       id: "SignExtend",
       data: { label: "Sign Extend" },
-      position: { x: 470, y: 449 },
+      position: { x: 470, y: 445 },
       style: { height: 50 + "px", width: 50 + "px" },
       targetPosition: "left",
       sourcePosition: "right",
@@ -452,7 +487,7 @@ export function DiagramUtils() {
     {
       id: "RegMuxFork1",
       position: { x: 575, y: 382.5 },
-      type: "regBankFork",
+      type: "forkNode",
     },
     {
       id: "RegMuxFork2",
@@ -473,7 +508,7 @@ export function DiagramUtils() {
     {
       id: "ALUControl",
       data: { label: "ALU Control" },
-      position: { x: 661, y: 482 },
+      position: { x: 660, y: 475 },
       type: "aluControlNode",
     },
     {
@@ -494,9 +529,24 @@ export function DiagramUtils() {
       type: "dataMemoryNode",
     },
     {
+      id: "ControlMemAuxNode",
+      position: { x: 810, y: 430 },
+      type: "controlMemAuxNode",
+    },
+    {
       id: "MuxMem",
       position: { x: 943, y: 405 },
       type: "muxNode",
+    },
+    {
+      id: "MemAuxNode",
+      position: { x: 970, y: 530 },
+      type: "memAuxNode",
+    },
+    {
+      id: "MemLeftAuxNode",
+      position: { x: 430, y: 530 },
+      type: "memLeftAuxNode",
     },
   ];
 
@@ -551,13 +601,30 @@ export function DiagramUtils() {
       target: "MuxTop",
       type: "smoothstep",
     },
-    { id: "e8", source: "MuxTop", target: "PC", type: "smoothstep" },
-
+    { id: "e8", source: "MuxTop", target: "PCAuxNode", type: "smoothstep" },
+    {
+      id: "e8Aux",
+      source: "PCAuxNode",
+      target: "PCTopAuxNode",
+      type: "smoothstep",
+    },
+    {
+      id: "e8Aux2",
+      source: "PCTopAuxNode",
+      target: "PC",
+      type: "smoothstep",
+    },
     {
       id: "e9",
       source: "InsDistributor",
       sourceHandle: "a",
       target: "Control",
+      type: "smoothstep",
+    },
+    {
+      id: "e9Ins",
+      source: "PC",
+      target: "InsDistributor",
       type: "smoothstep",
     },
     {
@@ -638,7 +705,7 @@ export function DiagramUtils() {
     {
       id: "e20",
       source: "RegMuxFork1",
-      sourceHandle: "a",
+      sourceHandle: "b",
       target: "MuxReg",
       targetHandle: "a",
       type: "smoothstep",
@@ -646,7 +713,7 @@ export function DiagramUtils() {
     {
       id: "e21",
       source: "RegMuxFork1",
-      sourceHandle: "b",
+      sourceHandle: "a",
       target: "DataMemory",
       targetHandle: "b",
       type: "smoothstep",
@@ -678,6 +745,7 @@ export function DiagramUtils() {
       source: "RegBank",
       sourceHandle: "b",
       target: "RegMuxFork1",
+      targetHandle: "a",
       type: "smoothstep",
     },
     {
@@ -718,8 +786,20 @@ export function DiagramUtils() {
       type: "smoothstep",
     },
     {
-      id: "e31",
+      id: "e31Aux",
       source: "MuxMem",
+      target: "MemAuxNode",
+      type: "smoothstep",
+    },
+    {
+      id: "e31Aux2",
+      source: "MemAuxNode",
+      target: "MemLeftAuxNode",
+      type: "smoothstep",
+    },
+    {
+      id: "e31",
+      source: "MemLeftAuxNode",
       target: "RegBank",
       targetHandle: "d",
       type: "smoothstep",
@@ -758,9 +838,16 @@ export function DiagramUtils() {
       type: "smoothstep",
     },
     {
-      id: "e36",
+      id: "e36Aux",
       source: "Control",
       sourceHandle: "c",
+      target: "ControlMemAuxNode",
+      type: "smoothstep",
+      style: { stroke: "#00ADEE" },
+    },
+    {
+      id: "e36",
+      source: "ControlMemAuxNode",
       target: "DataMemory",
       targetHandle: "d",
       type: "smoothstep",
@@ -852,7 +939,11 @@ export function DiagramUtils() {
     andNode: AndNode,
     addNode: AddNode,
     dataMemoryNode: DataMemoryNode,
-    regBankFork: RegBankFork,
+    pcAuxNode: PCAuxNode,
+    pcTopAuxNode: PCTopAuxNode,
+    memAuxNode: MemAuxNode,
+    memLeftAuxNode: MemLeftAuxNode,
+    controlMemAuxNode: ControlMemAuxNode,
   };
 
   return { nodes, edges, customNodeTypes };
