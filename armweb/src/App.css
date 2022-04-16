@@ -26,11 +26,27 @@
 }
 
 .fork-node {
-  height: 10px;
-  width: 10px;
+  height: 5px;
+  width: 5px;
   border: 1px solid black;
   border-radius: 5px;
   background: black;
+}
+
+.fork-node .top-node {
+  height: 5px;
+  width: 1px;
+  border: 0;
+  background: #a4a4a9;
+  border-radius: 0;
+}
+
+.fork-node .side-node {
+  height: 1px;
+  width: 5px;
+  border: 0;
+  background: #a4a4a9;
+  border-radius: 0;
 }
 
 .distributor-node {

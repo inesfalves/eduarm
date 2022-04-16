@@ -1,7 +1,10 @@
 const express = require("express");
+const CPU = require("./CPU.js");
 const app = express();
 const cors = require("cors");
 const port = 3001;
+
+let cpu = new CPU("basicCPU");
 
 app.use(cors());
 
@@ -15,8 +18,19 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+app.get("/getNode/:id", (req, res) => {
+  let component = cpu.returnComponentByID(req.params.id);
+  let obj = {
+    componentId: component.id,
+    componentInputs: component.inputs.values(),
+    componentOutputs: component.outputs.values(),
+  };
+  res.send(obj);
+});
+
+app.get("/execute", (req, res) => {
+  cpu.initializeCPU();
+  cpu.executeCPU();
 });
 
 app.listen(port, () => {

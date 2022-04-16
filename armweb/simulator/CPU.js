@@ -1,6 +1,6 @@
 const modules = require("./modules.js");
 
-const json = require("../src/CPU.json");
+const json = require("./CPU.json");
 
 const jsonFile = JSON.parse(JSON.stringify(json));
 
@@ -76,6 +76,10 @@ class CPU {
     for (let i = 0; i < this.cpuComponents.length; i++) {
       this.cpuComponents[i].printValues();
     }
+  }
+
+  returnComponentByID(id) {
+    return this.cpuComponents.find((x) => x.id === id);
   }
 }
 
