@@ -32,8 +32,7 @@ class CPU {
             jsonComponents[i][1]
           );
 
-          //Execute once to initialize the values and add components to component array
-          //component.execute();
+          //Add components to component array
           this.cpuComponents.push(component);
         }
       }
@@ -78,8 +77,8 @@ class CPU {
     }
   }
 
-  returnComponentByID(id) {
-    return this.cpuComponents.find((x) => x.id === id);
+  returnCPU() {
+    return this.cpuComponents;
   }
 }
 

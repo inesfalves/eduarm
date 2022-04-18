@@ -6,22 +6,16 @@ const {
   edges: initialEdges,
   customNodeTypes: nodeTypes,
 } = DiagramUtils();
-const axios = require("axios");
 
-function Datapath() {
-  const getMatchingComponent = async (componentId) => {
-    await axios
-      .get("http://localhost:3001/getNode/" + componentId)
-      .then(function (res) {
-        console.log(res.data);
-      });
-  };
-
+function Datapath(props) {
   const [nodes] = useNodesState(initialNodes);
   const [edges] = useEdgesState(initialEdges);
 
   const showNodeInformation = (event, node) => {
-    getMatchingComponent(node.id);
+    let component = props.cpuState.find((x) => x.id === node.id);
+    let componentInputs = component.inputs;
+    let componentOutputs = component.outputs;
+    console.log(componentInputs);
   };
 
   return (

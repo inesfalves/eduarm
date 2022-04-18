@@ -18,20 +18,17 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/getNode/:id", (req, res) => {
-  let component = cpu.returnComponentByID(req.params.id);
-  console.log(component);
-  // let obj = {
-  //   componentId: component.id,
-  //   componentInputs: component.inputs.values(),
-  //   componentOutputs: component.outputs.values(),
-  // };
-  res.send(component);
+app.get("/execute", (req, res) => {
+  if (cpu.returnCPU().length === 0) {
+    cpu.initializeCPU();
+    cpu.executeCPU();
+    res.send(cpu.returnCPU());
+  }
 });
 
-app.get("/execute", (req, res) => {
-  cpu.initializeCPU();
+app.get("/executeClockCycle", (req, res) => {
   cpu.executeCPU();
+  res.send(cpu.returnCPU());
 });
 
 app.listen(port, () => {

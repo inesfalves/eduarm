@@ -1,19 +1,52 @@
+import { useState } from "react";
 import Navbar from "./Navbar.js";
 import Registers from "./Registers.js";
 import ViewTab from "./ViewTab.js";
-import ButtonArea from "./ButtonArea.js";
 import "./App.css";
 
+const axios = require("axios");
+
 function App() {
+  const [cpuState, setCpuState] = useState([]);
+
+  const executeProgram = () => {
+    axios.get("http://localhost:3001/execute").then(function (res) {
+      console.log("CPU INITIALIZED");
+      console.log(res.data);
+      setCpuState(res.data);
+    });
+  };
+
+  const executeNext = () => {
+    axios.get("http://localhost:3001/executeClockCycle").then(function (res) {
+      setCpuState(res.data);
+    });
+  };
+
   return (
     <div className="App">
       <Navbar></Navbar>
-      <div className="container-fluid pageRow">
+      <div className="container-fluid">
         <div className="row">
           <div className="col-8 px-0">
-            <ViewTab></ViewTab>
+            <ViewTab cpuState={cpuState}></ViewTab>
             <div className="buttonsArea">
-              <ButtonArea></ButtonArea>
+              <div>
+                <button
+                  onClick={executeProgram}
+                  type="button"
+                  className="btn btn-dark"
+                >
+                  Execute
+                </button>
+                <button
+                  onClick={executeNext}
+                  type="button"
+                  className="btn btn-dark"
+                >
+                  Next
+                </button>
+              </div>
             </div>
           </div>
           <div className="registersArea col-4">

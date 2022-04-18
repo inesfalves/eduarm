@@ -1,7 +1,7 @@
 import "bootstrap/dist/js/bootstrap.js";
 import Datapath from "./Datapath.js";
 
-function ViewTab() {
+function ViewTab(props) {
   return (
     <div>
       <ul className="nav nav-tabs" id="myTab" role="tablist">
@@ -70,7 +70,7 @@ function ViewTab() {
           aria-labelledby="cpu-tab"
           style={{ height: 35 + "em", width: 64 + "em" }}
         >
-          <Datapath></Datapath>
+          <Datapath cpuState={props.cpuState}></Datapath>
         </div>
         <div
           className="tab-pane fade"
