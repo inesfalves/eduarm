@@ -26,28 +26,30 @@
 }
 
 .aux-node {
-  height: 1px;
-  width: 1px; 
+  height: 0.1em;
+  width: 0.1em; 
+  border-radius: 0.1em;
   background: #a4a4a9;
 }
 
 .control-aux-node {
-  height: 1px;
-  width: 1px; 
+  height: 0.1em;
+  width: 0.1em; 
+  border-radius: 0.1em;
   background: #00ADEE;
 }
 
 .control-aux-node .top-node {
-  height: 5px;
-  width: 1px;
+  height: 0.3em;
+  width: 0.1em;
   border: 0;
   background: #00ADEE;
   border-radius: 0;
 }
 
 .control-aux-node .side-node {
-  height: 1px;
-  width: 5px;
+  height: 0.1em;
+  width: 0.3em;
   border: 0;
   background: #00ADEE;
   border-radius: 0;
@@ -62,7 +64,7 @@
 }
 
 .fork-node .top-node, .distributor-node .top-node, .aux-node .top-node {
-  height: 5px;
+  height: 4px;
   width: 1px;
   border: 0;
   background: #a4a4a9;
@@ -71,7 +73,7 @@
 
 .fork-node .side-node, .distributor-node .side-node, .aux-node .side-node {
   height: 1px;
-  width: 5px;
+  width: 4px;
   border: 0;
   background: #a4a4a9;
   border-radius: 0;

@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="App">
       <Navbar></Navbar>
-      <div className="container-fluid">
+      <div className="container-fluid pageRow">
         <div className="row">
           <div className="col-8 px-0">
             <ViewTab></ViewTab>

@@ -6,20 +6,20 @@ class Component {
     this.id = id;
     this.json = json;
 
-    this.inputs = new Map();
-    this.outputs = new Map();
+    this.inputs = {};
+    this.outputs = {};
     this.isSynchronous = false;
   }
 
   addInput(id, data) {
     let input = new Input(id, this, data);
-    this.inputs.set(id, input);
+    this.inputs[id] = input;
     return input;
   }
 
   addOutput(id, data) {
     let output = new Output(id, this, data);
-    this.outputs.set(id, output);
+    this.outputs[id] = output;
     return output;
   }
 }

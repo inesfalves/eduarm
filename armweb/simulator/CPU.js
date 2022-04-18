@@ -58,8 +58,8 @@ class CPU {
         (e) => e.id === cpuConnections[i].dest
       );
 
-      output = originComponent.outputs.get(cpuConnections[i].output);
-      input = destComponent.inputs.get(cpuConnections[i].input);
+      output = originComponent.outputs[cpuConnections[i].output];
+      input = destComponent.inputs[cpuConnections[i].input];
 
       output.createConnection(input);
     }

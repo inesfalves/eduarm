@@ -13,6 +13,19 @@ class Input {
   set value(newValue) {
     this.data.value = newValue;
   }
+
+  toJSON() {
+    return {
+      id: this.id,
+      component: this.component.id,
+      data: this.data,
+      connectedTo: this.connectedTo?.id,
+    };
+  }
+
+  toString() {
+    return `{id: "${this.id}", component: "${this.component.id}", data: ${this.data}, connectedTo: ${this.connectedTo?.id}}`;
+  }
 }
 
 module.exports = Input;

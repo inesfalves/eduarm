@@ -20,12 +20,13 @@ app.use((req, res, next) => {
 
 app.get("/getNode/:id", (req, res) => {
   let component = cpu.returnComponentByID(req.params.id);
-  let obj = {
-    componentId: component.id,
-    componentInputs: component.inputs.values(),
-    componentOutputs: component.outputs.values(),
-  };
-  res.send(obj);
+  console.log(component);
+  // let obj = {
+  //   componentId: component.id,
+  //   componentInputs: component.inputs.values(),
+  //   componentOutputs: component.outputs.values(),
+  // };
+  res.send(component);
 });
 
 app.get("/execute", (req, res) => {

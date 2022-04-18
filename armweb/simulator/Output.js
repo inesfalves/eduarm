@@ -26,6 +26,20 @@ class Output {
     input.connectedTo = this;
     input.value = this.value;
   }
+
+  toJSON() {
+    return {
+      id: this.id,
+      component: this.component.id,
+      isConnected: this.isConnected,
+      data: this.data,
+      connectedTo: this.connectedTo?.id,
+    };
+  }
+
+  toString() {
+    return `{id: "${this.id}", component: "${this.component.id}", isConnected: ${this.isConnected}, data: ${this.data}, connectedTo: ${this.connectedTo?.id}}`;
+  }
 }
 
 module.exports = Output;
