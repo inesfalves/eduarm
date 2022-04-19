@@ -10,6 +10,10 @@
   border-top: 1px solid rgb(211, 211, 211);
 }
 
+.buttonRow {
+  display: flex;
+}
+
 .custom-node {
   height: 50px;
   border: 1px solid black;

@@ -12,7 +12,6 @@ function App() {
   const executeProgram = () => {
     axios.get("http://localhost:3001/execute").then(function (res) {
       console.log("CPU INITIALIZED");
-      console.log(res.data);
       setCpuState(res.data);
     });
   };
@@ -30,21 +29,30 @@ function App() {
         <div className="row">
           <div className="col-8 px-0">
             <ViewTab cpuState={cpuState}></ViewTab>
-            <div className="buttonsArea">
-              <div>
+            <div className="buttonsArea container">
+              <div className="row justify-content-around py-3">
+                <button type="button" className="btn btn-outline-dark col-2">
+                  Reset
+                </button>
+                <button type="button" className="btn btn-outline-dark col-2">
+                  Previous
+                </button>
                 <button
                   onClick={executeProgram}
                   type="button"
-                  className="btn btn-dark"
+                  className="btn btn-outline-primary col-2"
                 >
                   Execute
                 </button>
                 <button
                   onClick={executeNext}
                   type="button"
-                  className="btn btn-dark"
+                  className="btn btn-outline-dark col-2"
                 >
                   Next
+                </button>
+                <button type="button" className="btn btn-outline-dark col-2">
+                  Performance
                 </button>
               </div>
             </div>

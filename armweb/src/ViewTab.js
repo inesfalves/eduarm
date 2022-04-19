@@ -1,9 +1,12 @@
 import "bootstrap/dist/js/bootstrap.js";
 import Datapath from "./Datapath.js";
+import { useState } from "react";
+import CodeEditor from "@uiw/react-textarea-code-editor";
 
 function ViewTab(props) {
+  const [code, setCode] = useState(``);
   return (
-    <div>
+    <div style={{ height: 89 + "%", width: 100 + "%" }}>
       <ul className="nav nav-tabs" id="myTab" role="tablist">
         <li className="nav-item" role="presentation">
           <button
@@ -62,13 +65,13 @@ function ViewTab(props) {
           </button>
         </li>
       </ul>
-      <div className="tab-content" id="myTabContent">
+      <div className="tab-content h-100" id="myTabContent">
         <div
           className="tab-pane fade show active"
           id="cpu"
           role="tabpanel"
           aria-labelledby="cpu-tab"
-          style={{ height: 35 + "em", width: 64 + "em" }}
+          style={{ height: 35.5 + "em", width: 64 + "em" }}
         >
           <Datapath cpuState={props.cpuState}></Datapath>
         </div>
@@ -77,8 +80,22 @@ function ViewTab(props) {
           id="assembly"
           role="tabpanel"
           aria-labelledby="assembly-tab"
+          style={{ height: 35.5 + "em", width: 64 + "em" }}
         >
-          ...2
+          <CodeEditor
+            className="h-100"
+            value={code}
+            language="mips"
+            placeholder="Please enter ARM code."
+            onChange={(evn) => setCode(evn.target.value)}
+            padding={15}
+            style={{
+              fontSize: 12,
+              backgroundColor: "#f5f5f5",
+              fontFamily:
+                "ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace",
+            }}
+          />
         </div>
         <div
           className="tab-pane fade"

@@ -15,7 +15,6 @@ function Datapath(props) {
     let component = props.cpuState.find((x) => x.id === node.id);
     let componentInputs = component.inputs;
     let componentOutputs = component.outputs;
-    console.log(componentInputs);
   };
 
   return (
