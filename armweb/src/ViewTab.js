@@ -1,10 +1,13 @@
 import "bootstrap/dist/js/bootstrap.js";
 import Datapath from "./Datapath.js";
+import Assembly from "./Assembly.js";
+import MachineCode from "./MachineCode.js";
 import { useState } from "react";
-import CodeEditor from "@uiw/react-textarea-code-editor";
 
 function ViewTab(props) {
-  const [code, setCode] = useState(``);
+  const [machineCode, setMachineCode] = useState([]);
+  const [instruction, setInstruction] = useState([]);
+
   return (
     <div style={{ height: 89 + "%", width: 100 + "%" }}>
       <ul className="nav nav-tabs" id="myTab" role="tablist">
@@ -71,7 +74,12 @@ function ViewTab(props) {
           id="cpu"
           role="tabpanel"
           aria-labelledby="cpu-tab"
-          style={{ height: 35.5 + "em", width: 64 + "em" }}
+          style={{
+            height: 35.5 + "em",
+            width: 64 + "em",
+            maxHeight: 35.5 + "em",
+            maxWidth: 80 + "em",
+          }}
         >
           <Datapath cpuState={props.cpuState}></Datapath>
         </div>
@@ -80,22 +88,18 @@ function ViewTab(props) {
           id="assembly"
           role="tabpanel"
           aria-labelledby="assembly-tab"
-          style={{ height: 35.5 + "em", width: 64 + "em" }}
+          style={{
+            height: 35.5 + "em",
+            width: 64 + "em",
+            maxHeight: 35.5 + "em",
+            maxWidth: 80 + "em",
+          }}
         >
-          <CodeEditor
-            className="h-100"
-            value={code}
-            language="mips"
-            placeholder="Please enter ARM code."
-            onChange={(evn) => setCode(evn.target.value)}
-            padding={15}
-            style={{
-              fontSize: 12,
-              backgroundColor: "#f5f5f5",
-              fontFamily:
-                "ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace",
-            }}
-          />
+          {" "}
+          <Assembly
+            setMachineCode={setMachineCode}
+            setInstruction={setInstruction}
+          ></Assembly>
         </div>
         <div
           className="tab-pane fade"
@@ -103,7 +107,10 @@ function ViewTab(props) {
           role="tabpanel"
           aria-labelledby="machine-tab"
         >
-          ...3
+          <MachineCode
+            machineCode={machineCode}
+            instruction={instruction}
+          ></MachineCode>
         </div>
         <div
           className="tab-pane fade"

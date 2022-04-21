@@ -14,7 +14,6 @@ class Data {
 
   signExtend(newSize) {
     if (this.value >= 0) return this.value.toString(2).padStart(newSize, "0");
-    console.log("negative?");
     return (-this.value - 1)
       .toString(2)
       .replace(/[01]/g, function (d) {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "./Navbar.js";
 import Registers from "./Registers.js";
 import ViewTab from "./ViewTab.js";
@@ -8,8 +8,11 @@ const axios = require("axios");
 
 function App() {
   const [cpuState, setCpuState] = useState([]);
+  const [registerValues, setRegisterValues] = useState([]);
+  const [executing, setExecuting] = useState(false);
 
   const executeProgram = () => {
+    setExecuting(true);
     axios.get("http://localhost:3001/execute").then(function (res) {
       console.log("CPU INITIALIZED");
       setCpuState(res.data);
@@ -22,13 +25,51 @@ function App() {
     });
   };
 
+  let registerList = [],
+    registerListSecond = [];
+  for (var i = 0; i < 32; i++) {
+    if (i <= 15) {
+      registerList.push(
+        <Registers
+          key={i}
+          setRegisterValues={setRegisterValues}
+          registerValues={registerValues}
+          executing={executing}
+          setExecuting={setExecuting}
+          registerID={i}
+        ></Registers>
+      );
+    } else {
+      registerListSecond.push(
+        <Registers
+          key={i}
+          setRegisterValues={setRegisterValues}
+          registerValues={registerValues}
+          executing={executing}
+          setExecuting={setExecuting}
+          registerID={i}
+        ></Registers>
+      );
+    }
+  }
+
+  useEffect(() => {
+    if (executing) {
+      console.log(registerValues);
+    }
+  }, [executing]);
+
   return (
     <div className="App">
       <Navbar></Navbar>
       <div className="container-fluid">
         <div className="row">
           <div className="col-8 px-0">
-            <ViewTab cpuState={cpuState}></ViewTab>
+            <ViewTab
+              cpuState={cpuState}
+              registerValues={registerValues}
+              setRegisterValues={setRegisterValues}
+            ></ViewTab>
             <div className="buttonsArea container">
               <div className="row justify-content-around py-3">
                 <button type="button" className="btn btn-outline-dark col-2">
@@ -63,42 +104,8 @@ function App() {
             </p>
             <div className="container-fluid">
               <div className="row">
-                <div className="col-6">
-                  <Registers registerID="X0"></Registers>
-                  <Registers registerID="X1"></Registers>
-                  <Registers registerID="X2"></Registers>
-                  <Registers registerID="X3"></Registers>
-                  <Registers registerID="X4"></Registers>
-                  <Registers registerID="X5"></Registers>
-                  <Registers registerID="X6"></Registers>
-                  <Registers registerID="X7"></Registers>
-                  <Registers registerID="X8"></Registers>
-                  <Registers registerID="X9"></Registers>
-                  <Registers registerID="X10"></Registers>
-                  <Registers registerID="X11"></Registers>
-                  <Registers registerID="X12"></Registers>
-                  <Registers registerID="X13"></Registers>
-                  <Registers registerID="X14"></Registers>
-                  <Registers registerID="X15"></Registers>
-                </div>
-                <div className="col-6">
-                  <Registers registerID="X16"></Registers>
-                  <Registers registerID="X17"></Registers>
-                  <Registers registerID="X18"></Registers>
-                  <Registers registerID="X19"></Registers>
-                  <Registers registerID="X20"></Registers>
-                  <Registers registerID="X21"></Registers>
-                  <Registers registerID="X22"></Registers>
-                  <Registers registerID="X23"></Registers>
-                  <Registers registerID="X24"></Registers>
-                  <Registers registerID="X25"></Registers>
-                  <Registers registerID="X26"></Registers>
-                  <Registers registerID="X27"></Registers>
-                  <Registers registerID="X28"></Registers>
-                  <Registers registerID="X29"></Registers>
-                  <Registers registerID="X30"></Registers>
-                  <Registers registerID="X31"></Registers>
-                </div>
+                <div className="col-6">{registerList}</div>
+                <div className="col-6">{registerListSecond}</div>
               </div>
               <div className="text-center m-4">
                 <div
