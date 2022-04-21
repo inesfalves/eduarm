@@ -97,6 +97,7 @@ function ViewTab(props) {
         >
           {" "}
           <Assembly
+            compiling={props.compiling}
             setMachineCode={setMachineCode}
             setInstruction={setInstruction}
           ></Assembly>

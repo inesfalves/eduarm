@@ -1,51 +1,49 @@
 import CodeEditor from "@uiw/react-textarea-code-editor";
 import { useEffect, useState } from "react";
 
+const axios = require("axios");
+
 function Assembly(props) {
   const [code, setCode] = useState(``);
 
-  const assembleALInstruction = (op, dest, first, second) => {
-    let opcode = "";
-    let shamt = "000000";
-    let rm = (second >>> 0).toString(2).padStart(5, "0");
-    let rn = (first >>> 0).toString(2).padStart(5, "0");
-    let rd = (dest >>> 0).toString(2).padStart(5, "0");
-    switch (op) {
-      case "add":
-        opcode = "10001011000";
-        break;
-      case "sub":
-        opcode = "11001011000";
-        break;
-      case "and":
-        opcode = "10001010000";
-        break;
-      case "orr":
-        opcode = "10101010000";
-        break;
-    }
-    props.setMachineCode(opcode + rm + shamt + rn + rd);
+  const setMachineCodeValues = (op, dest, first, second) => {
+    axios
+      .get(
+        "http://localhost:3001/assembleInstruction/" +
+          op +
+          "/" +
+          dest +
+          "/" +
+          first +
+          "/" +
+          second
+      )
+      .then(function (res) {
+        props.setMachineCode(res.data);
+      });
   };
 
   useEffect(() => {
-    let lines = code.split("\n");
+    if (props.compiling) {
+      let lines = code.split("\n");
 
-    let parts = lines[0]
-      .replace(/,/g, " ")
-      .replace(/\sx+/g, " ")
-      .trim()
-      .split(/\s+/);
+      let parts = lines[0]
+        .replace(/,/g, " ")
+        .replace(/\sx+/g, " ")
+        .trim()
+        .split(/\s+/);
 
-    if (
-      parts[0] === "add" ||
-      parts[0] === "sub" ||
-      parts[0] === "and" ||
-      parts[0] === "orr"
-    ) {
-      assembleALInstruction(parts[0], parts[1], parts[2], parts[3]);
-      props.setInstruction(lines[0]);
+      if (
+        parts[0] === "add" ||
+        parts[0] === "sub" ||
+        parts[0] === "and" ||
+        parts[0] === "orr"
+      ) {
+        setMachineCodeValues(parts[0], parts[1], parts[2], parts[3]);
+        props.setInstruction(lines[0]);
+      }
     }
-  }, [code]);
+  }, [props.compiling]);
 
   return (
     <CodeEditor

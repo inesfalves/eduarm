@@ -10,6 +10,7 @@ function App() {
   const [cpuState, setCpuState] = useState([]);
   const [registerValues, setRegisterValues] = useState([]);
   const [executing, setExecuting] = useState(false);
+  const [compiling, setCompiling] = useState(false);
 
   const executeProgram = () => {
     setExecuting(true);
@@ -23,6 +24,10 @@ function App() {
     axios.get("http://localhost:3001/executeClockCycle").then(function (res) {
       setCpuState(res.data);
     });
+  };
+
+  const compileProgram = () => {
+    setCompiling(true);
   };
 
   let registerList = [],
@@ -53,11 +58,11 @@ function App() {
     }
   }
 
-  useEffect(() => {
-    if (executing) {
-      console.log(registerValues);
-    }
-  }, [executing]);
+  // useEffect(() => {
+  //   if (executing) {
+  //     console.log(registerValues);
+  //   }
+  // }, [executing]);
 
   return (
     <div className="App">
@@ -67,11 +72,20 @@ function App() {
           <div className="col-8 px-0">
             <ViewTab
               cpuState={cpuState}
+              executing={executing}
+              compiling={compiling}
               registerValues={registerValues}
               setRegisterValues={setRegisterValues}
             ></ViewTab>
             <div className="buttonsArea container">
               <div className="row justify-content-around py-3">
+                <button
+                  onClick={compileProgram}
+                  type="button"
+                  className="btn btn-outline-dark col-2"
+                >
+                  Compile
+                </button>
                 <button type="button" className="btn btn-outline-dark col-2">
                   Reset
                 </button>

@@ -14,14 +14,18 @@ class InstructionMemory extends Component {
     this.instruction = super.addOutput(json.output, new Data(0, 0));
 
     //Array with the assembled instructions
-    this.assembledInstructions = ["0x45820023"];
+    this.assembledInstructions = [];
   }
 
   execute() {
     //Fetch the instruction using the PC value
+
     let instructionPos = this.address.value / 4;
 
-    this.instruction.value = this.assembledInstructions[instructionPos];
+    this.instruction.value = parseInt(
+      this.assembledInstructions[instructionPos],
+      2
+    );
   }
 
   printValues() {
@@ -32,7 +36,7 @@ class InstructionMemory extends Component {
     console.log("Address: " + this.address.value);
 
     console.log("=======OUTPUTS======= ");
-    console.log("Instruction: " + (this.instruction.value >>> 0).toString(2));
+    console.log("Instruction: " + this.instruction.value);
   }
 }
 
