@@ -18,21 +18,23 @@ class RegBank extends Component {
     //Register Bank outputs
     this.readData1 = super.addOutput(json.output[0], new Data(0, 0));
     this.readData2 = super.addOutput(json.output[1], new Data(0, 0));
-
-    //Initialize registers -> assuming 32 registers
-    for (let i = 0; i < 32; i++) {
-      registers[i] = 0;
-    }
-
-    registers[1] = 3;
-    registers[2] = 8;
   }
 
   //allocating the register values
   execute() {
     // add x3, x2, x1
-    this.readData1.value = registers[this.readReg1.value];
-    this.readData2.value = registers[this.readReg2.value];
+    let possValue1 = this.registers.find(
+      (element) => element[0] === this.readReg1.value
+    );
+    let possValue2 = this.registers.find(
+      (element) => element[0] === this.readReg2.value
+    );
+    if (possValue1 !== undefined) {
+      this.readData1.value = parseInt(possValue1[1]);
+    }
+    if (possValue2 !== undefined) {
+      this.readData2.value = parseInt(possValue2[1]);
+    }
   }
 
   executeClockTransition() {
@@ -56,8 +58,6 @@ class RegBank extends Component {
     console.log("=======OUTPUTS======= ");
     console.log("Read Data 1: " + this.readData1.value);
     console.log("Read Data 2: " + this.readData2.value);
-
-    console.log("Register Bank: " + registers);
   }
 }
 

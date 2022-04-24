@@ -9,15 +9,17 @@ const axios = require("axios");
 function App() {
   const [cpuState, setCpuState] = useState([]);
   const [registerValues, setRegisterValues] = useState([]);
-  const [executing, setExecuting] = useState(false);
   const [compiling, setCompiling] = useState(false);
 
   const executeProgram = () => {
-    setExecuting(true);
-    axios.get("http://localhost:3001/execute").then(function (res) {
-      console.log("CPU INITIALIZED");
-      setCpuState(res.data);
-    });
+    axios
+      .post("http://localhost:3001/sendRegisters", registerValues)
+      .then(() => {
+        axios.get("http://localhost:3001/execute").then(function (res) {
+          console.log("CPU INITIALIZED");
+          setCpuState(res.data);
+        });
+      });
   };
 
   const executeNext = () => {
@@ -39,8 +41,6 @@ function App() {
           key={i}
           setRegisterValues={setRegisterValues}
           registerValues={registerValues}
-          executing={executing}
-          setExecuting={setExecuting}
           registerID={i}
         ></Registers>
       );
@@ -50,19 +50,11 @@ function App() {
           key={i}
           setRegisterValues={setRegisterValues}
           registerValues={registerValues}
-          executing={executing}
-          setExecuting={setExecuting}
           registerID={i}
         ></Registers>
       );
     }
   }
-
-  // useEffect(() => {
-  //   if (executing) {
-  //     console.log(registerValues);
-  //   }
-  // }, [executing]);
 
   return (
     <div className="App">
@@ -72,8 +64,8 @@ function App() {
           <div className="col-8 px-0">
             <ViewTab
               cpuState={cpuState}
-              executing={executing}
               compiling={compiling}
+              setCompiling={setCompiling}
               registerValues={registerValues}
               setRegisterValues={setRegisterValues}
             ></ViewTab>

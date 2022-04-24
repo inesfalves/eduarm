@@ -64,10 +64,13 @@ class CPU {
     }
   }
 
-  executeCPU(instruction) {
+  executeCPU(instruction, registers) {
     for (let i = 0; i < this.cpuComponents.length; i++) {
       if (this.cpuComponents[i].id === "InsMem") {
         this.cpuComponents[i].assembledInstructions.push(instruction);
+      }
+      if (this.cpuComponents[i].id === "RegBank") {
+        this.cpuComponents[i].registers = registers;
       }
       if (this.cpuComponents[i].isSynchronous) {
         this.cpuComponents[i].executeClockTransition();

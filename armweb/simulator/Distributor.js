@@ -31,7 +31,7 @@ class Distributor extends Component {
 
   createMask(from, to) {
     //Assuming 32 bits
-    return (-1 >>> (32 - (from - to))) << to;
+    return (-1 >>> (32 - (from - to + 1))) << to;
   }
 
   bitMasking(value, mask, to) {
@@ -39,7 +39,6 @@ class Distributor extends Component {
   }
 
   printValues() {
-    //01000011000000000000000110001011
     console.log("\n");
     console.log("=== DISTRIBUTOR ===");
     for (let i = 0; i < this.output.length; i++) {

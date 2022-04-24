@@ -7,16 +7,54 @@ function Assembly(props) {
   const [code, setCode] = useState(``);
 
   const setMachineCodeValues = (op, dest, first, second) => {
+    if (op === "ldur" || op === "stur") {
+      axios
+        .get(
+          "http://localhost:3001/assembleMemInstruction/" +
+            op +
+            "/" +
+            dest +
+            "/" +
+            first +
+            "/" +
+            second
+        )
+        .then(function (res) {
+          props.setMachineCode(res.data);
+        });
+    } else {
+      axios
+        .get(
+          "http://localhost:3001/assembleALInstruction/" +
+            op +
+            "/" +
+            dest +
+            "/" +
+            first +
+            "/" +
+            second
+        )
+        .then(function (res) {
+          props.setMachineCode(res.data);
+        });
+    }
+  };
+
+  const setJumpBMachineCodeValues = (label) => {
+    axios
+      .get("http://localhost:3001/assembleJumpBInstruction/" + label)
+      .then(function (res) {
+        props.setMachineCode(res.data);
+      });
+  };
+
+  const setJumpCondMachineCodeValues = (cond, label) => {
     axios
       .get(
-        "http://localhost:3001/assembleInstruction/" +
-          op +
+        "http://localhost:3001/assembleJumpCondInstruction/" +
+          cond +
           "/" +
-          dest +
-          "/" +
-          first +
-          "/" +
-          second
+          label
       )
       .then(function (res) {
         props.setMachineCode(res.data);
@@ -25,22 +63,81 @@ function Assembly(props) {
 
   useEffect(() => {
     if (props.compiling) {
+      props.setCompiling(false);
       let lines = code.split("\n");
+      let instructions = [];
 
-      let parts = lines[0]
-        .replace(/,/g, " ")
-        .replace(/\sx+/g, " ")
-        .trim()
-        .split(/\s+/);
+      for (let line of lines) {
+        instructions.push(
+          line
+            .replace(/,/g, " ")
+            .replace(/\s\[?x+/gi, " ")
+            .replace(/\s#+/g, " ")
+            .replace(/]+/g, " ")
+            .trim()
+            .split(/\s+/)
+        );
+      }
 
-      if (
-        parts[0] === "add" ||
-        parts[0] === "sub" ||
-        parts[0] === "and" ||
-        parts[0] === "orr"
-      ) {
-        setMachineCodeValues(parts[0], parts[1], parts[2], parts[3]);
-        props.setInstruction(lines[0]);
+      for (let ins in instructions) {
+        let instruction = instructions[ins];
+        switch (instruction[0]) {
+          case "add":
+            setMachineCodeValues(
+              instruction[0],
+              instruction[1],
+              instruction[2],
+              instruction[3]
+            );
+            break;
+          case "sub":
+            setMachineCodeValues(
+              instruction[0],
+              instruction[1],
+              instruction[2],
+              instruction[3]
+            );
+            break;
+          case "and":
+            setMachineCodeValues(
+              instruction[0],
+              instruction[1],
+              instruction[2],
+              instruction[3]
+            );
+            break;
+          case "orr":
+            setMachineCodeValues(
+              instruction[0],
+              instruction[1],
+              instruction[2],
+              instruction[3]
+            );
+            break;
+          case "ldur":
+            setMachineCodeValues(
+              instruction[0],
+              instruction[1],
+              instruction[2],
+              instruction[3]
+            );
+            break;
+          case "stur":
+            setMachineCodeValues(
+              instruction[0],
+              instruction[1],
+              instruction[2],
+              instruction[3]
+            );
+            break;
+          case "b":
+            setJumpBMachineCodeValues(instruction[1]);
+            break;
+          case "cbz":
+            setJumpCondMachineCodeValues(instruction[1], instruction[2]);
+            break;
+        }
+        props.setInstruction(lines[ins]);
       }
     }
   }, [props.compiling]);
