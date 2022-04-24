@@ -12,11 +12,44 @@ function Datapath(props) {
   const [edges] = useEdgesState(initialEdges);
 
   const showNodeInformation = (event, node) => {
-    let component = props.cpuState.find((x) => x.id === node.id);
-    let componentInputs = component.inputs;
-    let componentOutputs = component.outputs;
-    console.log(componentInputs);
-    console.log(componentOutputs);
+    if (props.executed) {
+      let nodeElement = document.querySelector(`[data-id=${node.id}`);
+      let tooltips = nodeElement.getElementsByClassName("tooltipNode");
+      if (tooltips.length !== 0) {
+        let component = props.cpuState.find((x) => x.id === node.id);
+        let componentInputs = component.inputs;
+        let componentOutputs = component.outputs;
+        tooltips[0].innerHTML = componentInputs;
+        tooltips[0].style.opacity = 1;
+      }
+    }
+  };
+
+  const hideNodeInformation = (event, node) => {
+    let nodeElement = document.querySelector(`[data-id=${node.id}`);
+    let tooltips = nodeElement.getElementsByClassName("tooltipNode");
+    if (tooltips.length !== 0) {
+      tooltips[0].style.opacity = 0;
+    }
+  };
+
+  const createTooltips = (instance) => {
+    let localNodes = instance.getNodes();
+    for (let node of localNodes) {
+      let nodeElement = document.querySelector(`[data-id=${node.id}`);
+      if (
+        nodeElement.className.includes("fork") ||
+        nodeElement.className.includes("Aux") ||
+        nodeElement.className.includes("distributor") ||
+        nodeElement.className.includes("Dist")
+      ) {
+        continue;
+      }
+      let tooltip = document.createElement("div");
+      tooltip.className = "tooltipNode";
+      tooltip.style.opacity = 0;
+      nodeElement.appendChild(tooltip);
+    }
   };
 
   return (
@@ -24,7 +57,9 @@ function Datapath(props) {
       nodeTypes={nodeTypes}
       nodes={nodes}
       edges={edges}
-      onNodeClick={showNodeInformation}
+      onInit={createTooltips}
+      onNodeMouseEnter={showNodeInformation}
+      onNodeMouseLeave={hideNodeInformation}
       defaultZoom="1.04"
     />
   );

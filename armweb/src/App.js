@@ -10,8 +10,10 @@ function App() {
   const [cpuState, setCpuState] = useState([]);
   const [registerValues, setRegisterValues] = useState([]);
   const [compiling, setCompiling] = useState(false);
+  const [executed, setExecuted] = useState(false);
 
   const executeProgram = () => {
+    setExecuted(true);
     axios
       .post("http://localhost:3001/sendRegisters", registerValues)
       .then(() => {
@@ -65,6 +67,7 @@ function App() {
             <ViewTab
               cpuState={cpuState}
               compiling={compiling}
+              executed={executed}
               setCompiling={setCompiling}
               registerValues={registerValues}
               setRegisterValues={setRegisterValues}

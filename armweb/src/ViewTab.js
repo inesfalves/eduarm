@@ -81,7 +81,10 @@ function ViewTab(props) {
             maxWidth: 80 + "em",
           }}
         >
-          <Datapath cpuState={props.cpuState}></Datapath>
+          <Datapath
+            executed={props.executed}
+            cpuState={props.cpuState}
+          ></Datapath>
         </div>
         <div
           className="tab-pane fade"
