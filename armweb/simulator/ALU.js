@@ -16,22 +16,17 @@ class ALU extends Component {
   }
 
   execute() {
-    //ignoring ALU control for now
     switch (this.controlOp.value) {
       case 2:
-        console.log("ADD");
         this.aluResult.value = this.input1.value + this.input2.value;
         break;
       case 6:
-        console.log("SUB");
         this.aluResult.value = this.input1.value - this.input2.value;
         break;
       case 0:
-        console.log("AND");
         this.aluResult.value = this.input1.value && this.input2.value;
         break;
       case 1:
-        console.log("ORR");
         this.aluResult.value = this.input1.value || this.input2.value;
         break;
       default:

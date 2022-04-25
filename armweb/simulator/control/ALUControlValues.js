@@ -23,8 +23,9 @@ class ALUControlValues {
           if (this.aluControlValues[i].opcode === opcode) {
             return this.aluControlValues[i];
           }
+        } else {
+          return this.aluControlValues[i];
         }
-        return this.aluControlValues[i];
       }
     }
   }
