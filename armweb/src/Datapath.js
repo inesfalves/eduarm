@@ -1,5 +1,6 @@
 import ReactFlow, { useNodesState, useEdgesState } from "react-flow-renderer";
 import { DiagramUtils } from "./DiagramUtils";
+import { useMemo } from "react";
 
 const {
   nodes: initialNodes,
@@ -10,6 +11,8 @@ const {
 function Datapath(props) {
   const [nodes] = useNodesState(initialNodes);
   const [edges] = useEdgesState(initialEdges);
+
+  const newnodeTypes = useMemo(() => nodeTypes, []);
 
   const showNodeInformation = (event, node) => {
     if (props.executed) {
@@ -33,7 +36,6 @@ function Datapath(props) {
           "</div><div className='row'>Outputs: " +
           tooltipOutText +
           "</div></div>";
-        tooltips[0].style.opacity = 1;
       }
     }
   };
@@ -43,7 +45,6 @@ function Datapath(props) {
     let tooltips = nodeElement.getElementsByClassName("tooltipNode");
     if (tooltips.length !== 0) {
       tooltips[0].innerHTML = "";
-      tooltips[0].style.opacity = 0;
     }
   };
 
@@ -65,10 +66,9 @@ function Datapath(props) {
       nodeElement.appendChild(tooltip);
     }
   };
-
   return (
     <ReactFlow
-      nodeTypes={nodeTypes}
+      nodeTypes={newnodeTypes}
       nodes={nodes}
       edges={edges}
       onInit={createTooltips}

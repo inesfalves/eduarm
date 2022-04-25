@@ -20,7 +20,7 @@ function Assembly(props) {
             second
         )
         .then(function (res) {
-          props.setMachineCode(res.data);
+          props.setMachineCodes([...props.machineCodes, ...res.data]);
         });
     } else {
       axios
@@ -35,7 +35,7 @@ function Assembly(props) {
             second
         )
         .then(function (res) {
-          props.setMachineCode(res.data);
+          props.setMachineCodes([...props.machineCodes, ...res.data]);
         });
     }
   };
@@ -44,7 +44,7 @@ function Assembly(props) {
     axios
       .get("http://localhost:3001/assembleJumpBInstruction/" + label)
       .then(function (res) {
-        props.setMachineCode(res.data);
+        props.setMachineCodes([...props.machineCodes, ...res.data]);
       });
   };
 
@@ -57,13 +57,12 @@ function Assembly(props) {
           label
       )
       .then(function (res) {
-        props.setMachineCode(res.data);
+        props.setMachineCodes([...props.machineCodes, ...res.data]);
       });
   };
 
   useEffect(() => {
     if (props.compiling) {
-      props.setCompiling(false);
       let lines = code.split("\n");
       let instructions = [];
 
@@ -78,6 +77,8 @@ function Assembly(props) {
             .split(/\s+/)
         );
       }
+
+      props.setInstructions([...props.instructions, instructions]);
 
       for (let ins in instructions) {
         let instruction = instructions[ins];
@@ -137,7 +138,6 @@ function Assembly(props) {
             setJumpCondMachineCodeValues(instruction[1], instruction[2]);
             break;
         }
-        props.setInstruction(lines[ins]);
       }
     }
   }, [props.compiling]);

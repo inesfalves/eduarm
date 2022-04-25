@@ -5,8 +5,8 @@ import MachineCode from "./MachineCode.js";
 import { useState } from "react";
 
 function ViewTab(props) {
-  const [machineCode, setMachineCode] = useState([]);
-  const [instruction, setInstruction] = useState([]);
+  const [machineCodes, setMachineCodes] = useState([]);
+  const [instructions, setInstructions] = useState([]);
 
   return (
     <div style={{ height: 89 + "%", width: 100 + "%" }}>
@@ -102,8 +102,10 @@ function ViewTab(props) {
           <Assembly
             compiling={props.compiling}
             setCompiling={props.setCompiling}
-            setMachineCode={setMachineCode}
-            setInstruction={setInstruction}
+            machineCodes={machineCodes}
+            setMachineCodes={setMachineCodes}
+            setInstructions={setInstructions}
+            instructions={instructions}
           ></Assembly>
         </div>
         <div
@@ -113,8 +115,10 @@ function ViewTab(props) {
           aria-labelledby="machine-tab"
         >
           <MachineCode
-            machineCode={machineCode}
-            instruction={instruction}
+            compiling={props.compiling}
+            setCompiling={props.setCompiling}
+            machineCodes={machineCodes}
+            instructions={instructions}
           ></MachineCode>
         </div>
         <div
