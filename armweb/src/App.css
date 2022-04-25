@@ -15,9 +15,15 @@
 }
 
 .tooltipNode {
+  text-align: center;
+  background-color: whitesmoke;
+  border-radius: 5px;
+  font-size: 10px;
+  padding: 1em;
+  border: 1px solid black;
   position: absolute;
-  margin: 0;
-  z-index: 10;
+  margin: 0.5em;
+  z-index: 5 !important;
 }
 
 .custom-node {

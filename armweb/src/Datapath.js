@@ -17,9 +17,22 @@ function Datapath(props) {
       let tooltips = nodeElement.getElementsByClassName("tooltipNode");
       if (tooltips.length !== 0) {
         let component = props.cpuState.find((x) => x.id === node.id);
+        let tooltipInpText = "",
+          tooltipOutText = "";
         let componentInputs = component.inputs;
         let componentOutputs = component.outputs;
-        tooltips[0].innerHTML = componentInputs;
+        for (let inp of Object.values(componentInputs)) {
+          tooltipInpText += inp.id + ": " + inp.data.value + " ";
+        }
+        for (let out of Object.values(componentOutputs)) {
+          tooltipOutText += out.id + ": " + out.data.value + " ";
+        }
+        tooltips[0].innerHTML =
+          "<div className='container'><div className='row'> Inputs: " +
+          tooltipInpText +
+          "</div><div className='row'>Outputs: " +
+          tooltipOutText +
+          "</div></div>";
         tooltips[0].style.opacity = 1;
       }
     }
@@ -29,6 +42,7 @@ function Datapath(props) {
     let nodeElement = document.querySelector(`[data-id=${node.id}`);
     let tooltips = nodeElement.getElementsByClassName("tooltipNode");
     if (tooltips.length !== 0) {
+      tooltips[0].innerHTML = "";
       tooltips[0].style.opacity = 0;
     }
   };
