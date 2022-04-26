@@ -2,12 +2,11 @@ import "bootstrap/dist/js/bootstrap.js";
 import Datapath from "./Datapath.js";
 import Assembly from "./Assembly.js";
 import MachineCode from "./MachineCode.js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function ViewTab(props) {
   const [machineCodes, setMachineCodes] = useState([]);
   const [instructions, setInstructions] = useState([]);
-
   return (
     <div style={{ height: 89 + "%", width: 100 + "%" }}>
       <ul className="nav nav-tabs" id="myTab" role="tablist">

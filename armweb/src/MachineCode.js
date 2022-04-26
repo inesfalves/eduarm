@@ -1,13 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function MachineCode(props) {
-  let instructions = [];
+  const [instructions, setInstructions] = useState([]);
 
   useEffect(() => {
     if (props.compiling) {
+      let tempIns = [];
       for (var i = 0; i < props.instructions.length; i++) {
-        console.log("hi");
-        instructions.push(
+        tempIns.push(
           <tr key={i}>
             <td>{i * 4}</td>
             <td>{props.machineCodes[i]}</td>
@@ -15,9 +15,9 @@ function MachineCode(props) {
           </tr>
         );
       }
-      props.setCompiling(false);
+      setInstructions(tempIns);
     }
-  }, [props.compiling, props.instructions]);
+  }, [props.machineCodes]);
 
   return (
     <table className="table table-striped table-sm">
