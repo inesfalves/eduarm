@@ -26,6 +26,8 @@ class Distributor extends Component {
         this.createMask(this.from[i], this.to[i]),
         this.to[i]
       );
+      console.log(this.from[i] + "-" + this.to[i]);
+      console.log(this.output[i].value);
     }
   }
 

@@ -16,13 +16,13 @@ class DataMemory extends Component {
     //Data memory output
     this.readData = super.addOutput(json.output, new Data(0, 0));
 
-    this.memory = [];
+    this.memory = [0, 1, 2, 3, 4];
   }
 
   execute() {
     if (this.memRead.value === 1) {
       //Reading from memory
-      this.readData.value = this.memory[this.address.value / 4];
+      this.readData.value = this.memory[parseInt(this.address.value, 2) / 4];
     }
   }
 

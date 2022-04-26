@@ -8,6 +8,7 @@ let cpu = new CPU("basicCPU");
 
 let instructionCode = "";
 let registers = [];
+let memory = [];
 
 app.use(cors());
 app.use(express.json());
@@ -63,6 +64,9 @@ app.get("/assembleALInstruction/:op/:dest/:first/:second", (req, res) => {
 });
 
 app.get("/assembleMemInstruction/:op/:dest/:first/:second", (req, res) => {
+  console.log("offset first: " + req.params.second);
+  console.log("rn first: " + req.params.first);
+  console.log("rd first: " + req.params.dest);
   let opcode = "";
   let offset = (req.params.second >>> 0).toString(2).padStart(9, "0");
   let op2 = "00";
@@ -76,6 +80,10 @@ app.get("/assembleMemInstruction/:op/:dest/:first/:second", (req, res) => {
       opcode = "11111000000";
       break;
   }
+  console.log("opcode: " + opcode);
+  console.log("offset: " + offset);
+  console.log("rn: " + rn);
+  console.log("rd: " + rd);
   instructionCode = opcode + offset + op2 + rn + rd;
   res.send(JSON.stringify(instructionCode));
 });

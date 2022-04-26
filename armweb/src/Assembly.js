@@ -79,6 +79,8 @@ function Assembly(props) {
         );
       }
 
+      console.log(instructions);
+
       for (let ins in instructions) {
         let instruction = instructions[ins];
         switch (instruction[0]) {

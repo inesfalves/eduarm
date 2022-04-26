@@ -9,6 +9,7 @@ const axios = require("axios");
 function App() {
   const [cpuState, setCpuState] = useState([]);
   const [registerValues, setRegisterValues] = useState([]);
+  const [memoryValues, setMemoryValues] = useState([]);
   const [compiling, setCompiling] = useState(false);
   const [executed, setExecuted] = useState(false);
 
@@ -71,6 +72,8 @@ function App() {
               setCompiling={setCompiling}
               registerValues={registerValues}
               setRegisterValues={setRegisterValues}
+              setMemoryValues={setMemoryValues}
+              memoryValues={memoryValues}
             ></ViewTab>
             <div className="buttonsArea container">
               <div className="row justify-content-around py-3">

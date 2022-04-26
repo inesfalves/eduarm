@@ -2,6 +2,7 @@ import "bootstrap/dist/js/bootstrap.js";
 import Datapath from "./Datapath.js";
 import Assembly from "./Assembly.js";
 import MachineCode from "./MachineCode.js";
+import DataMemoryDisplay from "./DataMemoryDisplay";
 import { useState } from "react";
 
 function ViewTab(props) {
@@ -123,7 +124,11 @@ function ViewTab(props) {
           role="tabpanel"
           aria-labelledby="memory-tab"
         >
-          ...4
+          <DataMemoryDisplay
+            executed={props.executed}
+            cpuState={props.cpuState}
+            memoryValues={props.memoryValues}
+          ></DataMemoryDisplay>
         </div>
       </div>
     </div>
