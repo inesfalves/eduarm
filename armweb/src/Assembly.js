@@ -6,69 +6,12 @@ const axios = require("axios");
 function Assembly(props) {
   const [code, setCode] = useState(``);
 
-  const setMachineCodeValues = (op, dest, first, second) => {
-    if (op === "ldur" || op === "stur") {
-      axios
-        .get(
-          "http://localhost:3001/assembleMemInstruction/" +
-            op +
-            "/" +
-            dest +
-            "/" +
-            first +
-            "/" +
-            second
-        )
-        .then(function (res) {
-          props.setMachineCode(res.data);
-        });
-    } else {
-      axios
-        .get(
-          "http://localhost:3001/assembleALInstruction/" +
-            op +
-            "/" +
-            dest +
-            "/" +
-            first +
-            "/" +
-            second
-        )
-        .then(function (res) {
-          props.setMachineCode(res.data);
-        });
-    }
-  };
-
-  const setJumpBMachineCodeValues = (label) => {
-    axios
-      .get("http://localhost:3001/assembleJumpBInstruction/" + label)
-      .then(function (res) {
-        props.setMachineCode(res.data);
-      });
-  };
-
-  const setJumpCondMachineCodeValues = (cond, label) => {
-    axios
-      .get(
-        "http://localhost:3001/assembleJumpCondInstruction/" +
-          cond +
-          "/" +
-          label
-      )
-      .then(function (res) {
-        props.setMachineCode(res.data);
-      });
-  };
-
   useEffect(() => {
     if (props.compiling) {
-      props.setCompiling(false);
       let lines = code.split("\n");
-      let instructions = [];
-
+      let tempIns = [];
       for (let line of lines) {
-        instructions.push(
+        tempIns.push(
           line
             .replace(/,/g, " ")
             .replace(/\s\[?x+/gi, " ")
@@ -78,69 +21,122 @@ function Assembly(props) {
             .split(/\s+/)
         );
       }
+      props.setInstructions(lines);
 
-      console.log(instructions);
-
-      for (let ins in instructions) {
-        let instruction = instructions[ins];
+      let tempValues = [];
+      let promises = [];
+      for (let ins in tempIns) {
+        console.log(tempIns);
+        let instruction = tempIns[ins];
         switch (instruction[0]) {
           case "add":
-            setMachineCodeValues(
-              instruction[0],
-              instruction[1],
-              instruction[2],
-              instruction[3]
+            promises.push(
+              axios.get(
+                "http://localhost:3001/assembleALInstruction/" +
+                  instruction[0] +
+                  "/" +
+                  instruction[1] +
+                  "/" +
+                  instruction[2] +
+                  "/" +
+                  instruction[3]
+              )
             );
             break;
           case "sub":
-            setMachineCodeValues(
-              instruction[0],
-              instruction[1],
-              instruction[2],
-              instruction[3]
+            promises.push(
+              axios.get(
+                "http://localhost:3001/assembleALInstruction/" +
+                  instruction[0] +
+                  "/" +
+                  instruction[1] +
+                  "/" +
+                  instruction[2] +
+                  "/" +
+                  instruction[3]
+              )
             );
             break;
           case "and":
-            setMachineCodeValues(
-              instruction[0],
-              instruction[1],
-              instruction[2],
-              instruction[3]
+            promises.push(
+              axios.get(
+                "http://localhost:3001/assembleALInstruction/" +
+                  instruction[0] +
+                  "/" +
+                  instruction[1] +
+                  "/" +
+                  instruction[2] +
+                  "/" +
+                  instruction[3]
+              )
             );
             break;
           case "orr":
-            setMachineCodeValues(
-              instruction[0],
-              instruction[1],
-              instruction[2],
-              instruction[3]
+            promises.push(
+              axios.get(
+                "http://localhost:3001/assembleALInstruction/" +
+                  instruction[0] +
+                  "/" +
+                  instruction[1] +
+                  "/" +
+                  instruction[2] +
+                  "/" +
+                  instruction[3]
+              )
             );
             break;
           case "ldur":
-            setMachineCodeValues(
-              instruction[0],
-              instruction[1],
-              instruction[2],
-              instruction[3]
+            promises.push(
+              axios.get(
+                "http://localhost:3001/assembleMemInstruction/" +
+                  instruction[0] +
+                  "/" +
+                  instruction[1] +
+                  "/" +
+                  instruction[2] +
+                  "/" +
+                  instruction[3]
+              )
             );
             break;
           case "stur":
-            setMachineCodeValues(
-              instruction[0],
-              instruction[1],
-              instruction[2],
-              instruction[3]
+            promises.push(
+              axios.get(
+                "http://localhost:3001/assembleMemInstruction/" +
+                  instruction[0] +
+                  "/" +
+                  instruction[1] +
+                  "/" +
+                  instruction[2] +
+                  "/" +
+                  instruction[3]
+              )
             );
             break;
           case "b":
-            setJumpBMachineCodeValues(instruction[1]);
+            promises.push(
+              axios.get(
+                "http://localhost:3001/assembleJumpBInstruction/" +
+                  instruction[1]
+              )
+            );
             break;
           case "cbz":
-            setJumpCondMachineCodeValues(instruction[1], instruction[2]);
+            promises.push(
+              axios.get(
+                "http://localhost:3001/assembleJumpCondInstruction/" +
+                  instruction[1] +
+                  "/" +
+                  instruction[2]
+              )
+            );
             break;
         }
-        props.setInstruction(lines[ins]);
       }
+
+      Promise.all(promises).then((values) =>
+        props.setMachineCodes(values.map((value) => value.data))
+      );
     }
   }, [props.compiling]);
 

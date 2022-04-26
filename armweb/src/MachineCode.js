@@ -1,4 +1,24 @@
+import { useEffect, useState } from "react";
+
 function MachineCode(props) {
+  const [instructions, setInstructions] = useState([]);
+
+  useEffect(() => {
+    if (props.compiling) {
+      let tempIns = [];
+      for (var i = 0; i < props.instructions.length; i++) {
+        tempIns.push(
+          <tr key={i}>
+            <td>{i * 4}</td>
+            <td>{props.machineCodes[i]}</td>
+            <td>{props.instructions[i]}</td>
+          </tr>
+        );
+      }
+      setInstructions(tempIns);
+    }
+  }, [props.machineCodes]);
+
   return (
     <table className="table table-striped table-sm">
       <thead>
@@ -8,13 +28,7 @@ function MachineCode(props) {
           <th scope="col">Instruction</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td>0</td>
-          <td>{props.machineCode}</td>
-          <td>{props.instruction}</td>
-        </tr>
-      </tbody>
+      <tbody>{instructions}</tbody>
     </table>
   );
 }
