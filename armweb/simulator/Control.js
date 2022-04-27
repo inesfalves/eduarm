@@ -10,7 +10,7 @@ class Control extends Component {
     super(id, json);
 
     //Control input values
-    //Bits 31 to 21 or 31 to 24
+    //Bits 31 to 21 or 31 to 26
     this.controlInput = super.addInput(json.input, new Data(0, 0));
 
     //Control output values

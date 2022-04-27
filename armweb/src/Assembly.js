@@ -23,10 +23,8 @@ function Assembly(props) {
       }
       props.setInstructions(lines);
 
-      let tempValues = [];
       let promises = [];
       for (let ins in tempIns) {
-        console.log(tempIns);
         let instruction = tempIns[ins];
         switch (instruction[0]) {
           case "add":

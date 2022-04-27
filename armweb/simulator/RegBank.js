@@ -22,8 +22,6 @@ class RegBank extends Component {
 
   //allocating the register values
   execute() {
-    console.log(this.readReg1.value);
-    console.log(this.readReg2.value);
     // add x3, x2, x1
     let possValue1 = this.registers.find(
       (element) => element[0] === this.readReg1.value

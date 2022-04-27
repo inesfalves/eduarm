@@ -23,13 +23,14 @@ class ALUControl extends Component {
   }
 
   execute() {
-    let jsonOutputValues = aluctrlValues.getALUControlValues(
+    console.log(this.opcode.value);
+    let jsonOutputValue = aluctrlValues.getALUControlValues(
       this.ALUOp0.value,
       this.ALUOp1.value,
       this.opcode.value
     );
 
-    this.ctrlALU.value = jsonOutputValues.CtrlALU;
+    this.ctrlALU.value = jsonOutputValue;
   }
 
   printValues() {

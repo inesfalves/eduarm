@@ -19,6 +19,19 @@ class Distributor extends Component {
     }
   }
 
+  loadInstructionType(insType) {
+    switch (insType) {
+      case "Mem":
+        this.from[0] = 20;
+        this.to[0] = 12;
+        break;
+      case "Cbz":
+        this.from[0] = 23;
+        this.to[0] = 5;
+        break;
+    }
+  }
+
   execute() {
     for (let i = 0; i < this.output.length; i++) {
       this.output[i].value = this.bitMasking(
@@ -26,8 +39,6 @@ class Distributor extends Component {
         this.createMask(this.from[i], this.to[i]),
         this.to[i]
       );
-      console.log(this.from[i] + "-" + this.to[i]);
-      console.log(this.output[i].value);
     }
   }
 

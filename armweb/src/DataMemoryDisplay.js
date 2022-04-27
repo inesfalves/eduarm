@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 
 function DataMemoryDisplay(props) {
   const [memoryLines, setMemoryLines] = useState([]);
-  let dataMemValues = [];
 
   useEffect(() => {
     if (props.executed) {
-      dataMemValues = props.cpuState.find((x) => x.id === "DataMemory").memory;
+      let dataMemValues = props.cpuState.find((x) => x.id === "DataMemory")
+        .memory;
       let tempMem = [];
-      for (var i = 0; i < 5; i++) {
+      for (var i = 0; i < dataMemValues.length; i++) {
         tempMem.push(
           <tr key={i}>
             <td>{i * 4}</td>
@@ -18,7 +18,7 @@ function DataMemoryDisplay(props) {
       }
       setMemoryLines(tempMem);
     }
-  }, [props.execute, props.cpuState]);
+  }, [props.cpuState]);
 
   return (
     <table className="table table-striped table-sm">

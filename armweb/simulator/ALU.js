@@ -16,6 +16,7 @@ class ALU extends Component {
   }
 
   execute() {
+    this.input2.value = parseInt(this.input2.value, 2);
     switch (this.controlOp.value) {
       case 2:
         this.aluResult.value = this.input1.value + this.input2.value;

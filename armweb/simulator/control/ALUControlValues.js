@@ -21,10 +21,10 @@ class ALUControlValues {
       ) {
         if (this.aluControlValues[i].opcode !== undefined) {
           if (this.aluControlValues[i].opcode === opcode) {
-            return this.aluControlValues[i];
+            return this.aluControlValues[i].CtrlALU;
           }
         } else {
-          return this.aluControlValues[i];
+          return this.aluControlValues[i].CtrlALU;
         }
       }
     }
