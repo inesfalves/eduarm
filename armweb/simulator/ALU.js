@@ -16,7 +16,6 @@ class ALU extends Component {
   }
 
   execute() {
-    this.input2.value = parseInt(this.input2.value, 2);
     switch (this.controlOp.value) {
       case 2:
         this.aluResult.value = this.input1.value + this.input2.value;
@@ -30,9 +29,11 @@ class ALU extends Component {
       case 1:
         this.aluResult.value = this.input1.value || this.input2.value;
         break;
+      case 7:
+        this.aluResult.value = this.input1.value;
+        break;
       default:
         console.log("Other operation");
-        this.aluResult.value = 0;
         break;
     }
 

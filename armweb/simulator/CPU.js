@@ -72,6 +72,13 @@ class CPU {
       if (this.cpuComponents[i].id === "RegBank") {
         this.cpuComponents[i].registers = registers;
       }
+      if (
+        this.cpuComponents[i].id === "InsDistributor" &&
+        instructionType === "Cbz"
+      ) {
+        this.cpuComponents[i].from[0] = 31;
+        this.cpuComponents[i].to[0] = 24;
+      }
       if (this.cpuComponents[i].id === "SignExtendDist") {
         this.cpuComponents[i].loadInstructionType(instructionType);
       }

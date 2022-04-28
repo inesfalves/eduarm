@@ -23,7 +23,6 @@ class ALUControl extends Component {
   }
 
   execute() {
-    console.log(this.opcode.value);
     let jsonOutputValue = aluctrlValues.getALUControlValues(
       this.ALUOp0.value,
       this.ALUOp1.value,

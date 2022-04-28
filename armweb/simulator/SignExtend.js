@@ -13,9 +13,10 @@ class SignExtend extends Component {
   }
 
   execute() {
-    this.signExtendOut.value = this.signExtendIn.data.getExtendedValue(
-      64
-    ).value;
+    this.signExtendOut.value = parseInt(
+      this.signExtendIn.data.getExtendedValue(64).value,
+      2
+    );
   }
 
   printValues() {

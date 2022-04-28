@@ -20,27 +20,6 @@
         "input": ["pcValue", 4],
         "output": "addedPCValue"
       },
-      "ShiftLeft": {
-        "componentType": "ShiftLeft",
-        "input": "shiftLeftInput",
-        "amount": 2,
-        "output": "shiftLeftOutput"
-      },
-      "AddBranch": {
-        "componentType": "Adder",
-        "input": ["addBranchValue1", "addBranchValue2"],
-        "output": "addBranchResult"
-      },
-      "MuxTop": {
-        "componentType": "MUX",
-        "input": ["topMuxValue1", "topMuxValue2", "topMuxControl"],
-        "output": "topMuxResult"
-      },
-      "And": {
-        "componentType": "And",
-        "input": ["andInput1", "andInput2"],
-        "output": "andResult"
-      },
       "InsMem": {
         "componentType": "InstructionMemory",
         "input": "address",
@@ -55,6 +34,11 @@
         "componentType": "Fork",
         "input": "insForkInput",
         "output": ["insForkOutput1", "insForkOutput2"]
+      },
+      "Control": {
+        "componentType": "Control",
+        "input": "controlInput",
+        "output": ["reg2Loc", "branch", "memRead", "memToReg", "ALUOp0", "ALUOp1", "memWrite", "ALUSrc", "regWrite"]
       },
       "MuxIns": {
         "componentType": "MUX",
@@ -86,10 +70,16 @@
         "input": "regMuxFork2Input",
         "output": ["regMuxFork2Output1", "regMuxFork2Output2"]
       },
-      "Control": {
-        "componentType": "Control",
-        "input": "controlInput",
-        "output": ["reg2Loc", "branch", "memRead", "memToReg", "ALUOp0", "ALUOp1", "memWrite", "ALUSrc", "regWrite"]
+      "ShiftLeft": {
+        "componentType": "ShiftLeft",
+        "input": "shiftLeftInput",
+        "amount": 2,
+        "output": "shiftLeftOutput"
+      },
+      "AddBranch": {
+        "componentType": "Adder",
+        "input": ["addBranchValue1", "addBranchValue2"],
+        "output": "addBranchResult"
       },
       "MuxReg": {
         "componentType": "MUX",
@@ -105,6 +95,16 @@
         "componentType": "ALU",
         "input": ["ALUInput1", "ALUInput2", "ctrlALU"],
         "output": ["aluZero", "aluResult"]
+      },
+      "And": {
+        "componentType": "And",
+        "input": ["andInput1", "andInput2"],
+        "output": "andResult"
+      },
+      "MuxTop": {
+        "componentType": "MUX",
+        "input": ["topMuxValue1", "topMuxValue2", "topMuxControl"],
+        "output": "topMuxResult"
       },
       "ALUFork": {
         "componentType": "Fork",
