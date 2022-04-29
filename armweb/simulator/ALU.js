@@ -30,7 +30,7 @@ class ALU extends Component {
         this.aluResult.value = this.input1.value || this.input2.value;
         break;
       case 7:
-        this.aluResult.value = this.input1.value;
+        this.aluResult.value = this.input2.value;
         break;
       default:
         console.log("Other operation");
