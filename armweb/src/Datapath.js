@@ -1,15 +1,23 @@
-import ReactFlow, { useNodesState, useEdgesState } from "react-flow-renderer";
+import ReactFlow, {
+  ReactFlowProvider,
+  useNodesState,
+  useEdgesState,
+} from "react-flow-renderer";
 import { DiagramUtils } from "./DiagramUtils";
 
 const {
   nodes: initialNodes,
   edges: initialEdges,
+  pipelineNodes: pipeNodes,
+  pipelineEdges: pipeEdges,
   customNodeTypes: nodeTypes,
 } = DiagramUtils();
 
 function Datapath(props) {
   const [nodes] = useNodesState(initialNodes);
   const [edges] = useEdgesState(initialEdges);
+  const [plNodes, setNodes, onNodesChange] = useNodesState(pipeNodes);
+  const [plEdges, setEdges, onEdgesChange] = useEdgesState(pipeEdges);
 
   const showNodeInformation = (event, node) => {
     if (props.executed) {
@@ -65,16 +73,62 @@ function Datapath(props) {
       nodeElement.appendChild(tooltip);
     }
   };
+
+  const showNodeInf = (event, node) => {
+    console.log(node);
+  };
+
   return (
-    <ReactFlow
-      nodeTypes={nodeTypes}
-      nodes={nodes}
-      edges={edges}
-      onInit={createTooltips}
-      onNodeMouseEnter={showNodeInformation}
-      onNodeMouseLeave={hideNodeInformation}
-      defaultZoom="1.04"
-    />
+    // <ReactFlow
+    //   nodeTypes={nodeTypes}
+    //   nodes={nodes}
+    //   edges={edges}
+    //   onInit={createTooltips}
+    //   onNodeMouseEnter={showNodeInformation}
+    //   onNodeMouseLeave={hideNodeInformation}
+    //   defaultZoom="1.04"
+    // />
+    <div
+      style={{
+        height: 35.5 + "em",
+        width: 63.3 + "em",
+        maxHeight: 35.5 + "em",
+        maxWidth: 80 + "em",
+      }}
+    >
+      <div className="container px-0">
+        <div className="row pb-0 mb-0">
+          <button type="button" className="btn btn-sm btn-outline-info col">
+            IF
+          </button>
+          <button type="button" className="btn btn-sm btn-outline-success col">
+            ID
+          </button>
+          <button type="button" className="btn btn-sm btn-outline-warning col">
+            EX
+          </button>
+          <button type="button" className="btn btn-sm btn-outline-danger col">
+            MEM
+          </button>
+          <button type="button" className="btn btn-sm btn-outline-primary col">
+            WB
+          </button>
+        </div>
+      </div>
+      <ReactFlowProvider>
+        <ReactFlow
+          onlyRenderVisibleElements={true}
+          nodes={plNodes}
+          edges={plEdges}
+          nodeTypes={nodeTypes}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onNodeClick={showNodeInf}
+          panOnDrag={false}
+          defaultZoom="0.85"
+        />
+      </ReactFlowProvider>
+    </div>
   );
 }
 
