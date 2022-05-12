@@ -154,7 +154,7 @@
   background: white;
 }
 
-.alucontrol-node label, .control-node label {
+.alucontrol-node label, .control-node label, .pipecontrol-node label, .pipeunit-node label {
   display: block;
   text-align: center;
   color: #00ADEE;
@@ -164,6 +164,24 @@
 .control-node {
   height:100px;
   width: 75px;
+  border: 1px solid #00ADEE;
+  padding: 5px;
+  border-radius: 15px;
+  background: white;
+}
+
+.pipecontrol-node {
+  height: 50px;
+  width: 75px;
+  border: 1px solid #00ADEE;
+  padding: 5px;
+  border-radius: 15px;
+  background: white;
+}
+
+.pipeunit-node {
+  height: 60px;
+  width: 95px;
   border: 1px solid #00ADEE;
   padding: 5px;
   border-radius: 15px;

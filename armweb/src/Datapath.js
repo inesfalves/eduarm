@@ -97,20 +97,34 @@ function Datapath(props) {
       }}
     >
       <div className="container px-0">
-        <div className="row pb-0 mb-0">
-          <button type="button" className="btn btn-sm btn-outline-info col">
+        <div
+          className="row pb-0 mb-0"
+          style={{
+            height: 1 + "em",
+          }}
+        >
+          <button type="button" className="btn btn-sm btn-outline-info col-3">
             IF
           </button>
-          <button type="button" className="btn btn-sm btn-outline-success col">
+          <button
+            type="button"
+            className="btn btn-sm btn-outline-success col-3"
+          >
             ID
           </button>
-          <button type="button" className="btn btn-sm btn-outline-warning col">
+          <button
+            type="button"
+            className="btn btn-sm btn-outline-warning col-3"
+          >
             EX
           </button>
-          <button type="button" className="btn btn-sm btn-outline-danger col">
+          <button type="button" className="btn btn-sm btn-outline-danger col-2">
             MEM
           </button>
-          <button type="button" className="btn btn-sm btn-outline-primary col">
+          <button
+            type="button"
+            className="btn btn-sm btn-outline-primary col-1"
+          >
             WB
           </button>
         </div>

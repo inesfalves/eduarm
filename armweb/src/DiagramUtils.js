@@ -20,6 +20,17 @@ function ForkNode({ data }) {
   );
 }
 
+function PipePCNode({ data }) {
+  return (
+    <div className="alu-node">
+      <label htmlFor="text">{data.label}</label>
+      <Handle type="target" position={Position.Left} id="a" />
+      <Handle type="target" position={Position.Top} id="b" />
+      <Handle type="source" position={Position.Right} />
+    </div>
+  );
+}
+
 function PCAuxNode({ data }) {
   return (
     <div className="aux-node">
@@ -105,6 +116,33 @@ function SignExtendDist({ data }) {
   );
 }
 
+function PipeSignExtendDist({ data }) {
+  return (
+    <div className="fork-node">
+      <Handle type="target" className="side-node" position={Position.Left} />
+      <Handle
+        type="source"
+        className="side-node"
+        position={Position.Right}
+        id="a"
+      />
+      <Handle
+        type="source"
+        className="side-node"
+        position={Position.Right}
+        style={{ top: 40 }}
+        id="b"
+      />
+      <Handle
+        type="source"
+        className="top-node"
+        position={Position.Bottom}
+        id="c"
+      />
+    </div>
+  );
+}
+
 function ALUControlNode({ data }) {
   return (
     <div className="alucontrol-node">
@@ -165,6 +203,33 @@ function MuxNode({ data }) {
         style={{ top: 40 }}
       />
       <Handle type="target" position={Position.Top} id="c" />
+      <Handle type="source" position={Position.Right} />
+    </div>
+  );
+}
+
+function PipeMuxNode({ data }) {
+  return (
+    <div className="mux-node">
+      <Handle
+        type="target"
+        position={Position.Left}
+        id="a"
+        style={{ top: 15 }}
+      />
+      <Handle
+        type="target"
+        position={Position.Left}
+        id="b"
+        style={{ top: 30 }}
+      />
+      <Handle
+        type="target"
+        position={Position.Left}
+        id="c"
+        style={{ top: 45 }}
+      />
+      <Handle type="target" position={Position.Bottom} id="d" />
       <Handle type="source" position={Position.Right} />
     </div>
   );
@@ -378,6 +443,7 @@ function IFIDNode({ data }) {
         id="b"
         style={{ top: 264 }}
       />
+      <Handle type="target" position={Position.Top} id="c" />
       <Handle
         type="source"
         id="a"
@@ -651,26 +717,110 @@ function ControlNode({ data }) {
 
 function PipeControlNode({ data }) {
   return (
-    <div className="control-node">
+    <div className="pipecontrol-node">
       <label htmlFor="text">{data.label}</label>
       <Handle type="target" position={Position.Left} />
+      <Handle type="source" position={Position.Right} />
+    </div>
+  );
+}
+
+function HazardDetectionNode({ data }) {
+  return (
+    <div className="pipeunit-node">
+      <label htmlFor="text">{data.label}</label>
       <Handle
         type="source"
-        position={Position.Right}
+        position={Position.Left}
         id="a"
-        style={{ top: 10 }}
+        style={{ top: 15 }}
       />
       <Handle
         type="source"
-        position={Position.Right}
+        position={Position.Left}
         id="b"
+        style={{ top: 25 }}
+      />
+      <Handle
+        type="target"
+        position={Position.Left}
+        id="a"
+        style={{ top: 35 }}
+      />
+      <Handle
+        type="target"
+        position={Position.Left}
+        id="b"
+        style={{ top: 45 }}
+      />
+      <Handle type="target" position={Position.Bottom} id="c" />
+      <Handle
+        type="target"
+        position={Position.Right}
+        id="d"
         style={{ top: 20 }}
       />
       <Handle
         type="source"
         position={Position.Right}
         id="c"
-        style={{ top: 30 }}
+        style={{ top: 40 }}
+      />
+    </div>
+  );
+}
+
+function ForwardingUnitNode({ data }) {
+  return (
+    <div className="pipeunit-node">
+      <label htmlFor="text">{data.label}</label>
+      <Handle
+        type="source"
+        position={Position.Left}
+        id="a"
+        style={{ top: 15 }}
+      />
+      <Handle
+        type="source"
+        position={Position.Left}
+        id="b"
+        style={{ top: 25 }}
+      />
+      <Handle
+        type="target"
+        position={Position.Left}
+        id="a"
+        style={{ top: 35 }}
+      />
+      <Handle
+        type="target"
+        position={Position.Left}
+        id="b"
+        style={{ top: 45 }}
+      />
+      <Handle
+        type="target"
+        position={Position.Right}
+        id="c"
+        style={{ top: 15 }}
+      />
+      <Handle
+        type="target"
+        position={Position.Right}
+        id="d"
+        style={{ top: 25 }}
+      />
+      <Handle
+        type="target"
+        position={Position.Right}
+        id="e"
+        style={{ top: 35 }}
+      />
+      <Handle
+        type="target"
+        position={Position.Right}
+        id="f"
+        style={{ top: 45 }}
       />
     </div>
   );
@@ -1225,34 +1375,32 @@ export function DiagramUtils() {
     {
       id: "IFIDNode",
       data: { label: "IF/ID" },
-      position: { x: 271, y: 65 },
+      position: { x: 279, y: 137 },
       type: "ifidNode",
     },
     {
       id: "IDEXNode",
       data: { label: "ID/EX" },
-      position: { x: 572, y: 65 },
+      position: { x: 567, y: 137 },
       type: "idexNode",
     },
     {
       id: "EXMEMNode",
       data: { label: "EX/MEM" },
-      position: { x: 834, y: 65 },
+      position: { x: 871, y: 137 },
       type: "exmemNode",
     },
     {
       id: "MEMWBNode",
       data: { label: "MEM/WB" },
-      position: { x: 1030, y: 65 },
+      position: { x: 1075, y: 137 },
       type: "memwbNode",
     },
     {
       id: "PC",
       data: { label: "PC" },
       position: { x: 49, y: 300.5 },
-      style: { height: 70 + "px", width: 70 + "px" },
-      targetPosition: "left",
-      sourcePosition: "right",
+      type: "pipePCNode",
     },
     {
       id: "PCAuxNode",
@@ -1275,6 +1423,26 @@ export function DiagramUtils() {
       type: "forkNodeSecond",
     },
     {
+      id: "HazardFork1",
+      position: { x: 330, y: 123 },
+      type: "forkNodeSecond",
+    },
+    {
+      id: "HazardIDEXFork",
+      position: { x: 612, y: 625 },
+      type: "forkNodeSecond",
+    },
+    {
+      id: "HazardFork2",
+      position: { x: 330, y: 70.5 },
+      type: "forkNodeSecond",
+    },
+    {
+      id: "ForwardEXMEMFork",
+      position: { x: 916, y: 625.5 },
+      type: "forkNodeSecond",
+    },
+    {
       id: "AddPC",
       data: { label: "Add" },
       position: { x: 150, y: 122 },
@@ -1283,7 +1451,7 @@ export function DiagramUtils() {
     {
       id: "ShiftLeft",
       data: { label: "Shift Left" },
-      position: { x: 646, y: 229 },
+      position: { x: 684, y: 271 },
       style: { height: 30 + "px", width: 30 + "px" },
       targetPosition: "left",
       sourcePosition: "right",
@@ -1291,7 +1459,7 @@ export function DiagramUtils() {
     {
       id: "AddBranch",
       data: { label: "Add" },
-      position: { x: 704, y: 174 },
+      position: { x: 733, y: 166 },
       type: "addNode",
     },
     {
@@ -1301,7 +1469,7 @@ export function DiagramUtils() {
     },
     {
       id: "And",
-      position: { x: 916, y: 131 },
+      position: { x: 953, y: 160 },
       data: { label: "And" },
       type: "andNode",
     },
@@ -1315,7 +1483,7 @@ export function DiagramUtils() {
     },
     {
       id: "InsDistributor",
-      position: { x: 331, y: 289 },
+      position: { x: 332, y: 284 },
       type: "pipeDistNode",
     },
     {
@@ -1330,9 +1498,9 @@ export function DiagramUtils() {
       type: "regBankNode",
     },
     {
-      id: "SignExtendDist",
+      id: "PipeSignExtendDist",
       position: { x: 328, y: 488.5 },
-      type: "signExtendDist",
+      type: "pipesignExtendDist",
     },
     {
       id: "SignExtend",
@@ -1344,61 +1512,176 @@ export function DiagramUtils() {
     },
     {
       id: "RegMuxFork1",
-      position: { x: 612, y: 377.5 },
+      position: { x: 674, y: 474.5 },
       type: "forkNode",
     },
     {
       id: "RegMuxFork2",
-      position: { x: 629, y: 397.5 },
+      position: { x: 665, y: 425.5 },
       type: "forkNodeSecond",
+    },
+    {
+      id: "HazardDetection",
+      data: { label: "Hazard Detection" },
+      position: { x: 348, y: 28 },
+      type: "hazardDetectionNode",
+    },
+    {
+      id: "ForwardingUnit",
+      data: { label: "Forwarding Unit" },
+      position: { x: 741, y: 554 },
+      type: "forwardingUnitNode",
     },
     {
       id: "Control",
       data: { label: "Control" },
-      position: { x: 428, y: 32 },
+      position: { x: 423, y: 100.5 },
       type: "pipeControlNode",
     },
     {
+      id: "MuxControl",
+      position: { x: 514, y: 105.5 },
+      type: "muxNode",
+    },
+    {
+      id: "ControlEXIDEX",
+      data: { label: "EX" },
+      position: { x: 567, y: 108 },
+      style: {
+        height: 30 + "px",
+        width: 30 + "px",
+        borderColor: "#00ADEE",
+        color: "#00ADEE",
+      },
+      type: "output",
+      targetPosition: "left",
+    },
+    {
+      id: "ControlMIDEX",
+      data: { label: "M" },
+      position: { x: 567, y: 78 },
+      style: {
+        height: 30 + "px",
+        width: 30 + "px",
+        borderColor: "#00ADEE",
+        color: "#00ADEE",
+      },
+      targetPosition: "left",
+      sourcePosition: "right",
+    },
+    {
+      id: "ControlWBIDEX",
+      data: { label: "WB" },
+      position: { x: 567, y: 48 },
+      style: {
+        height: 30 + "px",
+        width: 30 + "px",
+        borderColor: "#00ADEE",
+        color: "#00ADEE",
+      },
+      targetPosition: "left",
+      sourcePosition: "right",
+    },
+    {
+      id: "ControlMEXMEM",
+      data: { label: "M" },
+      position: { x: 871, y: 108 },
+      style: {
+        height: 30 + "px",
+        width: 30 + "px",
+        borderColor: "#00ADEE",
+        color: "#00ADEE",
+      },
+      type: "output",
+      targetPosition: "left",
+    },
+    {
+      id: "ControlWBEXMEM",
+      data: { label: "WB" },
+      position: { x: 871, y: 78 },
+      style: {
+        height: 30 + "px",
+        width: 30 + "px",
+        borderColor: "#00ADEE",
+        color: "#00ADEE",
+      },
+      targetPosition: "left",
+      sourcePosition: "right",
+    },
+    {
+      id: "ControlWBMEMWB",
+      data: { label: "WB" },
+      position: { x: 1075, y: 108 },
+      style: {
+        height: 30 + "px",
+        width: 30 + "px",
+        borderColor: "#00ADEE",
+        color: "#00ADEE",
+      },
+      targetPosition: "left",
+      sourcePosition: "right",
+    },
+    {
+      id: "ControlLineFork",
+      position: { x: 644, y: 91 },
+      type: "forkNode",
+    },
+    {
+      id: "ControlLineFork2",
+      position: { x: 916, y: 91 },
+      type: "forkNode",
+    },
+    {
+      id: "PipeMux1",
+      position: { x: 630, y: 348 },
+      type: "pipeMuxNode",
+    },
+    {
+      id: "PipeMux2",
+      position: { x: 630, y: 436 },
+      type: "pipeMuxNode",
+    },
+    {
       id: "MuxReg",
-      position: { x: 644, y: 361 },
+      position: { x: 702, y: 388 },
       type: "muxNode",
     },
     {
       id: "ALUControl",
       data: { label: "ALU Control" },
-      position: { x: 670, y: 470 },
+      position: { x: 706, y: 479 },
       type: "aluControlNode",
     },
     {
       id: "ALU",
       data: { label: "ALU" },
-      position: { x: 706, y: 262 },
+      position: { x: 738, y: 286 },
       type: "aluNode",
     },
     {
       id: "ALUFork",
-      position: { x: 905, y: 370 },
+      position: { x: 943, y: 435 },
       type: "signExtendDist",
     },
     {
       id: "DataMemory",
       data: { label: "Data Memory" },
-      position: { x: 927, y: 341 },
+      position: { x: 963, y: 407 },
       type: "dataMemoryNode",
     },
     {
       id: "MuxMem",
-      position: { x: 1103, y: 351 },
+      position: { x: 1150, y: 417 },
       type: "muxNode",
     },
     {
       id: "MemAuxNode",
-      position: { x: 1136, y: 590 },
+      position: { x: 1185, y: 641 },
       type: "memAuxNode",
     },
     {
       id: "MemLeftAuxNode",
-      position: { x: 375, y: 590 },
+      position: { x: 376, y: 641 },
       type: "memLeftAuxNode",
     },
   ];
@@ -1460,7 +1743,13 @@ export function DiagramUtils() {
       target: "EXMEMNode",
       type: "smoothstep",
     },
-    { id: "e8", source: "MuxTop", target: "PC", type: "smoothstep" },
+    {
+      id: "e8",
+      source: "MuxTop",
+      target: "PC",
+      targetHandle: "a",
+      type: "smoothstep",
+    },
     {
       id: "e8Aux",
       source: "PCAuxNode",
@@ -1485,7 +1774,44 @@ export function DiagramUtils() {
       id: "e9",
       source: "InsDistributor",
       sourceHandle: "a",
+      target: "HazardFork1",
+      type: "smoothstep",
+    },
+    {
+      id: "e91",
+      source: "HazardFork1",
+      sourceHandle: "a",
+      target: "HazardFork2",
+      type: "smoothstep",
+    },
+    {
+      id: "e92",
+      source: "HazardFork1",
+      sourceHandle: "b",
       target: "Control",
+      type: "smoothstep",
+    },
+    {
+      id: "e93",
+      source: "HazardFork2",
+      sourceHandle: "a",
+      target: "HazardDetection",
+      targetHandle: "a",
+      type: "smoothstep",
+    },
+    {
+      id: "e94",
+      source: "HazardFork2",
+      sourceHandle: "b",
+      target: "HazardDetection",
+      targetHandle: "b",
+      type: "smoothstep",
+    },
+    {
+      id: "e9c",
+      source: "Control",
+      target: "MuxControl",
+      targetHandle: "a",
       type: "smoothstep",
     },
     {
@@ -1524,22 +1850,30 @@ export function DiagramUtils() {
       id: "e13",
       source: "InsDistributor",
       sourceHandle: "f",
-      target: "SignExtendDist",
+      target: "PipeSignExtendDist",
       type: "smoothstep",
     },
     {
       id: "e16",
-      source: "SignExtendDist",
+      source: "PipeSignExtendDist",
       sourceHandle: "a",
       target: "SignExtend",
       type: "smoothstep",
     },
     {
       id: "e17",
-      source: "SignExtendDist",
+      source: "PipeSignExtendDist",
       sourceHandle: "b",
       target: "IDEXNode",
       targetHandle: "e",
+      type: "smoothstep",
+    },
+    {
+      id: "e172",
+      source: "PipeSignExtendDist",
+      sourceHandle: "c",
+      target: "IDEXNode",
+      targetHandle: "f",
       type: "smoothstep",
     },
     {
@@ -1613,9 +1947,16 @@ export function DiagramUtils() {
       type: "smoothstep",
     },
     {
-      id: "e22P",
+      id: "e22P2",
       source: "IDEXNode",
       sourceHandle: "b",
+      targetHandle: "a",
+      target: "PipeMux1",
+      type: "smoothstep",
+    },
+    {
+      id: "e22P",
+      source: "PipeMux1",
       targetHandle: "a",
       target: "ALU",
       type: "smoothstep",
@@ -1773,9 +2114,16 @@ export function DiagramUtils() {
       type: "smoothstep",
     },
     {
-      id: "e46",
+      id: "e46P",
       source: "IDEXNode",
       sourceHandle: "c",
+      target: "PipeMux2",
+      targetHandle: "a",
+      type: "smoothstep",
+    },
+    {
+      id: "e46",
+      source: "PipeMux2",
       target: "RegMuxFork1",
       type: "smoothstep",
     },
@@ -1787,9 +2135,24 @@ export function DiagramUtils() {
       type: "smoothstep",
     },
     {
-      id: "e48",
+      id: "e481",
       source: "IDEXNode",
       sourceHandle: "f",
+      target: "HazardIDEXFork",
+      type: "smoothstep",
+    },
+    {
+      id: "e482",
+      source: "HazardIDEXFork",
+      sourceHandle: "a",
+      target: "HazardDetection",
+      targetHandle: "c",
+      type: "smoothstep",
+    },
+    {
+      id: "e48",
+      source: "HazardIDEXFork",
+      sourceHandle: "b",
       target: "EXMEMNode",
       targetHandle: "e",
       type: "smoothstep",
@@ -1798,9 +2161,161 @@ export function DiagramUtils() {
       id: "e49",
       source: "EXMEMNode",
       sourceHandle: "e",
+      target: "ForwardEXMEMFork",
+      type: "smoothstep",
+    },
+    {
+      id: "e491",
+      source: "ForwardEXMEMFork",
+      sourceHandle: "b",
       target: "MEMWBNode",
       targetHandle: "c",
       type: "smoothstep",
+    },
+    {
+      id: "e50",
+      source: "HazardDetection",
+      sourceHandle: "a",
+      target: "PC",
+      targetHandle: "b",
+      type: "smoothstep",
+      style: { stroke: "#00ADEE" },
+    },
+    {
+      id: "e51",
+      source: "HazardDetection",
+      sourceHandle: "b",
+      target: "IFIDNode",
+      targetHandle: "c",
+      type: "smoothstep",
+      style: { stroke: "#00ADEE" },
+    },
+    {
+      id: "e52",
+      source: "HazardDetection",
+      sourceHandle: "c",
+      target: "MuxControl",
+      targetHandle: "c",
+      type: "smoothstep",
+      style: { stroke: "#00ADEE" },
+    },
+    {
+      id: "e53",
+      source: "ControlLineFork",
+      sourceHandle: "a",
+      target: "HazardDetection",
+      targetHandle: "d",
+      type: "smoothstep",
+      style: { stroke: "#00ADEE" },
+    },
+    {
+      id: "e54",
+      source: "ControlLineFork",
+      sourceHandle: "b",
+      target: "ControlMEXMEM",
+      type: "smoothstep",
+      style: { stroke: "#00ADEE" },
+    },
+    {
+      id: "e55",
+      source: "ControlMIDEX",
+      target: "ControlLineFork",
+      type: "smoothstep",
+      style: { stroke: "#00ADEE" },
+    },
+    {
+      id: "e56",
+      source: "ControlWBIDEX",
+      target: "ControlWBEXMEM",
+      type: "smoothstep",
+      style: { stroke: "#00ADEE" },
+    },
+    {
+      id: "e57",
+      source: "MuxControl",
+      target: "ControlWBIDEX",
+      type: "smoothstep",
+      style: { stroke: "#00ADEE" },
+    },
+    {
+      id: "e58",
+      source: "MuxControl",
+      target: "ControlMIDEX",
+      type: "smoothstep",
+      style: { stroke: "#00ADEE" },
+    },
+    {
+      id: "e59",
+      source: "MuxControl",
+      target: "ControlEXIDEX",
+      type: "smoothstep",
+      style: { stroke: "#00ADEE" },
+    },
+    {
+      id: "e60",
+      source: "ControlWBEXMEM",
+      target: "ControlLineFork2",
+      type: "smoothstep",
+      style: { stroke: "#00ADEE" },
+    },
+    {
+      id: "e61",
+      source: "ControlLineFork2",
+      sourceHandle: "b",
+      target: "ControlWBMEMWB",
+      type: "smoothstep",
+      style: { stroke: "#00ADEE" },
+    },
+    {
+      id: "e62",
+      source: "ControlLineFork2",
+      sourceHandle: "a",
+      target: "ForwardingUnit",
+      targetHandle: "d",
+      type: "smoothstep",
+      style: { stroke: "#00ADEE" },
+    },
+    {
+      id: "e492",
+      source: "ForwardEXMEMFork",
+      sourceHandle: "a",
+      target: "ForwardingUnit",
+      targetHandle: "c",
+      type: "smoothstep",
+    },
+    {
+      id: "e63",
+      source: "ForwardingUnit",
+      sourceHandle: "a",
+      target: "PipeMux1",
+      targetHandle: "d",
+      type: "smoothstep",
+      style: { stroke: "#00ADEE" },
+    },
+    {
+      id: "e64",
+      source: "ForwardingUnit",
+      sourceHandle: "b",
+      target: "PipeMux2",
+      targetHandle: "d",
+      type: "smoothstep",
+      style: { stroke: "#00ADEE" },
+    },
+    {
+      id: "e65",
+      source: "MEMWBNode",
+      sourceHandle: "c",
+      target: "ForwardingUnit",
+      targetHandle: "e",
+      type: "smoothstep",
+    },
+    {
+      id: "e66",
+      source: "ControlWBMEMWB",
+      target: "ForwardingUnit",
+      targetHandle: "f",
+      type: "smoothstep",
+      style: { stroke: "#00ADEE" },
     },
   ];
 
@@ -1811,6 +2326,7 @@ export function DiagramUtils() {
     muxNode: MuxNode,
     regBankNode: RegBankNode,
     signExtendDist: SignExtendDist,
+    pipesignExtendDist: PipeSignExtendDist,
     aluControlNode: ALUControlNode,
     controlNode: ControlNode,
     aluNode: ALUNode,
@@ -1828,6 +2344,10 @@ export function DiagramUtils() {
     memwbNode: MEMWBNode,
     pipeDistNode: PipeDistNode,
     pipeControlNode: PipeControlNode,
+    hazardDetectionNode: HazardDetectionNode,
+    forwardingUnitNode: ForwardingUnitNode,
+    pipeMuxNode: PipeMuxNode,
+    pipePCNode: PipePCNode,
   };
 
   return { nodes, edges, pipelineNodes, pipelineEdges, customNodeTypes };
