@@ -1428,13 +1428,23 @@ export function DiagramUtils() {
       type: "forkNodeSecond",
     },
     {
+      id: "HazardFork2",
+      position: { x: 330, y: 70.5 },
+      type: "forkNodeSecond",
+    },
+    {
       id: "HazardIDEXFork",
       position: { x: 612, y: 625 },
       type: "forkNodeSecond",
     },
     {
-      id: "HazardFork2",
-      position: { x: 330, y: 70.5 },
+      id: "ForwardIDEXFork1",
+      position: { x: 612, y: 535 },
+      type: "forkNodeSecond",
+    },
+    {
+      id: "ForwardIDEXFork2",
+      position: { x: 612, y: 585 },
       type: "forkNodeSecond",
     },
     {
@@ -2110,7 +2120,22 @@ export function DiagramUtils() {
       id: "e45",
       source: "IDEXNode",
       sourceHandle: "d",
+      target: "ForwardIDEXFork1",
+      type: "smoothstep",
+    },
+    {
+      id: "e452",
+      source: "ForwardIDEXFork1",
+      sourceHandle: "b",
       target: "RegMuxFork2",
+      type: "smoothstep",
+    },
+    {
+      id: "e453",
+      source: "ForwardIDEXFork1",
+      sourceHandle: "a",
+      target: "ForwardingUnit",
+      targetHandle: "a",
       type: "smoothstep",
     },
     {
@@ -2131,7 +2156,22 @@ export function DiagramUtils() {
       id: "e47",
       source: "IDEXNode",
       sourceHandle: "e",
+      target: "ForwardIDEXFork2",
+      type: "smoothstep",
+    },
+    {
+      id: "e472",
+      source: "ForwardIDEXFork2",
+      sourceHandle: "b",
       target: "ALUControl",
+      type: "smoothstep",
+    },
+    {
+      id: "e473",
+      source: "ForwardIDEXFork2",
+      sourceHandle: "a",
+      target: "ForwardingUnit",
+      targetHandle: "b",
       type: "smoothstep",
     },
     {
