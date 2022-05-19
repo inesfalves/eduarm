@@ -91,9 +91,9 @@ class CPU {
       this.cpuComponents[i].execute();
     }
 
-    // for (let i = 0; i < this.cpuComponents.length; i++) {
-    //   this.cpuComponents[i].printValues();
-    // }
+    for (let i = 0; i < this.cpuComponents.length; i++) {
+      this.cpuComponents[i].printValues();
+    }
   }
 
   returnCPU() {

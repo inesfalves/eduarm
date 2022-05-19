@@ -10,9 +10,11 @@ function Assembly(props) {
     if (props.compiling) {
       let lines = code.split("\n");
       let tempIns = [];
-      for (let line of lines) {
+      let jumpLabel = "";
+      let jumpPoint = 0;
+      for (let i = 0; i < lines.length; i++) {
         tempIns.push(
-          line
+          lines[i]
             .replace(/,/g, " ")
             .replace(/\s\[?x+/gi, " ")
             .replace(/\s#+/g, " ")
@@ -20,10 +22,16 @@ function Assembly(props) {
             .trim()
             .split(/\s+/)
         );
+        if (tempIns[i][0].endsWith(":")) {
+          jumpLabel = tempIns[i][0].replace(/:/g, "");
+          jumpPoint = i;
+          tempIns[i].splice(0, 1);
+        }
       }
       props.setInstructions(lines);
 
       let promises = [];
+
       for (let ins in tempIns) {
         let instruction = tempIns[ins];
         switch (instruction[0]) {
@@ -112,6 +120,9 @@ function Assembly(props) {
             );
             break;
           case "b":
+            if (instruction[1] === jumpLabel) {
+              instruction[1] = (jumpPoint - ins) * 4;
+            }
             promises.push(
               axios.get(
                 "http://localhost:3001/assembleJumpBInstruction/" +

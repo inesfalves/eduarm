@@ -29,6 +29,10 @@ class Distributor extends Component {
         this.from[0] = 23;
         this.to[0] = 5;
         break;
+      case "B":
+        this.from[0] = 25;
+        this.to[0] = 0;
+        break;
     }
   }
 

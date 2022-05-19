@@ -87,6 +87,7 @@ app.get("/assembleMemInstruction/:op/:dest/:first/:second", (req, res) => {
 app.get("/assembleJumpBInstruction/:label", (req, res) => {
   let opcode = "000101";
   let address = (req.params.label >>> 0).toString(2).padStart(26, "0");
+  instructionType = "B";
   instructionCode = opcode + address;
   res.send(JSON.stringify(instructionCode));
 });

@@ -101,6 +101,11 @@
         "input": ["andInput1", "andInput2"],
         "output": "andResult"
       },
+      "Or": {
+        "componentType": "Or",
+        "input": ["orInput1", "orInput2"],
+        "output": "orResult"
+      },
       "MuxTop": {
         "componentType": "MUX",
         "input": ["topMuxValue1", "topMuxValue2", "topMuxControl"],
