@@ -38,7 +38,7 @@
       "Control": {
         "componentType": "Control",
         "input": "controlInput",
-        "output": ["reg2Loc", "branch", "memRead", "memToReg", "ALUOp0", "ALUOp1", "memWrite", "ALUSrc", "regWrite"]
+        "output": ["reg2Loc", "uncondBranch", "branch", "memRead", "memToReg", "ALUOp0", "ALUOp1", "memWrite", "ALUSrc", "regWrite"]
       },
       "MuxIns": {
         "componentType": "MUX",
@@ -163,7 +163,9 @@
         {"origin": "Control", "dest": "MuxIns", "output": "reg2Loc", "input": "reg2Loc"},
         {"origin": "MuxIns", "dest": "RegBank", "output": "insMuxResult", "input": "readReg2"},
         {"origin": "Control", "dest": "And", "output": "branch", "input": "andInput1"},
-        {"origin": "And", "dest": "MuxTop", "output": "andResult", "input": "topMuxControl"},
+        {"origin": "And", "dest": "Or", "output": "andResult", "input": "orInput2"},
+        {"origin": "Control", "dest": "Or", "output": "uncondBranch", "input": "orInput1"},
+        {"origin": "Or", "dest": "MuxTop", "output": "orResult", "input": "topMuxControl"},
         {"origin": "Control", "dest": "DataMemory", "output": "memRead", "input": "memRead"},
         {"origin": "Control", "dest": "MuxMem", "output": "memToReg", "input": "memToReg"},
         {"origin": "Control", "dest": "ALUControl", "output": "ALUOp0", "input": "ALUOp0"},

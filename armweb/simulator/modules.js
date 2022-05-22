@@ -13,4 +13,5 @@ module.exports = {
   signextend: require("./SignExtend"),
   and: require("./And"),
   datamem: require("./DataMemory"),
+  or: require("./Or"),
 };

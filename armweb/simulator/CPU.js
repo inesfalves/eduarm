@@ -79,6 +79,13 @@ class CPU {
         this.cpuComponents[i].from[0] = 31;
         this.cpuComponents[i].to[0] = 24;
       }
+      if (
+        this.cpuComponents[i].id === "InsDistributor" &&
+        instructionType === "B"
+      ) {
+        this.cpuComponents[i].from[0] = 31;
+        this.cpuComponents[i].to[0] = 26;
+      }
       if (this.cpuComponents[i].id === "SignExtendDist") {
         this.cpuComponents[i].loadInstructionType(instructionType);
       }

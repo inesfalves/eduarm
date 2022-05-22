@@ -1,9 +1,10 @@
 {
     "controlUnit": {
-        "180": { "reg2Loc": 1, "ALUSrc": 0, "memToReg": 0, "regWrite": 0, "memRead": 0, "memWrite": 0, "branch": 1, "ALUOp1": 0, "ALUOp0": 1},
-        "1984": { "reg2Loc": 1, "ALUSrc": 1, "memToReg": 0, "regWrite": 0, "memRead": 0, "memWrite": 1, "branch": 0, "ALUOp1": 0, "ALUOp0": 0},
-        "1986": { "reg2Loc": 0, "ALUSrc": 1, "memToReg": 1, "regWrite": 1, "memRead": 1, "memWrite": 0, "branch": 0, "ALUOp1": 0, "ALUOp0": 0},
-        "R": {"reg2Loc": 0, "ALUSrc": 0, "memToReg": 0, "regWrite": 1, "memRead": 0, "memWrite": 0, "branch": 0, "ALUOp1": 1, "ALUOp0": 0}
+        "5": { "reg2Loc": 1, "ALUSrc": 0, "memToReg": 0, "regWrite": 0, "memRead": 0, "memWrite": 0, "uncondBranch": 1, "branch": 0, "ALUOp1": 0, "ALUOp0": 1},
+        "180": { "reg2Loc": 1, "ALUSrc": 0, "memToReg": 0, "regWrite": 0, "memRead": 0, "memWrite": 0, "uncondBranch": 0, "branch": 1, "ALUOp1": 0, "ALUOp0": 1},
+        "1984": { "reg2Loc": 1, "ALUSrc": 1, "memToReg": 0, "regWrite": 0, "memRead": 0, "memWrite": 1, "uncondBranch": 0, "branch": 0, "ALUOp1": 0, "ALUOp0": 0},
+        "1986": { "reg2Loc": 0, "ALUSrc": 1, "memToReg": 1, "regWrite": 1, "memRead": 1, "memWrite": 0, "uncondBranch": 0, "branch": 0, "ALUOp1": 0, "ALUOp0": 0},
+        "R": {"reg2Loc": 0, "ALUSrc": 0, "memToReg": 0, "regWrite": 1, "memRead": 0, "memWrite": 0, "uncondBranch": 0, "branch": 0, "ALUOp1": 1, "ALUOp0": 0}
     },
     "ALUcontrol": {
         "control": [
