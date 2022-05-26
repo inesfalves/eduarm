@@ -377,6 +377,12 @@ function ControlNode({ data }) {
         id="i"
         style={{ top: 90 }}
       />
+      <Handle
+        type="source"
+        position={Position.Right}
+        id="j"
+        style={{ top: 100 }}
+      />
     </div>
   );
 }
@@ -393,7 +399,7 @@ export function DiagramUtils() {
     },
     {
       id: "PCAuxNode",
-      position: { x: 930, y: 10 },
+      position: { x: 980, y: 10 },
       type: "pcAuxNode",
     },
     {
@@ -420,7 +426,7 @@ export function DiagramUtils() {
     {
       id: "ShiftLeft",
       data: { label: "Shift Left" },
-      position: { x: 624, y: 125 },
+      position: { x: 650, y: 160 },
       style: { height: 30 + "px", width: 30 + "px" },
       targetPosition: "left",
       sourcePosition: "right",
@@ -428,18 +434,24 @@ export function DiagramUtils() {
     {
       id: "AddBranch",
       data: { label: "Add" },
-      position: { x: 679, y: 100 },
+      position: { x: 700, y: 135 },
       type: "addNode",
     },
     {
       id: "MuxTop",
-      position: { x: 895, y: 52 },
+      position: { x: 950, y: 105 },
       type: "muxNode",
     },
     {
       id: "And",
-      position: { x: 799, y: 18 },
+      position: { x: 800, y: 70 },
       data: { label: "And" },
+      type: "andNode",
+    },
+    {
+      id: "Or",
+      position: { x: 880, y: 40 },
+      data: { label: "Or" },
       type: "andNode",
     },
     {
@@ -823,7 +835,7 @@ export function DiagramUtils() {
     {
       id: "e34",
       source: "Control",
-      sourceHandle: "b",
+      sourceHandle: "c",
       target: "And",
       targetHandle: "a",
       type: "smoothstep",
@@ -832,6 +844,23 @@ export function DiagramUtils() {
     {
       id: "e35",
       source: "And",
+      targetHandle: "b",
+      target: "Or",
+      style: { stroke: "#00ADEE" },
+      type: "smoothstep",
+    },
+    {
+      id: "e352",
+      source: "Control",
+      sourceHandle: "b",
+      target: "Or",
+      targetHandle: "a",
+      type: "smoothstep",
+      style: { stroke: "#00ADEE" },
+    },
+    {
+      id: "e353",
+      source: "Or",
       targetHandle: "c",
       target: "MuxTop",
       style: { stroke: "#00ADEE" },
@@ -840,7 +869,7 @@ export function DiagramUtils() {
     {
       id: "e36Aux",
       source: "Control",
-      sourceHandle: "c",
+      sourceHandle: "d",
       target: "ControlMemAuxNode",
       type: "smoothstep",
       style: { stroke: "#00ADEE" },
@@ -856,7 +885,7 @@ export function DiagramUtils() {
     {
       id: "e37",
       source: "Control",
-      sourceHandle: "d",
+      sourceHandle: "e",
       target: "MuxMem",
       targetHandle: "c",
       type: "smoothstep",
@@ -865,7 +894,7 @@ export function DiagramUtils() {
     {
       id: "e38",
       source: "Control",
-      sourceHandle: "e",
+      sourceHandle: "f",
       target: "ALUControl",
       targetHandle: "b",
       type: "smoothstep",
@@ -874,7 +903,7 @@ export function DiagramUtils() {
     {
       id: "e39",
       source: "Control",
-      sourceHandle: "f",
+      sourceHandle: "g",
       target: "ALUControl",
       targetHandle: "b",
       type: "smoothstep",
@@ -900,7 +929,7 @@ export function DiagramUtils() {
     {
       id: "e42",
       source: "Control",
-      sourceHandle: "g",
+      sourceHandle: "h",
       target: "DataMemory",
       targetHandle: "c",
       type: "smoothstep",
@@ -909,7 +938,7 @@ export function DiagramUtils() {
     {
       id: "e43",
       source: "Control",
-      sourceHandle: "h",
+      sourceHandle: "i",
       target: "MuxReg",
       targetHandle: "c",
       type: "smoothstep",
@@ -918,7 +947,7 @@ export function DiagramUtils() {
     {
       id: "e44",
       source: "Control",
-      sourceHandle: "i",
+      sourceHandle: "j",
       targetHandle: "f",
       target: "RegBank",
       type: "smoothstep",

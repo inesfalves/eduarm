@@ -7,9 +7,10 @@ const port = 3001;
 let cpu = new CPU("basicCPU");
 
 let instructionCode = "";
+let instructionGroup = [];
 let registers = [];
 let memory = new Array(11).fill(0);
-let instructionType = "";
+let instructionTypeGroup = [];
 
 app.use(cors());
 app.use(express.json());
@@ -25,8 +26,10 @@ app.use((req, res, next) => {
 });
 
 app.get("/execute", (req, res) => {
-  cpu.initializeCPU();
-  cpu.executeCPU(instructionCode, registers, instructionType, memory);
+  cpu.initializeCPU(registers, memory);
+  for (let i = 0; i < instructionGroup.length; i++) {
+    cpu.executeCPU(instructionGroup[i], instructionTypeGroup[i]);
+  }
   res.send(cpu.returnCPU());
 });
 
@@ -60,8 +63,9 @@ app.get("/assembleALInstruction/:op/:dest/:first/:second", (req, res) => {
       opcode = "10101010000";
       break;
   }
-  instructionType = "R";
+  instructionTypeGroup.push("R");
   instructionCode = opcode + rm + shamt + rn + rd;
+  instructionGroup.push(instructionCode);
   res.send(JSON.stringify(instructionCode));
 });
 
@@ -79,16 +83,18 @@ app.get("/assembleMemInstruction/:op/:dest/:first/:second", (req, res) => {
       opcode = "11111000000";
       break;
   }
-  instructionType = "Mem";
+  instructionTypeGroup.push("Mem");
   instructionCode = opcode + offset + op2 + rn + rd;
+  instructionGroup.push(instructionCode);
   res.send(JSON.stringify(instructionCode));
 });
 
 app.get("/assembleJumpBInstruction/:label", (req, res) => {
   let opcode = "000101";
   let address = (req.params.label >>> 0).toString(2).padStart(26, "0");
-  instructionType = "B";
+  instructionTypeGroup.push("B");
   instructionCode = opcode + address;
+  instructionGroup.push(instructionCode);
   res.send(JSON.stringify(instructionCode));
 });
 
@@ -96,8 +102,9 @@ app.get("/assembleJumpCondInstruction/:cond/:label", (req, res) => {
   let opcode = "10110100";
   let address = (req.params.label >>> 0).toString(2).padStart(19, "0");
   let rd = (req.params.cond >>> 0).toString(2).padStart(5, "0");
-  instructionType = "Cbz";
+  instructionTypeGroup.push("Cbz");
   instructionCode = opcode + address + rd;
+  instructionGroup.push(instructionCode);
   res.send(JSON.stringify(instructionCode));
 });
 

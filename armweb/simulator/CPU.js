@@ -11,9 +11,10 @@ class CPU {
 
     //List with all the components of the CPU
     this.cpuComponents = [];
+    this.executionCount = 0;
   }
 
-  initializeCPU() {
+  initializeCPU(registers, memory) {
     //Read JSON file
     let jsonComponents = Object.entries(jsonFile.cpuComponents);
     let componentClasses = Object.values(modules);
@@ -39,6 +40,17 @@ class CPU {
     }
 
     this.connectComponents();
+
+    for (let i = 0; i < this.cpuComponents.length; i++) {
+      if (this.cpuComponents[i].id === "RegBank") {
+        for (let j = 0; j < registers.length; j++) {
+          this.cpuComponents[i].registers[registers[j][0]][1] = registers[j][1];
+        }
+      }
+      if (this.cpuComponents[i].id === "DataMemory") {
+        this.cpuComponents[i].memory = memory;
+      }
+    }
   }
 
   connectComponents() {
@@ -64,13 +76,11 @@ class CPU {
     }
   }
 
-  executeCPU(instruction, registers, instructionType, memory) {
+  executeCPU(instruction, instructionType) {
+    this.executionCount++;
     for (let i = 0; i < this.cpuComponents.length; i++) {
       if (this.cpuComponents[i].id === "InsMem") {
         this.cpuComponents[i].assembledInstructions.push(instruction);
-      }
-      if (this.cpuComponents[i].id === "RegBank") {
-        this.cpuComponents[i].registers = registers;
       }
       if (
         this.cpuComponents[i].id === "InsDistributor" &&
@@ -89,18 +99,19 @@ class CPU {
       if (this.cpuComponents[i].id === "SignExtendDist") {
         this.cpuComponents[i].loadInstructionType(instructionType);
       }
-      if (this.cpuComponents[i].id === "DataMemory") {
-        this.cpuComponents[i].memory = memory;
-      }
-      if (this.cpuComponents[i].isSynchronous) {
-        this.cpuComponents[i].executeClockTransition();
-      }
+
       this.cpuComponents[i].execute();
     }
 
     for (let i = 0; i < this.cpuComponents.length; i++) {
-      this.cpuComponents[i].printValues();
+      if (this.cpuComponents[i].isSynchronous) {
+        this.cpuComponents[i].executeClockTransition();
+      }
     }
+
+    // for (let i = 0; i < this.cpuComponents.length; i++) {
+    //   this.cpuComponents[i].printValues();
+    // }
   }
 
   returnCPU() {
