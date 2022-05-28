@@ -11,7 +11,7 @@ class CPU {
 
     //List with all the components of the CPU
     this.cpuComponents = [];
-    this.executionCount = 0;
+    this.cpuState = [];
   }
 
   initializeCPU(registers, memory) {
@@ -77,7 +77,6 @@ class CPU {
   }
 
   executeCPU(instruction, instructionType) {
-    this.executionCount++;
     for (let i = 0; i < this.cpuComponents.length; i++) {
       if (this.cpuComponents[i].id === "InsMem") {
         this.cpuComponents[i].assembledInstructions.push(instruction);
@@ -117,6 +116,8 @@ class CPU {
   returnCPU() {
     return this.cpuComponents;
   }
+
+  resetCPU() {}
 }
 
 module.exports = CPU;

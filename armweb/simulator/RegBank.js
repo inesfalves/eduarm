@@ -28,7 +28,6 @@ class RegBank extends Component {
 
   //allocating the register values
   execute() {
-    console.log(this.registers);
     let possValue1 = this.registers.find(
       (element) => element[0] === this.readReg1.value
     );
@@ -53,6 +52,7 @@ class RegBank extends Component {
     if (this.regWrite.value === 1) {
       this.registers[this.writeReg.value][1] = this.writeData.value;
     }
+    console.log(this.registers);
   }
 
   printValues() {

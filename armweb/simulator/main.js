@@ -33,6 +33,11 @@ app.get("/execute", (req, res) => {
   res.send(cpu.returnCPU());
 });
 
+app.get("/reset", (req, res) => {
+  cpu.resetCPU();
+  res.send(cpu.returnCPU());
+});
+
 app.post("/sendRegisters", (req, res) => {
   registers = req.body;
   res.send("Registers");

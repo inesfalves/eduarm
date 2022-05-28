@@ -25,6 +25,13 @@ function App() {
       });
   };
 
+  const resetProgram = () => {
+    axios.get("http://localhost:3001/reset").then(function (res) {
+      console.log("CPU RESET");
+      setCpuState(res.data);
+    });
+  };
+
   const executeNext = () => {
     axios.get("http://localhost:3001/executeClockCycle").then(function (res) {
       setCpuState(res.data);
@@ -84,7 +91,11 @@ function App() {
                 >
                   Compile
                 </button>
-                <button type="button" className="btn btn-outline-dark col-2">
+                <button
+                  onClick={resetProgram}
+                  type="button"
+                  className="btn btn-outline-dark col-2"
+                >
                   Reset
                 </button>
                 <button type="button" className="btn btn-outline-dark col-2">
