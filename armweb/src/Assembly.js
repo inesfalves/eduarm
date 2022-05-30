@@ -122,7 +122,6 @@ function Assembly(props) {
           case "b":
             if (instruction[1] === jumpLabel) {
               instruction[1] = (jumpPoint - ins) * 4;
-              console.log(instruction[1]);
             }
             promises.push(
               axios.get(

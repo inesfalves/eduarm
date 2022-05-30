@@ -7,7 +7,6 @@ function DataMemoryDisplay(props) {
     if (props.executed) {
       let dataMemValues = props.cpuState.find((x) => x.id === "DataMemory")
         .memory;
-      console.log(dataMemValues);
       let tempMem = [];
       for (var i = 0; i < dataMemValues.length; i++) {
         tempMem.push(

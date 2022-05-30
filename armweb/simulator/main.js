@@ -34,8 +34,7 @@ app.get("/execute", (req, res) => {
 });
 
 app.get("/reset", (req, res) => {
-  cpu.resetCPU();
-  res.send(cpu.returnCPU());
+  res.send(cpu.resetCPU());
 });
 
 app.post("/sendRegisters", (req, res) => {

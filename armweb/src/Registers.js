@@ -8,19 +8,20 @@ function Registers(props) {
   };
 
   useEffect(() => {
-    let registerMap = new Map();
-    let sameIndexID = props.registerValues.findIndex(
-      (element) => element[0] === props.registerID
-    );
-    registerMap.set(props.registerID, input);
-    if (sameIndexID !== -1) {
-      let newRegs = props.registerValues.slice();
-      newRegs.splice(sameIndexID, 1);
-      props.setRegisterValues([...newRegs, ...registerMap]);
-    } else {
-      props.setRegisterValues([...props.registerValues, ...registerMap]);
+    if (props.registerValues.length > 0) {
+      let auxRegs = props.registerValues.slice();
+      auxRegs[props.registerID][1] = input;
+      props.setRegisterValues(auxRegs);
     }
   }, [input]);
+
+  useEffect(() => {
+    console.log(props.registerValues);
+    if (props.registerValues.length > 0) {
+      let inputElement = document.getElementById("Reg" + props.registerID);
+      inputElement.value = props.registerValues[props.registerID][1];
+    }
+  }, [props.registerValues]);
 
   return (
     <div className="input-group input-group-sm mb-1">
@@ -28,6 +29,7 @@ function Registers(props) {
         {"X" + props.registerID}
       </span>
       <input
+        id={"Reg" + props.registerID}
         type="number"
         value={input}
         onInput={(e) => {

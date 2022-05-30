@@ -13,6 +13,23 @@ function App() {
   const [compiling, setCompiling] = useState(false);
   const [executed, setExecuted] = useState(false);
 
+  useEffect(() => {
+    let tempReg = [];
+    for (let i = 0; i < 32; i++) {
+      let registerMap = [i, ""];
+      tempReg.push(registerMap);
+    }
+    setRegisterValues(tempReg);
+  }, []);
+
+  const updateRegisters = (data) => {
+    for (let comp of data) {
+      if (comp.id === "RegBank") {
+        setRegisterValues(comp.registers);
+      }
+    }
+  };
+
   const executeProgram = () => {
     setExecuted(true);
     axios
@@ -21,6 +38,7 @@ function App() {
         axios.get("http://localhost:3001/execute").then(function (res) {
           console.log("CPU INITIALIZED");
           setCpuState(res.data);
+          updateRegisters(res.data);
         });
       });
   };
@@ -28,7 +46,10 @@ function App() {
   const resetProgram = () => {
     axios.get("http://localhost:3001/reset").then(function (res) {
       console.log("CPU RESET");
+      setCompiling(false);
+      setExecuted(false);
       setCpuState(res.data);
+      updateRegisters(res.data);
     });
   };
 
@@ -77,8 +98,6 @@ function App() {
               compiling={compiling}
               executed={executed}
               setCompiling={setCompiling}
-              registerValues={registerValues}
-              setRegisterValues={setRegisterValues}
               setMemoryValues={setMemoryValues}
               memoryValues={memoryValues}
             ></ViewTab>

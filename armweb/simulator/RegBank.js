@@ -47,12 +47,10 @@ class RegBank extends Component {
   }
 
   executeClockTransition() {
-    console.log(this.writeData.value);
     //Write the result of the operation on the intended register
     if (this.regWrite.value === 1) {
       this.registers[this.writeReg.value][1] = this.writeData.value;
     }
-    console.log(this.registers);
   }
 
   printValues() {
