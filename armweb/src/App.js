@@ -21,25 +21,25 @@ function App() {
     tempReg.push(registerMap);
   }
 
-  useEffect(() => {
-    // let tempArray = registerValues.slice();
-    // for (let i = 0; i < tempArray.length; i++) {
-    //   if (!isNaN(tempArray[i][1])) {
-    //     switch (numberFormat) {
-    //       case "BIN":
-    //         tempArray[i][1] = parseInt(tempArray[i][1], 10).toString(2);
-    //         break;
-    //       case "HEX":
-    //         tempArray[i][1] = parseInt(tempArray[i][1], 10).toString(16);
-    //         break;
-    //       case "DEC":
-    //         tempArray[i][1] = parseInt(tempArray[i][1], 10).toString(10);
-    //         break;
-    //     }
-    //   }
-    // }
-    // setRegisterValues(tempArray);
-  }, [numberFormat]);
+  // useEffect(() => {
+  //   let tempArray = registerValues.slice();
+  //   for (let i = 0; i < tempArray.length; i++) {
+  //     if (!isNaN(tempArray[i][1])) {
+  //       switch (numberFormat) {
+  //         case "BIN":
+  //           tempArray[i][1] = parseInt(tempArray[i][1], 10).toString(2);
+  //           break;
+  //         case "HEX":
+  //           tempArray[i][1] = parseInt(tempArray[i][1], 10).toString(16);
+  //           break;
+  //         case "DEC":
+  //           tempArray[i][1] = parseInt(tempArray[i][1], 10).toString(10);
+  //           break;
+  //       }
+  //     }
+  //   }
+  //   setRegisterValues(tempArray);
+  // }, [numberFormat]);
 
   useEffect(() => {
     setRegisterValues(tempReg);
@@ -60,11 +60,15 @@ function App() {
       .then(() => {
         axios.get("http://localhost:3001/execute").then(function (res) {
           console.log("CPU INITIALIZED");
-          setCpuState(res.data);
-          //setSavedCPUStates([...savedCPUStates, cpuState]);
-          updateRegisters(res.data);
+          setSavedCPUStates(res.data);
+          setCpuState(res.data[res.data.length - 1]);
+          updateRegisters(res.data[res.data.length - 1]);
         });
       });
+  };
+
+  const getPrevious = () => {
+    console.log(savedCPUStates);
   };
 
   const resetProgram = () => {
@@ -141,7 +145,11 @@ function App() {
                 >
                   Reset
                 </button>
-                <button type="button" className="btn btn-outline-dark col-2">
+                <button
+                  onClick={getPrevious}
+                  type="button"
+                  className="btn btn-outline-dark col-2"
+                >
                   Previous
                 </button>
                 <button

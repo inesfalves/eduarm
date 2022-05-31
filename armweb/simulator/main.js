@@ -11,6 +11,7 @@ let instructionGroup = [];
 let registers = [];
 let memory = new Array(11).fill(0);
 let instructionTypeGroup = [];
+let cpuStates = [];
 
 app.use(cors());
 app.use(express.json());
@@ -28,9 +29,10 @@ app.use((req, res, next) => {
 app.get("/execute", (req, res) => {
   cpu.initializeCPU(registers, memory);
   for (let i = 0; i < instructionGroup.length; i++) {
-    cpu.executeCPU(instructionGroup[i], instructionTypeGroup[i]);
+    let state = cpu.executeCPU(instructionGroup[i], instructionTypeGroup[i]);
+    cpuStates.push(JSON.parse(JSON.stringify(state)));
   }
-  res.send(cpu.returnCPU());
+  res.send(cpuStates);
 });
 
 app.get("/reset", (req, res) => {

@@ -109,6 +109,8 @@ class CPU {
       }
     }
 
+    return this.cpuComponents;
+
     // for (let i = 0; i < this.cpuComponents.length; i++) {
     //   this.cpuComponents[i].printValues();
     // }
