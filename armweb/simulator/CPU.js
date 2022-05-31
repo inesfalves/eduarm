@@ -11,8 +11,6 @@ class CPU {
 
     //List with all the components of the CPU
     this.cpuComponents = [];
-    this.cpuState = [];
-    this.emptyCPU = [];
   }
 
   initializeCPU(registers, memory) {

@@ -8,6 +8,7 @@ const axios = require("axios");
 
 function App() {
   const [cpuState, setCpuState] = useState([]);
+  const [cpuIndex, setCpuIndex] = useState(0);
   const [registerValues, setRegisterValues] = useState([]);
   const [memoryValues, setMemoryValues] = useState([]);
   const [compiling, setCompiling] = useState(false);
@@ -62,13 +63,26 @@ function App() {
           console.log("CPU INITIALIZED");
           setSavedCPUStates(res.data);
           setCpuState(res.data[res.data.length - 1]);
+          setCpuIndex(res.data.length - 1);
           updateRegisters(res.data[res.data.length - 1]);
         });
       });
   };
 
   const getPrevious = () => {
-    console.log(savedCPUStates);
+    if (cpuIndex > 0) {
+      setCpuState(savedCPUStates[cpuIndex - 1]);
+      updateRegisters(savedCPUStates[cpuIndex - 1]);
+      setCpuIndex(cpuIndex - 1);
+    }
+  };
+
+  const getNext = () => {
+    if (cpuIndex < savedCPUStates.length - 1) {
+      setCpuState(savedCPUStates[cpuIndex + 1]);
+      updateRegisters(savedCPUStates[cpuIndex + 1]);
+      setCpuIndex(cpuIndex + 1);
+    }
   };
 
   const resetProgram = () => {
@@ -76,6 +90,8 @@ function App() {
       console.log("CPU RESET");
       setCompiling(false);
       setExecuted(false);
+      setSavedCPUStates(res.data);
+      setCpuIndex(0);
       setRegisterValues(tempReg);
     });
   };
@@ -160,7 +176,7 @@ function App() {
                   Execute
                 </button>
                 <button
-                  onClick={executeNext}
+                  onClick={getNext}
                   type="button"
                   className="btn btn-outline-dark col-2"
                 >

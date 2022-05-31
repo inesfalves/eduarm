@@ -36,7 +36,11 @@ app.get("/execute", (req, res) => {
 });
 
 app.get("/reset", (req, res) => {
-  res.send(cpu.resetCPU());
+  cpuStates = [];
+  instructionGroup = [];
+  instructionTypeGroup = [];
+  cpu.resetCPU();
+  res.send(cpuStates);
 });
 
 app.post("/sendRegisters", (req, res) => {
