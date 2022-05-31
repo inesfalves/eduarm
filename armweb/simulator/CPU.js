@@ -120,7 +120,6 @@ class CPU {
 
   resetCPU() {
     this.cpuComponents = [];
-    this.initializeCPU([], []);
     return this.cpuComponents;
   }
 }

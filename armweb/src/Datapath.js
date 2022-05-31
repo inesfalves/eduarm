@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import ReactFlow, { useNodesState, useEdgesState } from "react-flow-renderer";
 import { DiagramUtils } from "./DiagramUtils";
 
@@ -22,10 +23,34 @@ function Datapath(props) {
         let componentInputs = component.inputs;
         let componentOutputs = component.outputs;
         for (let inp of Object.values(componentInputs)) {
-          tooltipInpText += inp.id + ": " + inp.data.value + " ";
+          switch (props.numberFormat) {
+            case "HEX":
+              tooltipInpText +=
+                inp.id + ": " + inp.data.value.toString(16) + " ";
+              break;
+            case "BIN":
+              tooltipInpText +=
+                inp.id + ": " + inp.data.value.toString(2) + " ";
+              break;
+            case "DEC":
+              tooltipInpText += inp.id + ": " + inp.data.value + " ";
+              break;
+          }
         }
         for (let out of Object.values(componentOutputs)) {
-          tooltipOutText += out.id + ": " + out.data.value + " ";
+          switch (props.numberFormat) {
+            case "HEX":
+              tooltipOutText +=
+                out.id + ": " + out.data.value.toString(16) + " ";
+              break;
+            case "BIN":
+              tooltipOutText +=
+                out.id + ": " + out.data.value.toString(2) + " ";
+              break;
+            case "DEC":
+              tooltipOutText += out.id + ": " + out.data.value + " ";
+              break;
+          }
         }
         tooltips[0].innerHTML =
           "<div className='container'><div className='row'> Inputs: " +

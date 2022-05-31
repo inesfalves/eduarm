@@ -12,13 +12,36 @@ function App() {
   const [memoryValues, setMemoryValues] = useState([]);
   const [compiling, setCompiling] = useState(false);
   const [executed, setExecuted] = useState(false);
+  const [savedCPUStates, setSavedCPUStates] = useState([]);
+  const [numberFormat, setNumberFormat] = useState("DEC");
+
+  let tempReg = [];
+  for (let i = 0; i < 32; i++) {
+    let registerMap = [i, ""];
+    tempReg.push(registerMap);
+  }
 
   useEffect(() => {
-    let tempReg = [];
-    for (let i = 0; i < 32; i++) {
-      let registerMap = [i, ""];
-      tempReg.push(registerMap);
-    }
+    // let tempArray = registerValues.slice();
+    // for (let i = 0; i < tempArray.length; i++) {
+    //   if (!isNaN(tempArray[i][1])) {
+    //     switch (numberFormat) {
+    //       case "BIN":
+    //         tempArray[i][1] = parseInt(tempArray[i][1], 10).toString(2);
+    //         break;
+    //       case "HEX":
+    //         tempArray[i][1] = parseInt(tempArray[i][1], 10).toString(16);
+    //         break;
+    //       case "DEC":
+    //         tempArray[i][1] = parseInt(tempArray[i][1], 10).toString(10);
+    //         break;
+    //     }
+    //   }
+    // }
+    // setRegisterValues(tempArray);
+  }, [numberFormat]);
+
+  useEffect(() => {
     setRegisterValues(tempReg);
   }, []);
 
@@ -38,6 +61,7 @@ function App() {
         axios.get("http://localhost:3001/execute").then(function (res) {
           console.log("CPU INITIALIZED");
           setCpuState(res.data);
+          //setSavedCPUStates([...savedCPUStates, cpuState]);
           updateRegisters(res.data);
         });
       });
@@ -48,8 +72,7 @@ function App() {
       console.log("CPU RESET");
       setCompiling(false);
       setExecuted(false);
-      setCpuState(res.data);
-      updateRegisters(res.data);
+      setRegisterValues(tempReg);
     });
   };
 
@@ -94,6 +117,7 @@ function App() {
         <div className="row">
           <div className="col-8 px-0">
             <ViewTab
+              numberFormat={numberFormat}
               cpuState={cpuState}
               compiling={compiling}
               executed={executed}
@@ -155,13 +179,25 @@ function App() {
                   role="group"
                   aria-label="Basic example"
                 >
-                  <button type="button" className="btn btn-outline-secondary">
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={() => setNumberFormat("DEC")}
+                  >
                     DEC
                   </button>
-                  <button type="button" className="btn btn-outline-secondary">
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={() => setNumberFormat("BIN")}
+                  >
                     BIN
                   </button>
-                  <button type="button" className="btn btn-outline-secondary">
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={() => setNumberFormat("HEX")}
+                  >
                     HEX
                   </button>
                 </div>

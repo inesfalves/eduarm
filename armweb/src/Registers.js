@@ -16,7 +16,6 @@ function Registers(props) {
   }, [input]);
 
   useEffect(() => {
-    console.log(props.registerValues);
     if (props.registerValues.length > 0) {
       let inputElement = document.getElementById("Reg" + props.registerID);
       inputElement.value = props.registerValues[props.registerID][1];
