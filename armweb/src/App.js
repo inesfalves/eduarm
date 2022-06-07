@@ -15,6 +15,7 @@ function App() {
   const [executed, setExecuted] = useState(false);
   const [savedCPUStates, setSavedCPUStates] = useState([]);
   const [numberFormat, setNumberFormat] = useState("DEC");
+  const [defineLatency, setDefineLatency] = useState(false);
 
   let tempReg = [];
   for (let i = 0; i < 32; i++) {
@@ -22,25 +23,30 @@ function App() {
     tempReg.push(registerMap);
   }
 
-  // useEffect(() => {
-  //   let tempArray = registerValues.slice();
-  //   for (let i = 0; i < tempArray.length; i++) {
-  //     if (!isNaN(tempArray[i][1])) {
-  //       switch (numberFormat) {
-  //         case "BIN":
-  //           tempArray[i][1] = parseInt(tempArray[i][1], 10).toString(2);
-  //           break;
-  //         case "HEX":
-  //           tempArray[i][1] = parseInt(tempArray[i][1], 10).toString(16);
-  //           break;
-  //         case "DEC":
-  //           tempArray[i][1] = parseInt(tempArray[i][1], 10).toString(10);
-  //           break;
-  //       }
-  //     }
-  //   }
-  //   setRegisterValues(tempArray);
-  // }, [numberFormat]);
+  useEffect(() => {
+    if (defineLatency) {
+      console.log("Setting component latency");
+    }
+  }, [defineLatency]);
+  useEffect(() => {
+    let tempArray = registerValues.slice();
+    for (let i = 0; i < tempArray.length; i++) {
+      if (!isNaN(tempArray[i][1])) {
+        switch (numberFormat) {
+          case "BIN":
+            tempArray[i][1] = parseInt(tempArray[i][1], 10).toString(2);
+            break;
+          case "HEX":
+            tempArray[i][1] = parseInt(tempArray[i][1], 10).toString(16);
+            break;
+          case "DEC":
+            tempArray[i][1] = parseInt(tempArray[i][1], 10).toString(10);
+            break;
+        }
+      }
+    }
+    setRegisterValues(tempArray);
+  }, [numberFormat]);
 
   useEffect(() => {
     setRegisterValues(tempReg);
@@ -144,6 +150,8 @@ function App() {
               setCompiling={setCompiling}
               setMemoryValues={setMemoryValues}
               memoryValues={memoryValues}
+              defineLatency={defineLatency}
+              setDefineLatency={setDefineLatency}
             ></ViewTab>
             <div className="buttonsArea container">
               <div className="row justify-content-around py-3">
