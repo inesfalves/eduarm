@@ -17,6 +17,8 @@ class Distributor extends Component {
       this.from[i] = json.output[i].from;
       this.to[i] = json.output[i].to;
     }
+
+    super.latency = json.latency;
   }
 
   loadInstructionType(insType) {

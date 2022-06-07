@@ -13,6 +13,8 @@ class ProgramCounter extends Component {
     this.pcValue = super.addOutput(json.output, new Data(0, 0));
 
     this.auxAddress = new Data(0, 0);
+
+    super.latency = json.latency;
   }
 
   execute() {

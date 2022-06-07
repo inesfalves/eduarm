@@ -17,6 +17,8 @@ class DataMemory extends Component {
     this.readData = super.addOutput(json.output, new Data(0, 0));
 
     this.memory = [];
+
+    super.latency = json.latency;
   }
 
   execute() {

@@ -13,6 +13,8 @@ class ALU extends Component {
     //ALU output values
     this.zero = super.addOutput(json.output[0], new Data(0, 0));
     this.aluResult = super.addOutput(json.output[1], new Data(0, 0));
+
+    super.latency = json.latency;
   }
 
   execute() {

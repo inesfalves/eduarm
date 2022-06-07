@@ -24,6 +24,8 @@ class RegBank extends Component {
       let register = [i, "0"];
       this.registers.push(register);
     }
+
+    super.latency = json.latency;
   }
 
   //allocating the register values

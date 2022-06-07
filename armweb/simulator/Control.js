@@ -26,6 +26,8 @@ class Control extends Component {
       super.addOutput(json.output[8], new Data(0, 0)),
       super.addOutput(json.output[9], new Data(0, 0)),
     ];
+
+    super.latency = json.latency;
   }
 
   execute() {

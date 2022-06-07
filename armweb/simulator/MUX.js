@@ -12,6 +12,8 @@ class MUX extends Component {
 
     //MUX output values
     this.muxOut = super.addOutput(json.output, new Data(0, 0));
+
+    super.latency = json.latency;
   }
 
   execute() {
