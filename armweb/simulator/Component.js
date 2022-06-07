@@ -25,6 +25,9 @@ class Component {
   }
 
   calculateLatency() {
+    if (this.id === "PC") {
+      return;
+    }
     let higherLatency = 0;
     let componentHigher = "";
     let inputLatencies = [];
