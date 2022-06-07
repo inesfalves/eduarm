@@ -17,6 +17,8 @@ class Distributor extends Component {
       this.from[i] = json.output[i].from;
       this.to[i] = json.output[i].to;
     }
+
+    super.latency = json.latency;
   }
 
   loadInstructionType(insType) {
@@ -28,6 +30,10 @@ class Distributor extends Component {
       case "Cbz":
         this.from[0] = 23;
         this.to[0] = 5;
+        break;
+      case "B":
+        this.from[0] = 25;
+        this.to[0] = 0;
         break;
     }
   }

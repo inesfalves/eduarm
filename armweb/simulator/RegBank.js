@@ -18,11 +18,18 @@ class RegBank extends Component {
     //Register Bank outputs
     this.readData1 = super.addOutput(json.output[0], new Data(0, 0));
     this.readData2 = super.addOutput(json.output[1], new Data(0, 0));
+
+    this.registers = [];
+    for (let i = 0; i < 32; i++) {
+      let register = [i, "0"];
+      this.registers.push(register);
+    }
+
+    super.latency = json.latency;
   }
 
   //allocating the register values
   execute() {
-    // add x3, x2, x1
     let possValue1 = this.registers.find(
       (element) => element[0] === this.readReg1.value
     );
@@ -31,16 +38,20 @@ class RegBank extends Component {
     );
     if (possValue1 !== undefined) {
       this.readData1.value = parseInt(possValue1[1]);
+    } else {
+      this.readData1.value = 0;
     }
     if (possValue2 !== undefined) {
       this.readData2.value = parseInt(possValue2[1]);
+    } else {
+      this.readData2.value = 0;
     }
   }
 
   executeClockTransition() {
     //Write the result of the operation on the intended register
     if (this.regWrite.value === 1) {
-      registers[this.writeReg.value] = this.writeData.value;
+      this.registers[this.writeReg.value][1] = this.writeData.value;
     }
   }
 

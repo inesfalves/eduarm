@@ -8,10 +8,57 @@ const axios = require("axios");
 
 function App() {
   const [cpuState, setCpuState] = useState([]);
+  const [cpuIndex, setCpuIndex] = useState(0);
   const [registerValues, setRegisterValues] = useState([]);
   const [memoryValues, setMemoryValues] = useState([]);
   const [compiling, setCompiling] = useState(false);
   const [executed, setExecuted] = useState(false);
+  const [savedCPUStates, setSavedCPUStates] = useState([]);
+  const [numberFormat, setNumberFormat] = useState("DEC");
+  const [defineLatency, setDefineLatency] = useState(false);
+
+  let tempReg = [];
+  for (let i = 0; i < 32; i++) {
+    let registerMap = [i, ""];
+    tempReg.push(registerMap);
+  }
+
+  useEffect(() => {
+    if (defineLatency) {
+      console.log("Setting component latency");
+    }
+  }, [defineLatency]);
+  useEffect(() => {
+    let tempArray = registerValues.slice();
+    for (let i = 0; i < tempArray.length; i++) {
+      if (!isNaN(tempArray[i][1])) {
+        switch (numberFormat) {
+          case "BIN":
+            tempArray[i][1] = parseInt(tempArray[i][1], 10).toString(2);
+            break;
+          case "HEX":
+            tempArray[i][1] = parseInt(tempArray[i][1], 10).toString(16);
+            break;
+          case "DEC":
+            tempArray[i][1] = parseInt(tempArray[i][1], 10).toString(10);
+            break;
+        }
+      }
+    }
+    setRegisterValues(tempArray);
+  }, [numberFormat]);
+
+  useEffect(() => {
+    setRegisterValues(tempReg);
+  }, []);
+
+  const updateRegisters = (data) => {
+    for (let comp of data) {
+      if (comp.id === "RegBank") {
+        setRegisterValues(comp.registers);
+      }
+    }
+  };
 
   const executeProgram = () => {
     setExecuted(true);
@@ -20,9 +67,39 @@ function App() {
       .then(() => {
         axios.get("http://localhost:3001/execute").then(function (res) {
           console.log("CPU INITIALIZED");
-          setCpuState(res.data);
+          setSavedCPUStates(res.data);
+          setCpuState(res.data[res.data.length - 1]);
+          setCpuIndex(res.data.length - 1);
+          updateRegisters(res.data[res.data.length - 1]);
         });
       });
+  };
+
+  const getPrevious = () => {
+    if (cpuIndex > 0) {
+      setCpuState(savedCPUStates[cpuIndex - 1]);
+      updateRegisters(savedCPUStates[cpuIndex - 1]);
+      setCpuIndex(cpuIndex - 1);
+    }
+  };
+
+  const getNext = () => {
+    if (cpuIndex < savedCPUStates.length - 1) {
+      setCpuState(savedCPUStates[cpuIndex + 1]);
+      updateRegisters(savedCPUStates[cpuIndex + 1]);
+      setCpuIndex(cpuIndex + 1);
+    }
+  };
+
+  const resetProgram = () => {
+    axios.get("http://localhost:3001/reset").then(function (res) {
+      console.log("CPU RESET");
+      setCompiling(false);
+      setExecuted(false);
+      setSavedCPUStates(res.data);
+      setCpuIndex(0);
+      setRegisterValues(tempReg);
+    });
   };
 
   const executeNext = () => {
@@ -66,14 +143,15 @@ function App() {
         <div className="row">
           <div className="col-8 px-0">
             <ViewTab
+              numberFormat={numberFormat}
               cpuState={cpuState}
               compiling={compiling}
               executed={executed}
               setCompiling={setCompiling}
-              registerValues={registerValues}
-              setRegisterValues={setRegisterValues}
               setMemoryValues={setMemoryValues}
               memoryValues={memoryValues}
+              defineLatency={defineLatency}
+              setDefineLatency={setDefineLatency}
             ></ViewTab>
             <div className="buttonsArea container">
               <div className="row justify-content-around py-3">
@@ -84,10 +162,18 @@ function App() {
                 >
                   Compile
                 </button>
-                <button type="button" className="btn btn-outline-dark col-2">
+                <button
+                  onClick={resetProgram}
+                  type="button"
+                  className="btn btn-outline-dark col-2"
+                >
                   Reset
                 </button>
-                <button type="button" className="btn btn-outline-dark col-2">
+                <button
+                  onClick={getPrevious}
+                  type="button"
+                  className="btn btn-outline-dark col-2"
+                >
                   Previous
                 </button>
                 <button
@@ -98,7 +184,7 @@ function App() {
                   Execute
                 </button>
                 <button
-                  onClick={executeNext}
+                  onClick={getNext}
                   type="button"
                   className="btn btn-outline-dark col-2"
                 >
@@ -125,13 +211,25 @@ function App() {
                   role="group"
                   aria-label="Basic example"
                 >
-                  <button type="button" className="btn btn-outline-secondary">
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={() => setNumberFormat("DEC")}
+                  >
                     DEC
                   </button>
-                  <button type="button" className="btn btn-outline-secondary">
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={() => setNumberFormat("BIN")}
+                  >
                     BIN
                   </button>
-                  <button type="button" className="btn btn-outline-secondary">
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={() => setNumberFormat("HEX")}
+                  >
                     HEX
                   </button>
                 </div>

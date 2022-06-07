@@ -13,6 +13,8 @@ class Fork extends Component {
     for (let i = 0; i < json.output.length; i++) {
       this.output[i] = super.addOutput(json.output[i], new Data(0, 0));
     }
+
+    super.latency = json.latency;
   }
 
   execute() {

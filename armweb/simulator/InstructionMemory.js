@@ -15,6 +15,8 @@ class InstructionMemory extends Component {
 
     //Array with the assembled instructions
     this.assembledInstructions = [];
+
+    super.latency = json.latency;
   }
 
   execute() {

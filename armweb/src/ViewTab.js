@@ -82,7 +82,11 @@ function ViewTab(props) {
           }}
         >
           <Datapath
+            defineLatency={props.defineLatency}
+            setDefineLatency={props.setDefineLatency}
+            numberFormat={props.numberFormat}
             executed={props.executed}
+            compiling={props.compiling}
             cpuState={props.cpuState}
           ></Datapath>
         </div>

@@ -20,6 +20,8 @@ class ALUControl extends Component {
 
     //ALUControl output values
     this.ctrlALU = super.addOutput(json.output, new Data(0, 0));
+
+    super.latency = json.latency;
   }
 
   execute() {

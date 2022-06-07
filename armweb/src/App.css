@@ -136,8 +136,17 @@
   background: white;
 }
 
-.alu-node, .add-node {
+.alu-node {
   height: 70px;
+  width: 60px;
+  border: 1px solid black;
+  padding: 5px;
+  border-radius: 5px;
+  background: white;
+}
+
+.add-node {
+  height: 50px;
   width: 60px;
   border: 1px solid black;
   padding: 5px;
@@ -162,7 +171,7 @@
 }
 
 .control-node {
-  height:100px;
+  height:110px;
   width: 75px;
   border: 1px solid #00ADEE;
   padding: 5px;

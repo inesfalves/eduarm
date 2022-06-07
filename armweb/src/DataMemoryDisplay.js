@@ -11,7 +11,7 @@ function DataMemoryDisplay(props) {
       for (var i = 0; i < dataMemValues.length; i++) {
         tempMem.push(
           <tr key={i}>
-            <td>{i * 4}</td>
+            <td>{i * 8}</td>
             <td>{dataMemValues[i]}</td>
           </tr>
         );

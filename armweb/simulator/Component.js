@@ -9,6 +9,7 @@ class Component {
     this.inputs = {};
     this.outputs = {};
     this.isSynchronous = false;
+    this.latency = 0;
   }
 
   addInput(id, data) {
@@ -21,6 +22,22 @@ class Component {
     let output = new Output(id, this, data);
     this.outputs[id] = output;
     return output;
+  }
+
+  calculateLatency() {
+    if (this.id === "PC") {
+      return;
+    }
+    let higherLatency = 0;
+    let componentHigher = "";
+    let inputLatencies = [];
+    for (let inp of Object.values(this.inputs)) {
+      if (inp.connectedTo !== null) {
+        inputLatencies.push(inp.connectedTo.component.latency);
+      }
+    }
+    higherLatency = Math.max.apply(Math, inputLatencies);
+    return (this.latency += higherLatency);
   }
 }
 

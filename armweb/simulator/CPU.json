@@ -3,123 +3,153 @@
       "PC": {
         "componentType": "ProgramCounter",
         "input": "updatedPC",
-        "output":"PC"
+        "output": "PC",
+        "latency": 0
       },
       "PCounterFork": {
         "componentType": "Fork",
         "input": "pcForkInput",
-        "output": ["pcForkOutput1", "pcForkOutput2"]
+        "output": ["pcForkOutput1", "pcForkOutput2"],
+        "latency": 0
       },
       "PCAddFork": {
         "componentType": "Fork",
         "input": "pcAddForkInput",
-        "output": ["pcAddForkOutput1", "pcAddForkOutput2"]
+        "output": ["pcAddForkOutput1", "pcAddForkOutput2"],
+        "latency": 0
       },
       "AddPC": {
         "componentType": "Adder",
         "input": ["pcValue", 4],
-        "output": "addedPCValue"
+        "output": "addedPCValue",
+        "latency": 100
       },
       "InsMem": {
         "componentType": "InstructionMemory",
         "input": "address",
-        "output": "instruction"
+        "output": "instruction",
+        "latency": 400
       },
       "InsDistributor": {
         "componentType": "Distributor",
         "input": "distributorInput",
-        "output": [{"id": "dist3121", "from": 31, "to": 21} , {"id": "dist95", "from": 9, "to": 5}, {"id": "dist2016", "from": 20, "to": 16}, {"id": "dist40", "from": 4, "to": 0}, {"id": "dist310", "from": 31, "to": 0}]
+        "output": [{"id": "dist3121", "from": 31, "to": 21} , {"id": "dist95", "from": 9, "to": 5}, {"id": "dist2016", "from": 20, "to": 16}, {"id": "dist40", "from": 4, "to": 0}, {"id": "dist310", "from": 31, "to": 0}],
+        "latency": 0
       },
       "InsFork": {
         "componentType": "Fork",
         "input": "insForkInput",
-        "output": ["insForkOutput1", "insForkOutput2"]
+        "output": ["insForkOutput1", "insForkOutput2"],
+        "latency": 0
       },
       "Control": {
         "componentType": "Control",
         "input": "controlInput",
-        "output": ["reg2Loc", "branch", "memRead", "memToReg", "ALUOp0", "ALUOp1", "memWrite", "ALUSrc", "regWrite"]
+        "output": ["reg2Loc", "uncondBranch", "branch", "memRead", "memToReg", "ALUOp0", "ALUOp1", "memWrite", "ALUSrc", "regWrite"],
+        "latency": 100
       },
       "MuxIns": {
         "componentType": "MUX",
         "input": ["insMuxValue1", "insMuxValue2", "reg2Loc"],
-        "output": "insMuxResult"
+        "output": "insMuxResult",
+        "latency": 30
       },
       "RegBank": {
         "componentType": "RegBank",
         "input": ["readReg1", "readReg2", "writeReg", "writeData", "regWrite"],
-        "output": ["readData1", "readData2"]
+        "output": ["readData1", "readData2"],
+        "latency": 200
       },
       "SignExtendDist": {
         "componentType": "Distributor",
         "input": "signExtendDistInput",
-        "output": [{"id": "signextend310", "from": 31, "to": 0}, {"id": "signextend3121", "from": 31, "to": 21}]
+        "output": [{"id": "signextend310", "from": 31, "to": 0}, {"id": "signextend3121", "from": 31, "to": 21}],
+        "latency": 0
       },
       "SignExtend": {
         "componentType": "SignExtend",
         "input": "signExtendIn",
-        "output": "signExtendResult"
+        "output": "signExtendResult",
+        "latency": 0
       },
       "RegMuxFork1": {
         "componentType": "Fork",
         "input": "regMuxFork1Input",
-        "output": ["regMuxFork1Output1", "regMuxFork1Output2"]
+        "output": ["regMuxFork1Output1", "regMuxFork1Output2"],
+        "latency": 0
       },
       "RegMuxFork2": {
         "componentType": "Fork",
         "input": "regMuxFork2Input",
-        "output": ["regMuxFork2Output1", "regMuxFork2Output2"]
+        "output": ["regMuxFork2Output1", "regMuxFork2Output2"],
+        "latency": 0
       },
       "ShiftLeft": {
         "componentType": "ShiftLeft",
         "input": "shiftLeftInput",
         "amount": 2,
-        "output": "shiftLeftOutput"
+        "output": "shiftLeftOutput",
+        "latency": 0
       },
       "AddBranch": {
         "componentType": "Adder",
         "input": ["addBranchValue1", "addBranchValue2"],
-        "output": "addBranchResult"
+        "output": "addBranchResult",
+        "latency": 100
       },
       "MuxReg": {
         "componentType": "MUX",
         "input": ["regMuxInput1", "regMuxInput2", "ALUSrc"],
-        "output": "regMuxResult"
+        "output": "regMuxResult",
+        "latency": 30
       },
       "ALUControl": {
         "componentType": "ALUControl",
         "input": ["ALUOp0", "ALUOp1", "opcode"],
-        "output": "ctrlALU"
+        "output": "ctrlALU",
+        "latency": 0
       },
       "ALU": {
         "componentType": "ALU",
         "input": ["ALUInput1", "ALUInput2", "ctrlALU"],
-        "output": ["aluZero", "aluResult"]
+        "output": ["aluZero", "aluResult"],
+        "latency": 120
       },
       "And": {
         "componentType": "And",
         "input": ["andInput1", "andInput2"],
-        "output": "andResult"
+        "output": "andResult",
+        "latency": 0
+      },
+      "Or": {
+        "componentType": "Or",
+        "input": ["orInput1", "orInput2"],
+        "output": "orResult",
+        "latency": 0
       },
       "MuxTop": {
         "componentType": "MUX",
         "input": ["topMuxValue1", "topMuxValue2", "topMuxControl"],
-        "output": "topMuxResult"
+        "output": "topMuxResult",
+        "latency": 30
       },
       "ALUFork": {
         "componentType": "Fork",
         "input": "aluForkInput",
-        "output": ["aluForkOutput1", "aluForkOutput2"]
+        "output": ["aluForkOutput1", "aluForkOutput2"],
+        "latency": 0
       },
       "DataMemory": {
         "componentType": "DataMemory",
         "input": ["memoryAddress", "writeData", "memRead", "memWrite"],
-        "output": "readData"
+        "output": "readData",
+        "latency": 350
       },
       "MuxMem": {
         "componentType": "MUX",
         "input": ["muxMemValue1", "muxMemValue2", "memToReg"],
-        "output": "muxMemResult"
+        "output": "muxMemResult",
+        "latency": 30
       }
     },
     "cpuConnections": [
@@ -144,21 +174,23 @@
         {"origin": "SignExtend", "dest": "RegMuxFork2", "output": "signExtendResult", "input": "regMuxFork2Input"},
         {"origin": "RegMuxFork2", "dest": "MuxReg", "output": "regMuxFork2Output1", "input": "regMuxInput2"},
         {"origin": "RegMuxFork1", "dest": "MuxReg", "output": "regMuxFork1Output1", "input": "regMuxInput1"},
-        {"origin": "RegMuxFork1", "dest": "DataMemory", "output": "regMuxFork1Output2", "input": "writeData"},
+        {"origin": "RegMuxFork1", "dest": "DataMemory", "output": "regMuxFork1Output2", "input": "memoryAddress"},
         {"origin": "RegMuxFork2", "dest": "ShiftLeft", "output": "regMuxFork2Output2", "input": "shiftLeftInput"},
         {"origin": "ShiftLeft", "dest": "AddBranch", "output": "shiftLeftOutput", "input": "addBranchValue2"},
         {"origin": "RegBank", "dest": "ALU", "output": "readData1", "input": "ALUInput1"},
         {"origin": "RegBank", "dest": "RegMuxFork1", "output": "readData2", "input": "regMuxFork1Input"},
         {"origin": "MuxReg", "dest": "ALU", "output": "regMuxResult", "input": "ALUInput2"},
         {"origin": "ALU", "dest": "ALUFork", "output": "aluResult", "input": "aluForkInput"},
-        {"origin": "ALUFork", "dest": "DataMemory", "output": "aluForkOutput1", "input": "memoryAddress"},
+        {"origin": "ALUFork", "dest": "DataMemory", "output": "aluForkOutput1", "input": "writeData"},
         {"origin": "ALUFork", "dest": "MuxMem", "output": "aluForkOutput2", "input": "muxMemValue1"},
         {"origin": "DataMemory", "dest": "MuxMem", "output": "readData", "input": "muxMemValue2"},
         {"origin": "MuxMem", "dest": "RegBank", "output": "muxMemResult", "input": "writeData"},
         {"origin": "Control", "dest": "MuxIns", "output": "reg2Loc", "input": "reg2Loc"},
         {"origin": "MuxIns", "dest": "RegBank", "output": "insMuxResult", "input": "readReg2"},
         {"origin": "Control", "dest": "And", "output": "branch", "input": "andInput1"},
-        {"origin": "And", "dest": "MuxTop", "output": "andResult", "input": "topMuxControl"},
+        {"origin": "And", "dest": "Or", "output": "andResult", "input": "orInput2"},
+        {"origin": "Control", "dest": "Or", "output": "uncondBranch", "input": "orInput1"},
+        {"origin": "Or", "dest": "MuxTop", "output": "orResult", "input": "topMuxControl"},
         {"origin": "Control", "dest": "DataMemory", "output": "memRead", "input": "memRead"},
         {"origin": "Control", "dest": "MuxMem", "output": "memToReg", "input": "memToReg"},
         {"origin": "Control", "dest": "ALUControl", "output": "ALUOp0", "input": "ALUOp0"},

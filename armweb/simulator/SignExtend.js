@@ -10,6 +10,8 @@ class SignExtend extends Component {
 
     //SignExtend output value
     this.signExtendOut = super.addOutput(json.output, new Data(0, 0));
+
+    super.latency = json.latency;
   }
 
   execute() {
