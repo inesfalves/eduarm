@@ -133,84 +133,75 @@ function Datapath(props) {
     console.log(node);
   };
 
-  return (
-    // <ReactFlow
-    //   nodeTypes={nodeTypes}
-    //   nodes={nodes}
-    //   edges={edges}
-    //   onInit={createTooltips}
-    //   onNodeMouseEnter={showNodeInformation}
-    //   onNodeMouseLeave={hideNodeInformation}
-    //   defaultZoom="1.04"
-    // />
-    <div
-      style={{
-        height: 35.5 + "em",
-        width: 63.3 + "em",
-        maxHeight: 35.5 + "em",
-        maxWidth: 80 + "em",
-      }}
-    >
-      <div className="container px-0">
-        <div
-          className="row pb-0 mb-0"
-          style={{
-            height: 1 + "em",
-          }}
-        >
-          <button type="button" className="btn btn-sm btn-outline-info col-3">
-            IF
-          </button>
-          <button
-            type="button"
-            className="btn btn-sm btn-outline-success col-3"
-          >
-            ID
-          </button>
-          <button
-            type="button"
-            className="btn btn-sm btn-outline-warning col-3"
-          >
-            EX
-          </button>
-          <button type="button" className="btn btn-sm btn-outline-danger col-2">
-            MEM
-          </button>
-          <button
-            type="button"
-            className="btn btn-sm btn-outline-primary col-1"
-          >
-            WB
-          </button>
-        </div>
-      </div>
-      <ReactFlowProvider>
-        <ReactFlow
-          onlyRenderVisibleElements={true}
-          nodes={plNodes}
-          edges={plEdges}
-          nodeTypes={nodeTypes}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onNodeClick={showNodeInf}
-          panOnDrag={false}
-          defaultZoom="0.85"
-        />
-      </ReactFlowProvider>
-    </div>
-  );
   // return (
-  //   <ReactFlow
-  //     nodeTypes={nodeTypes}
-  //     nodes={nodes}
-  //     edges={edges}
-  //     onInit={createTooltips}
-  //     onNodeMouseEnter={showNodeInformation}
-  //     onNodeMouseLeave={hideNodeInformation}
-  //     onNodeClick={setLatency}
-  //     defaultZoom="1.04"
-  //   />
+  //   <div
+  //     style={{
+  //       height: 35.5 + "em",
+  //       width: 63.3 + "em",
+  //       maxHeight: 35.5 + "em",
+  //       maxWidth: 80 + "em",
+  //     }}
+  //   >
+  //     <div className="container px-0">
+  //       <div
+  //         className="row pb-0 mb-0"
+  //         style={{
+  //           height: 1 + "em",
+  //         }}
+  //       >
+  //         <button type="button" className="btn btn-sm btn-outline-info col-3">
+  //           IF
+  //         </button>
+  //         <button
+  //           type="button"
+  //           className="btn btn-sm btn-outline-success col-3"
+  //         >
+  //           ID
+  //         </button>
+  //         <button
+  //           type="button"
+  //           className="btn btn-sm btn-outline-warning col-3"
+  //         >
+  //           EX
+  //         </button>
+  //         <button type="button" className="btn btn-sm btn-outline-danger col-2">
+  //           MEM
+  //         </button>
+  //         <button
+  //           type="button"
+  //           className="btn btn-sm btn-outline-primary col-1"
+  //         >
+  //           WB
+  //         </button>
+  //       </div>
+  //     </div>
+  //     <ReactFlowProvider>
+  //       <ReactFlow
+  //         onlyRenderVisibleElements={true}
+  //         nodes={plNodes}
+  //         edges={plEdges}
+  //         nodeTypes={nodeTypes}
+  //         onNodesChange={onNodesChange}
+  //         onEdgesChange={onEdgesChange}
+  //         onNodeClick={showNodeInf}
+  //         panOnDrag={false}
+  //         defaultZoom="0.85"
+  //       />
+  //     </ReactFlowProvider>
+  //   </div>
   // );
+  return (
+    <ReactFlow
+      nodeTypes={nodeTypes}
+      nodes={nodes}
+      edges={edges}
+      onInit={createTooltips}
+      onNodeMouseEnter={showNodeInformation}
+      onNodeMouseLeave={hideNodeInformation}
+      onNodeClick={setLatency}
+      defaultZoom="1.04"
+    />
+  );
 }
 
 export default Datapath;

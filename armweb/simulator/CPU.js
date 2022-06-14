@@ -43,6 +43,9 @@ class CPU {
     for (let i = 0; i < this.cpuComponents.length; i++) {
       if (this.cpuComponents[i].id === "RegBank") {
         for (let j = 0; j < registers.length; j++) {
+          if (registers[j][1] === "") {
+            registers[j][1] = "0";
+          }
           this.cpuComponents[i].registers[registers[j][0]][1] = registers[j][1];
         }
       }

@@ -50,6 +50,7 @@ function App() {
 
   useEffect(() => {
     setRegisterValues(tempReg);
+    resetProgram();
   }, []);
 
   const updateRegisters = (data) => {
@@ -99,12 +100,6 @@ function App() {
       setSavedCPUStates(res.data);
       setCpuIndex(0);
       setRegisterValues(tempReg);
-    });
-  };
-
-  const executeNext = () => {
-    axios.get("http://localhost:3001/executeClockCycle").then(function (res) {
-      setCpuState(res.data);
     });
   };
 

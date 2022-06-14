@@ -24,14 +24,16 @@ class DataMemory extends Component {
   execute() {
     if (this.memRead.value === 1) {
       //Reading from memory
-      this.readData.value = this.memory[this.address.value / 4];
+      this.readData.value = this.memory[this.address.value / 8];
     }
   }
 
   executeClockTransition() {
     if (this.memWrite.value === 1) {
       //Writing on memory
-      this.memory[this.address.value / 4] = this.writeData.value;
+      console.log(this.address.value);
+      console.log(this.writeData.value);
+      this.memory[this.address.value / 8] = this.writeData.value;
     }
   }
 

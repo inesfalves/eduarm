@@ -717,6 +717,12 @@ function ControlNode({ data }) {
         id="i"
         style={{ top: 90 }}
       />
+      <Handle
+        type="source"
+        position={Position.Right}
+        id="j"
+        style={{ top: 100 }}
+      />
     </div>
   );
 }
