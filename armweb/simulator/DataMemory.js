@@ -31,8 +31,6 @@ class DataMemory extends Component {
   executeClockTransition() {
     if (this.memWrite.value === 1) {
       //Writing on memory
-      console.log(this.address.value);
-      console.log(this.writeData.value);
       this.memory[this.address.value / 8] = this.writeData.value;
     }
   }

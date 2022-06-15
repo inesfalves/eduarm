@@ -96,6 +96,26 @@ function ForkNodeSecond({ data }) {
   );
 }
 
+function AddAuxNode({ data }) {
+  return (
+    <div className="aux-node">
+      <Handle type="target" className="top-node" position={Position.Bottom} />
+      <Handle
+        type="source"
+        className="top-node"
+        position={Position.Top}
+        id="a"
+      />
+      <Handle
+        type="source"
+        className="side-node"
+        position={Position.Right}
+        id="b"
+      />
+    </div>
+  );
+}
+
 function SignExtendDist({ data }) {
   return (
     <div className="fork-node">
@@ -865,13 +885,18 @@ export function DiagramUtils() {
     },
     {
       id: "PCAddFork",
-      position: { x: 101, y: 117.5 },
+      position: { x: 99.5, y: 117.5 },
       type: "forkNodeSecond",
+    },
+    {
+      id: "PCAddAuxFork",
+      position: { x: 101, y: 75.5 },
+      type: "addAuxNode",
     },
     {
       id: "AddPC",
       data: { label: "Add" },
-      position: { x: 136, y: 37 },
+      position: { x: 160, y: 37 },
       type: "addNode",
     },
     {
@@ -1038,9 +1063,26 @@ export function DiagramUtils() {
       id: "e4",
       source: "PCAddFork",
       sourceHandle: "a",
+      target: "PCAddAuxFork",
+      type: "smoothstep",
+    },
+    {
+      id: "e4Aux1",
+      source: "PCAddAuxFork",
+      sourceHandle: "a",
       target: "AddPC",
       targetHandle: "a",
       type: "smoothstep",
+    },
+    {
+      id: "e4Aux2",
+      source: "PCAddAuxFork",
+      sourceHandle: "b",
+      target: "AddPC",
+      targetHandle: "b",
+      type: "smoothstep",
+      label: "4",
+      labelStyle: { fontSize: 12 + "px" },
     },
     {
       id: "e5",
@@ -1057,6 +1099,7 @@ export function DiagramUtils() {
       targetHandle: "a",
       type: "smoothstep",
     },
+
     {
       id: "e7",
       source: "AddBranch",
@@ -2423,6 +2466,7 @@ export function DiagramUtils() {
     forwardingUnitNode: ForwardingUnitNode,
     pipeMuxNode: PipeMuxNode,
     pipePCNode: PipePCNode,
+    addAuxNode: AddAuxNode,
   };
 
   return { nodes, edges, pipelineNodes, pipelineEdges, customNodeTypes };
