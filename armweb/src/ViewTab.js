@@ -88,6 +88,7 @@ function ViewTab(props) {
             executed={props.executed}
             compiling={props.compiling}
             cpuState={props.cpuState}
+            relevantLines={props.relevantLines}
           ></Datapath>
         </div>
         <div
@@ -110,6 +111,8 @@ function ViewTab(props) {
             setMachineCodes={setMachineCodes}
             setInstructions={setInstructions}
             instructions={instructions}
+            assemblyCode={props.assemblyCode}
+            setAssemblyCode={props.setAssemblyCode}
           ></Assembly>
         </div>
         <div

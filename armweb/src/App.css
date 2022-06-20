@@ -197,6 +197,9 @@
   background: white;
 }
 
+input[type="file"] {
+  display: none;
+}
 
 
 

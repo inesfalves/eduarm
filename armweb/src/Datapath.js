@@ -3,7 +3,10 @@ import ReactFlow, {
   useNodesState,
   useEdgesState,
 } from "react-flow-renderer";
+import { useEffect } from "react";
 import { DiagramUtils } from "./DiagramUtils";
+
+const axios = require("axios");
 
 const {
   nodes: initialNodes,
@@ -190,6 +193,7 @@ function Datapath(props) {
   //     </ReactFlowProvider>
   //   </div>
   // );
+
   return (
     <ReactFlow
       nodeTypes={nodeTypes}

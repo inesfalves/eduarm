@@ -1,18 +1,38 @@
-function Navbar() {
+function Navbar(props) {
+  const showFile = (e) => {
+    e.preventDefault();
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const text = e.target.result;
+      props.setAssemblyCode(text);
+    };
+    reader.readAsText(e.target.files[0]);
+  };
+
+  const downloadTxtFile = () => {
+    const element = document.createElement("a");
+    const file = new Blob([props.assemblyCode], {
+      type: "text/plain",
+    });
+    element.href = URL.createObjectURL(file);
+    element.download = "assemblyCode.txt";
+    document.body.appendChild(element);
+    element.click();
+  };
+
   return (
     <nav className="navbar navbar-expand-md navbar-light bg-light">
+      <button type="button" className="btn btn-light">
+        <label htmlFor="file-upload">Load</label>
+      </button>
+      <input id="file-upload" type="file" onChange={showFile} />
+      <button type="button" className="btn btn-light" onClick={downloadTxtFile}>
+        Save
+      </button>
       <div className="mx-auto order-0">
         <a className="navbar-brand mx-auto" href="#">
           simulator
         </a>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target=".dual-collapse2"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
       </div>
     </nav>
   );

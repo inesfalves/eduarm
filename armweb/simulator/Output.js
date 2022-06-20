@@ -5,6 +5,7 @@ class Output {
     this.isConnected = false;
     this.data = data;
     this.connectedTo = null;
+    this.isRelevant = false;
   }
 
   get value() {
@@ -35,6 +36,12 @@ class Output {
       data: this.data,
       connectedTo: this.connectedTo?.id,
     };
+  }
+
+  setRelevant() {
+    // if (this.data.value !== 0) {
+    //   this.isRelevant = true;
+    // }
   }
 
   toString() {

@@ -7,6 +7,14 @@ function Assembly(props) {
   const [code, setCode] = useState(``);
 
   useEffect(() => {
+    setCode(props.assemblyCode);
+  }, [props.assemblyCode]);
+
+  useEffect(() => {
+    props.setAssemblyCode(code);
+  }, [code]);
+
+  useEffect(() => {
     if (!props.compiling && code.length > 0) {
       setCode(``);
     }

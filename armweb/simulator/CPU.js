@@ -11,6 +11,7 @@ class CPU {
 
     //List with all the components of the CPU
     this.cpuComponents = [];
+    this.cpuConnections = [];
   }
 
   initializeCPU(registers, memory) {
@@ -75,6 +76,7 @@ class CPU {
       input = destComponent.inputs[cpuConnections[i].input];
 
       output.createConnection(input);
+      this.cpuConnections.push([output, input]);
     }
   }
 
@@ -124,6 +126,16 @@ class CPU {
   resetCPU() {
     this.cpuComponents = [];
     return this.cpuComponents;
+  }
+
+  returnCPURelevantLines() {
+    // let relevantLines = [];
+    // for (let i = 0; i < this.cpuConnections.length; i++) {
+    //   if (this.cpuConnections[i][0].isRelevant) {
+    //     relevantLines.push(this.cpuConnections[i]);
+    //   }
+    // }
+    // return relevantLines;
   }
 }
 

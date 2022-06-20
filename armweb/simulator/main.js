@@ -12,6 +12,7 @@ let registers = [];
 let memory = new Array(21).fill(0);
 let instructionTypeGroup = [];
 let cpuStates = [];
+let relevantLines = [];
 
 app.use(cors());
 app.use(express.json());
@@ -33,6 +34,10 @@ app.get("/execute", (req, res) => {
     cpuStates.push(JSON.parse(JSON.stringify(state)));
   }
   res.send(cpuStates);
+});
+
+app.get("/getRelevantLines", (req, res) => {
+  res.send(cpu.returnCPURelevantLines());
 });
 
 app.get("/reset", (req, res) => {

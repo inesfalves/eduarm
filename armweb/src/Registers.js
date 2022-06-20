@@ -30,6 +30,16 @@ function Registers(props) {
       <input
         id={"Reg" + props.registerID}
         type="number"
+        title={
+          "DEC: " +
+          input +
+          "\n" +
+          "HEX: " +
+          (input === "" ? "" : parseInt(input, 10).toString(16)) +
+          "\n" +
+          "BIN: " +
+          (input === "" ? "" : parseInt(input, 10).toString(2))
+        }
         value={input}
         onInput={(e) => {
           setInput(e.target.value);

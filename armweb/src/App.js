@@ -16,6 +16,8 @@ function App() {
   const [savedCPUStates, setSavedCPUStates] = useState([]);
   const [numberFormat, setNumberFormat] = useState("DEC");
   const [defineLatency, setDefineLatency] = useState(false);
+  const [relevantLines, setRelevantLines] = useState([]);
+  const [assemblyCode, setAssemblyCode] = useState(``);
 
   let tempReg = [];
   for (let i = 0; i < 32; i++) {
@@ -28,6 +30,7 @@ function App() {
       console.log("Setting component latency");
     }
   }, [defineLatency]);
+
   useEffect(() => {
     let tempArray = registerValues.slice();
     for (let i = 0; i < tempArray.length; i++) {
@@ -45,7 +48,6 @@ function App() {
         }
       }
     }
-    setRegisterValues(tempArray);
   }, [numberFormat]);
 
   useEffect(() => {
@@ -66,13 +68,22 @@ function App() {
     axios
       .post("http://localhost:3001/sendRegisters", registerValues)
       .then(() => {
-        axios.get("http://localhost:3001/execute").then(function (res) {
-          console.log("CPU INITIALIZED");
-          setSavedCPUStates(res.data);
-          setCpuState(res.data[res.data.length - 1]);
-          setCpuIndex(res.data.length - 1);
-          updateRegisters(res.data[res.data.length - 1]);
-        });
+        axios
+          .get("http://localhost:3001/execute")
+          .then(function (res) {
+            console.log("CPU INITIALIZED");
+            setSavedCPUStates(res.data);
+            setCpuState(res.data[res.data.length - 1]);
+            setCpuIndex(res.data.length - 1);
+            updateRegisters(res.data[res.data.length - 1]);
+          })
+          .then(() => {
+            axios
+              .get("http://localhost:3001/getRelevantLines")
+              .then(function (res) {
+                console.log(res.data);
+              });
+          });
       });
   };
 
@@ -94,7 +105,6 @@ function App() {
 
   const resetProgram = () => {
     axios.get("http://localhost:3001/reset").then(function (res) {
-      console.log("CPU RESET");
       setCompiling(false);
       setExecuted(false);
       setSavedCPUStates(res.data);
@@ -133,7 +143,10 @@ function App() {
 
   return (
     <div className="App">
-      <Navbar></Navbar>
+      <Navbar
+        setAssemblyCode={setAssemblyCode}
+        assemblyCode={assemblyCode}
+      ></Navbar>
       <div className="container-fluid">
         <div className="row">
           <div className="col-8 px-0">
@@ -147,6 +160,9 @@ function App() {
               memoryValues={memoryValues}
               defineLatency={defineLatency}
               setDefineLatency={setDefineLatency}
+              relevantLines={relevantLines}
+              assemblyCode={assemblyCode}
+              setAssemblyCode={setAssemblyCode}
             ></ViewTab>
             <div className="buttonsArea container">
               <div className="row justify-content-around py-3">
