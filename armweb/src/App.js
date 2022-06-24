@@ -68,22 +68,13 @@ function App() {
     axios
       .post("http://localhost:3001/sendRegisters", registerValues)
       .then(() => {
-        axios
-          .get("http://localhost:3001/execute")
-          .then(function (res) {
-            console.log("CPU INITIALIZED");
-            setSavedCPUStates(res.data);
-            setCpuState(res.data[res.data.length - 1]);
-            setCpuIndex(res.data.length - 1);
-            updateRegisters(res.data[res.data.length - 1]);
-          })
-          .then(() => {
-            axios
-              .get("http://localhost:3001/getRelevantLines")
-              .then(function (res) {
-                console.log(res.data);
-              });
-          });
+        axios.get("http://localhost:3001/execute").then(function (res) {
+          setSavedCPUStates(res.data.cpuStates);
+          setCpuState(res.data.cpuStates[res.data.cpuStates.length - 1]);
+          setCpuIndex(res.data.cpuStates.length - 1);
+          setRelevantLines(res.data.relevantLines);
+          updateRegisters(res.data.cpuStates[res.data.cpuStates.length - 1]);
+        });
       });
   };
 
@@ -152,6 +143,7 @@ function App() {
           <div className="col-8 px-0">
             <ViewTab
               numberFormat={numberFormat}
+              setCpuState={setCpuState}
               cpuState={cpuState}
               compiling={compiling}
               executed={executed}

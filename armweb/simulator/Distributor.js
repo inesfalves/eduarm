@@ -23,15 +23,19 @@ class Distributor extends Component {
 
   loadInstructionType(insType) {
     switch (insType) {
-      case "Mem":
+      case "loadType":
         this.from[0] = 20;
         this.to[0] = 12;
         break;
-      case "Cbz":
+      case "storeType":
+        this.from[0] = 20;
+        this.to[0] = 12;
+        break;
+      case "cBranchType":
         this.from[0] = 23;
         this.to[0] = 5;
         break;
-      case "B":
+      case "uncondBranchType":
         this.from[0] = 25;
         this.to[0] = 0;
         break;

@@ -32,12 +32,17 @@ app.get("/execute", (req, res) => {
   for (let i = 0; i < instructionGroup.length; i++) {
     let state = cpu.executeCPU(instructionGroup[i], instructionTypeGroup[i]);
     cpuStates.push(JSON.parse(JSON.stringify(state)));
+    relevantLines = cpu.returnCPURelevantLines(instructionTypeGroup[i]);
   }
-  res.send(cpuStates);
+
+  res.send({
+    cpuStates: cpuStates,
+    relevantLines: relevantLines,
+  });
 });
 
 app.get("/getRelevantLines", (req, res) => {
-  res.send(cpu.returnCPURelevantLines());
+  res.send(relevantLines);
 });
 
 app.get("/reset", (req, res) => {
@@ -48,14 +53,17 @@ app.get("/reset", (req, res) => {
   res.send(cpuStates);
 });
 
+app.get("/recalculateLatency/:newLatency/:componentID", (req, res) => {
+  let newCpuState = cpu.recalculateComponentLatency(
+    req.params.newLatency,
+    req.params.componentID
+  );
+  res.send(newCpuState);
+});
+
 app.post("/sendRegisters", (req, res) => {
   registers = req.body;
   res.send("Registers");
-});
-
-app.get("/executeClockCycle", (req, res) => {
-  cpu.executeCPU(instructionCode, registers, instructionType, memory);
-  res.send(cpu.returnCPU());
 });
 
 app.get("/assembleALInstruction/:op/:dest/:first/:second", (req, res) => {
@@ -78,7 +86,7 @@ app.get("/assembleALInstruction/:op/:dest/:first/:second", (req, res) => {
       opcode = "10101010000";
       break;
   }
-  instructionTypeGroup.push("R");
+  instructionTypeGroup.push("rType");
   instructionCode = opcode + rm + shamt + rn + rd;
   instructionGroup.push(instructionCode);
   res.send(JSON.stringify(instructionCode));
@@ -93,12 +101,13 @@ app.get("/assembleMemInstruction/:op/:dest/:first/:second", (req, res) => {
   switch (req.params.op) {
     case "ldur":
       opcode = "11111000010";
+      instructionTypeGroup.push("loadType");
       break;
     case "stur":
       opcode = "11111000000";
+      instructionTypeGroup.push("storeType");
       break;
   }
-  instructionTypeGroup.push("Mem");
   instructionCode = opcode + offset + op2 + rn + rd;
   instructionGroup.push(instructionCode);
   res.send(JSON.stringify(instructionCode));
@@ -107,7 +116,7 @@ app.get("/assembleMemInstruction/:op/:dest/:first/:second", (req, res) => {
 app.get("/assembleJumpBInstruction/:label", (req, res) => {
   let opcode = "000101";
   let address = (req.params.label >>> 0).toString(2).padStart(26, "0");
-  instructionTypeGroup.push("B");
+  instructionTypeGroup.push("uncondBranchType");
   instructionCode = opcode + address;
   instructionGroup.push(instructionCode);
   res.send(JSON.stringify(instructionCode));
@@ -117,7 +126,7 @@ app.get("/assembleJumpCondInstruction/:cond/:label", (req, res) => {
   let opcode = "10110100";
   let address = (req.params.label >>> 0).toString(2).padStart(19, "0");
   let rd = (req.params.cond >>> 0).toString(2).padStart(5, "0");
-  instructionTypeGroup.push("Cbz");
+  instructionTypeGroup.push("cBranchType");
   instructionCode = opcode + address + rd;
   instructionGroup.push(instructionCode);
   res.send(JSON.stringify(instructionCode));

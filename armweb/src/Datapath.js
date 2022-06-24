@@ -1,12 +1,11 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import ReactFlow, {
   ReactFlowProvider,
   useNodesState,
   useEdgesState,
 } from "react-flow-renderer";
-import { useEffect } from "react";
 import { DiagramUtils } from "./DiagramUtils";
-
-const axios = require("axios");
 
 const {
   nodes: initialNodes,
@@ -21,23 +20,78 @@ function Datapath(props) {
   const [edges] = useEdgesState(initialEdges);
   const [plNodes, setNodes, onNodesChange] = useNodesState(pipeNodes);
   const [plEdges, setEdges, onEdgesChange] = useEdgesState(pipeEdges);
+  const [editingLatency, setEditingLatency] = useState(false);
+  const [componentLatency, setComponentLatency] = useState(0);
+  const [componentID, setComponentID] = useState("");
+
+  useEffect(() => {
+    if (props.executed) {
+      colorLines(props.relevantLines);
+    }
+  }, [props.relevantLines]);
+
+  useEffect(() => {
+    if (props.executed) {
+      axios
+        .get(
+          "http://localhost:3001/recalculateLatency/" +
+            componentLatency +
+            "/" +
+            componentID
+        )
+        .then(function (res) {
+          props.setCpuState(res.data);
+        });
+    }
+  }, [componentLatency]);
+
+  const colorLines = (lines) => {
+    for (let e of edges) {
+      for (let l of lines) {
+        if (e.source === l[0].component && e.target === l[1].component) {
+          e.style = { stroke: "grey" };
+        }
+      }
+    }
+  };
+
+  const changeLatency = (component, node, event) => {
+    setComponentID(component.id);
+    let nodeElement = document.querySelector(`[data-id=${node.id}`);
+    let latencyInput = nodeElement.getElementsByClassName("latencyNode");
+    latencyInput[0].innerHTML = "";
+    setComponentLatency(event.target.value);
+    setEditingLatency(false);
+  };
 
   const setLatency = (event, node) => {
-    if (props.compiling) {
+    console.log(editingLatency);
+    if (props.compiling && !editingLatency) {
       let nodeElement = document.querySelector(`[data-id=${node.id}`);
       let latencyInput = nodeElement.getElementsByClassName("latencyNode");
+      console.log(latencyInput);
       let component = props.cpuState.find((x) => x.id === node.id);
       latencyInput[0].innerHTML =
         "<div className='container'><input type=' text ' name=' input ' value=" +
         component.latency +
         " /></div>";
       latencyInput[0].style.opacity = 1;
+      latencyInput[0].style.position = "absolute";
+      latencyInput[0].style.zIndex = 2000;
+      let input = latencyInput[0].getElementsByTagName("input")[0];
+      input.addEventListener(
+        "change",
+        changeLatency.bind(null, component, node)
+      );
+      input.style.width = "3em";
+      setEditingLatency(true);
     }
   };
 
   const showNodeInformation = (event, node) => {
     if (props.executed) {
       let nodeElement = document.querySelector(`[data-id=${node.id}`);
+      nodeElement.style.zIndex = 1;
       let tooltips = nodeElement.getElementsByClassName("tooltipNode");
       if (tooltips.length !== 0) {
         let component = props.cpuState.find((x) => x.id === node.id);
@@ -50,14 +104,14 @@ function Datapath(props) {
           switch (props.numberFormat) {
             case "HEX":
               tooltipInpText +=
-                inp.id + ": " + inp.data.value.toString(16) + " ";
+                inp.id + ": " + inp.data.value.toString(16) + "\n";
               break;
             case "BIN":
               tooltipInpText +=
-                inp.id + ": " + inp.data.value.toString(2) + " ";
+                inp.id + ": " + inp.data.value.toString(2) + "\n";
               break;
             default:
-              tooltipInpText += inp.id + ": " + inp.data.value + " ";
+              tooltipInpText += inp.id + ": " + inp.data.value + "\n";
               break;
           }
         }
@@ -65,43 +119,46 @@ function Datapath(props) {
           switch (props.numberFormat) {
             case "HEX":
               tooltipOutText +=
-                out.id + ": " + out.data.value.toString(16) + " ";
+                out.id + ": " + out.data.value.toString(16) + "\n";
               break;
             case "BIN":
               tooltipOutText +=
-                out.id + ": " + out.data.value.toString(2) + " ";
+                out.id + ": " + out.data.value.toString(2) + "\n";
               break;
             default:
-              tooltipOutText += out.id + ": " + out.data.value + " ";
+              tooltipOutText += out.id + ": " + out.data.value + "\n";
               break;
           }
         }
         switch (props.numberFormat) {
           case "HEX":
-            tooltipLatText = component.latency.toString(16) + " ";
+            tooltipLatText = component.totalLatency.toString(16) + "\n";
             break;
           case "BIN":
-            tooltipLatText = component.latency.toString(2) + " ";
+            tooltipLatText = component.totalLatency.toString(2) + "\n";
             break;
           default:
-            tooltipLatText = component.latency + " ";
+            tooltipLatText = component.totalLatency + "\n";
             break;
         }
         tooltips[0].innerHTML =
           "<div className='container'><div className='row'> Latency: " +
           tooltipLatText +
-          "</div><div className='row'> Inputs: " +
+          "</div><div className='row'>Inputs</div><div className='row'>" +
           tooltipInpText +
-          "</div><div className='row'>Outputs: " +
+          "</div><div className='row'>Outputs</div><div className='row'>" +
           tooltipOutText +
           "</div></div>";
+
         tooltips[0].style.opacity = 1;
+        tooltips[0].style.whiteSpace = "pre";
       }
     }
   };
 
   const hideNodeInformation = (event, node) => {
     let nodeElement = document.querySelector(`[data-id=${node.id}`);
+    nodeElement.style.zIndex = 0;
     let tooltips = nodeElement.getElementsByClassName("tooltipNode");
     if (tooltips.length !== 0) {
       tooltips[0].innerHTML = "";

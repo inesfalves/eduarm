@@ -1,6 +1,7 @@
 const modules = require("./modules.js");
 
 const json = require("./CPU.json");
+const e = require("cors");
 
 const jsonFile = JSON.parse(JSON.stringify(json));
 
@@ -11,7 +12,7 @@ class CPU {
 
     //List with all the components of the CPU
     this.cpuComponents = [];
-    this.cpuConnections = [];
+    this.connections = [];
   }
 
   initializeCPU(registers, memory) {
@@ -76,7 +77,7 @@ class CPU {
       input = destComponent.inputs[cpuConnections[i].input];
 
       output.createConnection(input);
-      this.cpuConnections.push([output, input]);
+      this.connections.push([output, input]);
     }
   }
 
@@ -87,14 +88,14 @@ class CPU {
       }
       if (
         this.cpuComponents[i].id === "InsDistributor" &&
-        instructionType === "Cbz"
+        instructionType === "cBranchType"
       ) {
         this.cpuComponents[i].from[0] = 31;
         this.cpuComponents[i].to[0] = 24;
       }
       if (
         this.cpuComponents[i].id === "InsDistributor" &&
-        instructionType === "B"
+        instructionType === "uncondBranchType"
       ) {
         this.cpuComponents[i].from[0] = 31;
         this.cpuComponents[i].to[0] = 26;
@@ -128,14 +129,34 @@ class CPU {
     return this.cpuComponents;
   }
 
-  returnCPURelevantLines() {
-    // let relevantLines = [];
-    // for (let i = 0; i < this.cpuConnections.length; i++) {
-    //   if (this.cpuConnections[i][0].isRelevant) {
-    //     relevantLines.push(this.cpuConnections[i]);
-    //   }
-    // }
-    // return relevantLines;
+  recalculateComponentLatency(newLatency, componentID) {
+    for (let i = 0; i < this.cpuComponents.length; i++) {
+      if (this.cpuComponents[i].id === componentID) {
+        this.cpuComponents[i].latency = parseInt(newLatency);
+      }
+      this.cpuComponents[i].calculateLatency();
+    }
+    return this.cpuComponents;
+  }
+
+  returnCPURelevantLines(instructionType) {
+    let relevantLines = [];
+    let cpuConnections = jsonFile.cpuConnections;
+
+    for (let i = 0; i < this.connections.length; i++) {
+      for (let j = 0; j < cpuConnections.length; j++) {
+        if (
+          this.connections[i][1].id === cpuConnections[j].input &&
+          this.connections[i][0].id === cpuConnections[j].output
+        ) {
+          if (cpuConnections[j][instructionType]) {
+            relevantLines.push(this.connections[i]);
+          }
+        }
+      }
+    }
+
+    return relevantLines;
   }
 }
 

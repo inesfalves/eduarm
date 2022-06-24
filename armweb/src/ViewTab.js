@@ -87,6 +87,7 @@ function ViewTab(props) {
             numberFormat={props.numberFormat}
             executed={props.executed}
             compiling={props.compiling}
+            setCpuState={props.setCpuState}
             cpuState={props.cpuState}
             relevantLines={props.relevantLines}
           ></Datapath>

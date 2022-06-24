@@ -31,7 +31,7 @@ function Navbar(props) {
       </button>
       <div className="mx-auto order-0">
         <a className="navbar-brand mx-auto" href="#">
-          simulator
+          EduARM
         </a>
       </div>
     </nav>
