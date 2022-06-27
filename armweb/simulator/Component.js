@@ -34,11 +34,6 @@ class Component {
     for (let inp of Object.values(this.inputs)) {
       if (inp.connectedTo !== null) {
         inputLatencies.push(inp.connectedTo.component.totalLatency);
-        console.log(
-          inp.connectedTo.component.id +
-            ": " +
-            inp.connectedTo.component.totalLatency
-        );
       }
     }
     higherLatency = Math.max.apply(Math, inputLatencies);

@@ -5,9 +5,20 @@ function Registers(props) {
 
   const mystyle = {
     fontSize: "10px",
+    fontWeight: 600,
+    width: "3.3em",
+  };
+
+  const showArea = () => {
+    props.setShowRegisterArea(
+      !props.showRegisterArea || props.registerID !== props.selectedRegister
+    );
+    props.setSelectedRegister(props.registerID);
+    props.setCurrentInput(input);
   };
 
   useEffect(() => {
+    props.setCurrentInput(input);
     if (props.registerValues.length > 0) {
       let auxRegs = props.registerValues.slice();
       auxRegs[props.registerID][1] = input;
@@ -17,37 +28,39 @@ function Registers(props) {
 
   useEffect(() => {
     if (props.registerValues.length > 0) {
-      let inputElement = document.getElementById("Reg" + props.registerID);
-      inputElement.value = props.registerValues[props.registerID][1];
+      //let inputElement = document.getElementById("Reg" + props.registerID);
+      //inputElement.value = props.registerValues[props.registerID][1];
+      setInput(props.registerValues[props.registerID][1]);
     }
   }, [props.registerValues]);
 
   return (
-    <div className="input-group input-group-sm mb-1">
-      <span style={mystyle} className="input-group-text" id="basic-addon1">
+    <div
+      className={"input-group input-group-sm my-2 register" + props.registerID}
+    >
+      <button
+        style={mystyle}
+        className="btn btn-outline-secondary"
+        type="button"
+        onClick={showArea}
+        id="button-addon1"
+      >
         {"X" + props.registerID}
-      </span>
+      </button>
       <input
         id={"Reg" + props.registerID}
         type="number"
-        title={
-          "DEC: " +
-          input +
-          "\n" +
-          "HEX: " +
-          (input === "" ? "" : parseInt(input, 10).toString(16)) +
-          "\n" +
-          "BIN: " +
-          (input === "" ? "" : parseInt(input, 10).toString(2))
-        }
         value={input}
         onInput={(e) => {
           setInput(e.target.value);
         }}
+        onClick={showArea}
         className="form-control"
         placeholder="0"
         aria-label="Username"
         aria-describedby="basic-addon1"
+        min="-9223372036854775808"
+        max="9223372036854775807"
       ></input>
     </div>
   );

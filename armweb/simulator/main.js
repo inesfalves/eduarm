@@ -66,13 +66,62 @@ app.post("/sendRegisters", (req, res) => {
   res.send("Registers");
 });
 
+app.post("/readInstruction", (req, res) => {
+  let instructions = req.body.instructions;
+  let instructionCodes = [];
+  let address,
+    rd,
+    rn = null;
+  for (let instruction of instructions) {
+    switch (instruction[0]) {
+      case "add":
+      case "sub":
+      case "and":
+      case "orr":
+        let rm = (instruction[3] >>> 0).toString(2).padStart(5, "0");
+        rn = (instruction[2] >>> 0).toString(2).padStart(5, "0");
+        rd = (instruction[1] >>> 0).toString(2).padStart(5, "0");
+        instructionCodes.push(
+          assembleALInstruction(instruction[0], rm, rn, rd)
+        );
+        break;
+      case "ldur":
+      case "stur":
+        let offset = (instruction[3] >>> 0).toString(2).padStart(9, "0");
+        rn = (instruction[2] >>> 0).toString(2).padStart(5, "0");
+        rd = (instruction[1] >>> 0).toString(2).padStart(5, "0");
+        instructionCodes.push(
+          assembleMemInstruction(instruction[0], offset, rn, rd)
+        );
+        break;
+      case "b":
+        address = (instruction[1] >>> 0).toString(2).padStart(26, "0");
+        instructionCodes.push(assembleJumpBInstruction(address));
+        break;
+      case "cbz":
+        rd = (instruction[1] >>> 0).toString(2).padStart(5, "0");
+        address = (instruction[2] >>> 0).toString(2).padStart(19, "0");
+        instructionCodes.push(assembleJumpCondInstruction(address, rd));
+        break;
+    }
+  }
+  res.send(JSON.stringify(instructionCodes));
+});
+
 app.get("/assembleALInstruction/:op/:dest/:first/:second", (req, res) => {
-  let opcode = "";
-  let shamt = "000000";
+  let op = req.params.op;
   let rm = (req.params.second >>> 0).toString(2).padStart(5, "0");
   let rn = (req.params.first >>> 0).toString(2).padStart(5, "0");
   let rd = (req.params.dest >>> 0).toString(2).padStart(5, "0");
-  switch (req.params.op) {
+
+  let instructionCode = assembleALInstruction(op, rm, rn, rd);
+  res.send(JSON.stringify(instructionCode));
+});
+
+const assembleALInstruction = (op, rm, rn, rd) => {
+  let opcode = "";
+  let shamt = "000000";
+  switch (op) {
     case "add":
       opcode = "10001011000";
       break;
@@ -89,16 +138,22 @@ app.get("/assembleALInstruction/:op/:dest/:first/:second", (req, res) => {
   instructionTypeGroup.push("rType");
   instructionCode = opcode + rm + shamt + rn + rd;
   instructionGroup.push(instructionCode);
+  return instructionCode;
+};
+
+app.get("/assembleMemInstruction/:op/:dest/:first/:second", (req, res) => {
+  let op = req.params.op;
+  let offset = (req.params.second >>> 0).toString(2).padStart(9, "0");
+  let rn = (req.params.first >>> 0).toString(2).padStart(5, "0");
+  let rd = (req.params.dest >>> 0).toString(2).padStart(5, "0");
+  let instructionCode = assembleMemInstruction(op, offset, rn, rd);
   res.send(JSON.stringify(instructionCode));
 });
 
-app.get("/assembleMemInstruction/:op/:dest/:first/:second", (req, res) => {
+const assembleMemInstruction = (op, offset, rn, rd) => {
   let opcode = "";
-  let offset = (req.params.second >>> 0).toString(2).padStart(9, "0");
   let op2 = "00";
-  let rn = (req.params.first >>> 0).toString(2).padStart(5, "0");
-  let rd = (req.params.dest >>> 0).toString(2).padStart(5, "0");
-  switch (req.params.op) {
+  switch (op) {
     case "ldur":
       opcode = "11111000010";
       instructionTypeGroup.push("loadType");
@@ -110,27 +165,37 @@ app.get("/assembleMemInstruction/:op/:dest/:first/:second", (req, res) => {
   }
   instructionCode = opcode + offset + op2 + rn + rd;
   instructionGroup.push(instructionCode);
+  return instructionCode;
+};
+
+app.get("/assembleJumpBInstruction/:label", (req, res) => {
+  let address = (req.params.label >>> 0).toString(2).padStart(26, "0");
+  let instructionCode = assembleJumpBInstruction(address);
   res.send(JSON.stringify(instructionCode));
 });
 
-app.get("/assembleJumpBInstruction/:label", (req, res) => {
+const assembleJumpBInstruction = (address) => {
   let opcode = "000101";
-  let address = (req.params.label >>> 0).toString(2).padStart(26, "0");
   instructionTypeGroup.push("uncondBranchType");
   instructionCode = opcode + address;
   instructionGroup.push(instructionCode);
+  return instructionCode;
+};
+
+app.get("/assembleJumpCondInstruction/:cond/:label", (req, res) => {
+  let rd = (req.params.cond >>> 0).toString(2).padStart(5, "0");
+  let address = (req.params.label >>> 0).toString(2).padStart(19, "0");
+  let instructionCode = assembleJumpCondInstruction(address, rd);
   res.send(JSON.stringify(instructionCode));
 });
 
-app.get("/assembleJumpCondInstruction/:cond/:label", (req, res) => {
+const assembleJumpCondInstruction = (rd, address) => {
   let opcode = "10110100";
-  let address = (req.params.label >>> 0).toString(2).padStart(19, "0");
-  let rd = (req.params.cond >>> 0).toString(2).padStart(5, "0");
   instructionTypeGroup.push("cBranchType");
   instructionCode = opcode + address + rd;
   instructionGroup.push(instructionCode);
-  res.send(JSON.stringify(instructionCode));
-});
+  return instructionCode;
+};
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

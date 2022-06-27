@@ -69,7 +69,6 @@ function Datapath(props) {
     if (props.compiling && !editingLatency) {
       let nodeElement = document.querySelector(`[data-id=${node.id}`);
       let latencyInput = nodeElement.getElementsByClassName("latencyNode");
-      console.log(latencyInput);
       let component = props.cpuState.find((x) => x.id === node.id);
       latencyInput[0].innerHTML =
         "<div className='container'><input type=' text ' name=' input ' value=" +
@@ -104,11 +103,11 @@ function Datapath(props) {
           switch (props.numberFormat) {
             case "HEX":
               tooltipInpText +=
-                inp.id + ": " + inp.data.value.toString(16) + "\n";
+                inp.id + ": " + (inp.data.value >>> 0).toString(16) + "\n";
               break;
             case "BIN":
               tooltipInpText +=
-                inp.id + ": " + inp.data.value.toString(2) + "\n";
+                inp.id + ": " + (inp.data.value >>> 0).toString(2) + "\n";
               break;
             default:
               tooltipInpText += inp.id + ": " + inp.data.value + "\n";
@@ -119,11 +118,11 @@ function Datapath(props) {
           switch (props.numberFormat) {
             case "HEX":
               tooltipOutText +=
-                out.id + ": " + out.data.value.toString(16) + "\n";
+                out.id + ": " + (out.data.value >>> 0).toString(16) + "\n";
               break;
             case "BIN":
               tooltipOutText +=
-                out.id + ": " + out.data.value.toString(2) + "\n";
+                out.id + ": " + (out.data.value >>> 0).toString(2) + "\n";
               break;
             default:
               tooltipOutText += out.id + ": " + out.data.value + "\n";
@@ -144,9 +143,9 @@ function Datapath(props) {
         tooltips[0].innerHTML =
           "<div className='container'><div className='row'> Latency: " +
           tooltipLatText +
-          "</div><div className='row'>Inputs</div><div className='row'>" +
+          "</div><div className='row' style='text-decoration: underline'>Inputs</div><div className='row'>" +
           tooltipInpText +
-          "</div><div className='row'>Outputs</div><div className='row'>" +
+          "</div><div className='row' style='text-decoration: underline'>Outputs</div><div className='row'>" +
           tooltipOutText +
           "</div></div>";
 

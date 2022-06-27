@@ -41,122 +41,14 @@ function Assembly(props) {
       }
       props.setInstructions(lines);
 
-      let promises = [];
-
-      for (let ins in tempIns) {
-        let instruction = tempIns[ins];
-        switch (instruction[0]) {
-          case "add":
-            promises.push(
-              axios.get(
-                "http://localhost:3001/assembleALInstruction/" +
-                  instruction[0] +
-                  "/" +
-                  instruction[1] +
-                  "/" +
-                  instruction[2] +
-                  "/" +
-                  instruction[3]
-              )
-            );
-            break;
-          case "sub":
-            promises.push(
-              axios.get(
-                "http://localhost:3001/assembleALInstruction/" +
-                  instruction[0] +
-                  "/" +
-                  instruction[1] +
-                  "/" +
-                  instruction[2] +
-                  "/" +
-                  instruction[3]
-              )
-            );
-            break;
-          case "and":
-            promises.push(
-              axios.get(
-                "http://localhost:3001/assembleALInstruction/" +
-                  instruction[0] +
-                  "/" +
-                  instruction[1] +
-                  "/" +
-                  instruction[2] +
-                  "/" +
-                  instruction[3]
-              )
-            );
-            break;
-          case "orr":
-            promises.push(
-              axios.get(
-                "http://localhost:3001/assembleALInstruction/" +
-                  instruction[0] +
-                  "/" +
-                  instruction[1] +
-                  "/" +
-                  instruction[2] +
-                  "/" +
-                  instruction[3]
-              )
-            );
-            break;
-          case "ldur":
-            promises.push(
-              axios.get(
-                "http://localhost:3001/assembleMemInstruction/" +
-                  instruction[0] +
-                  "/" +
-                  instruction[1] +
-                  "/" +
-                  instruction[2] +
-                  "/" +
-                  instruction[3]
-              )
-            );
-            break;
-          case "stur":
-            promises.push(
-              axios.get(
-                "http://localhost:3001/assembleMemInstruction/" +
-                  instruction[0] +
-                  "/" +
-                  instruction[1] +
-                  "/" +
-                  instruction[2] +
-                  "/" +
-                  instruction[3]
-              )
-            );
-            break;
-          case "b":
-            if (instruction[1] === jumpLabel) {
-              instruction[1] = (jumpPoint - ins) * 4;
-            }
-            promises.push(
-              axios.get(
-                "http://localhost:3001/assembleJumpBInstruction/" +
-                  instruction[1]
-              )
-            );
-            break;
-          case "cbz":
-            promises.push(
-              axios.get(
-                "http://localhost:3001/assembleJumpCondInstruction/" +
-                  instruction[1] +
-                  "/" +
-                  instruction[2]
-              )
-            );
-            break;
-        }
-      }
-
-      Promise.all(promises).then((values) =>
-        props.setMachineCodes(values.map((value) => value.data))
-      );
+      axios
+        .post("http://localhost:3001/readInstruction/", {
+          instructions: tempIns,
+        })
+        .then((instructionCodes) => {
+          console.log(instructionCodes);
+          props.setMachineCodes(instructionCodes.data);
+        });
     }
   }, [props.compiling]);
 

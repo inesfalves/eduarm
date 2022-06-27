@@ -1,5 +1,25 @@
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.numFormatField {
+  width: 3.5em;
+}
+
 .registersArea {
   border-left: 1px solid rgb(211, 211, 211);
+}
+
+.formatArea {
+  margin-top: auto;
 }
 
 .react-flow__attribution a{
