@@ -96,26 +96,6 @@ function ForkNodeSecond({ data }) {
   );
 }
 
-function AddAuxNode({ data }) {
-  return (
-    <div className="aux-node">
-      <Handle type="target" className="top-node" position={Position.Bottom} />
-      <Handle
-        type="source"
-        className="top-node"
-        position={Position.Top}
-        id="a"
-      />
-      <Handle
-        type="source"
-        className="side-node"
-        position={Position.Right}
-        id="b"
-      />
-    </div>
-  );
-}
-
 function SignExtendDist({ data }) {
   return (
     <div className="fork-node">
@@ -864,13 +844,20 @@ export function DiagramUtils() {
       id: "PC",
       data: { label: "PC" },
       position: { x: 20, y: 300.5 },
-      style: { height: 70 + "px", width: 70 + "px" },
+      style: {
+        height: 70 + "px",
+        width: 70 + "px",
+        display: "block",
+        textAlign: "center",
+        color: "black",
+        fontSize: 12 + "px",
+      },
       targetPosition: "left",
       sourcePosition: "right",
     },
     {
       id: "PCAuxNode",
-      position: { x: 930, y: 10 },
+      position: { x: 980, y: 10 },
       type: "pcAuxNode",
     },
     {
@@ -889,9 +876,18 @@ export function DiagramUtils() {
       type: "forkNodeSecond",
     },
     {
-      id: "PCAddAuxFork",
-      position: { x: 101, y: 75.5 },
-      type: "addAuxNode",
+      id: "PC4",
+      data: { label: "4" },
+      position: { x: 120, y: 67 },
+      style: {
+        height: 20 + "px",
+        width: 10 + "px",
+        padding: 0,
+        border: 0,
+        paddingRight: 1 + "em",
+      },
+      type: "input",
+      sourcePosition: "right",
     },
     {
       id: "AddPC",
@@ -902,8 +898,11 @@ export function DiagramUtils() {
     {
       id: "ShiftLeft",
       data: { label: "Shift Left" },
-      position: { x: 650, y: 160 },
-      style: { height: 30 + "px", width: 30 + "px" },
+      position: { x: 640, y: 160 },
+      style: {
+        height: 30 + "px",
+        width: 40 + "px",
+      },
       targetPosition: "left",
       sourcePosition: "right",
     },
@@ -915,18 +914,18 @@ export function DiagramUtils() {
     },
     {
       id: "MuxTop",
-      position: { x: 950, y: 105 },
+      position: { x: 945, y: 105 },
       type: "muxNode",
     },
     {
       id: "And",
-      position: { x: 800, y: 70 },
+      position: { x: 810, y: 70 },
       data: { label: "And" },
       type: "andNode",
     },
     {
       id: "Or",
-      position: { x: 880, y: 40 },
+      position: { x: 880, y: 30 },
       data: { label: "Or" },
       type: "andNode",
     },
@@ -1040,52 +1039,42 @@ export function DiagramUtils() {
 
   const edges = [
     {
-      id: "e1",
+      id: "PC/pcForkInput",
       source: "PC",
       target: "PCounterFork",
       type: "smoothstep",
     },
     {
-      id: "e2",
+      id: "pcForkOutput1/pcAddForkInput",
       source: "PCounterFork",
       target: "PCAddFork",
       type: "smoothstep",
       sourceHandle: "a",
     },
     {
-      id: "e3",
+      id: "pcForkOutput2/address",
       source: "PCounterFork",
       target: "InsMem",
       type: "smoothstep",
       sourceHandle: "b",
     },
     {
-      id: "e4",
+      id: "pcAddForkOutput1/pcValue",
       source: "PCAddFork",
-      sourceHandle: "a",
-      target: "PCAddAuxFork",
-      type: "smoothstep",
-    },
-    {
-      id: "e4Aux1",
-      source: "PCAddAuxFork",
       sourceHandle: "a",
       target: "AddPC",
       targetHandle: "a",
       type: "smoothstep",
     },
     {
-      id: "e4Aux2",
-      source: "PCAddAuxFork",
-      sourceHandle: "b",
+      id: "ePC4",
+      source: "PC4",
       target: "AddPC",
       targetHandle: "b",
       type: "smoothstep",
-      label: "4",
-      labelStyle: { fontSize: 12 + "px" },
     },
     {
-      id: "e5",
+      id: "pcAddForkOutput2/addBranchValue1",
       source: "PCAddFork",
       sourceHandle: "b",
       target: "AddBranch",
@@ -1093,7 +1082,7 @@ export function DiagramUtils() {
       type: "smoothstep",
     },
     {
-      id: "e6",
+      id: "addedPCValue/topMuxValue1",
       source: "AddPC",
       target: "MuxTop",
       targetHandle: "a",
@@ -1101,40 +1090,45 @@ export function DiagramUtils() {
     },
 
     {
-      id: "e7",
+      id: "addBranchResult/topMuxValue2",
       source: "AddBranch",
       targetHandle: "b",
       target: "MuxTop",
       type: "smoothstep",
     },
-    { id: "e8", source: "MuxTop", target: "PCAuxNode", type: "smoothstep" },
     {
-      id: "e8Aux",
+      id: "topMuxResult/updatedPC/Aux1",
+      source: "MuxTop",
+      target: "PCAuxNode",
+      type: "smoothstep",
+    },
+    {
+      id: "topMuxResult/updatedPC/Aux2",
       source: "PCAuxNode",
       target: "PCTopAuxNode",
       type: "smoothstep",
     },
     {
-      id: "e8Aux2",
+      id: "topMuxResult/updatedPC",
       source: "PCTopAuxNode",
       target: "PC",
       type: "smoothstep",
     },
     {
-      id: "e9",
+      id: "dist3121/controlInput",
       source: "InsDistributor",
       sourceHandle: "a",
       target: "Control",
       type: "smoothstep",
     },
     {
-      id: "e9Ins",
+      id: "instruction/distributorInput",
       source: "InsMem",
       target: "InsDistributor",
       type: "smoothstep",
     },
     {
-      id: "e10",
+      id: "dist95/readReg1",
       source: "InsDistributor",
       sourceHandle: "b",
       targetHandle: "a",
@@ -1142,7 +1136,7 @@ export function DiagramUtils() {
       type: "smoothstep",
     },
     {
-      id: "e11",
+      id: "dist2016/insMuxValue1",
       source: "InsDistributor",
       sourceHandle: "c",
       targetHandle: "a",
@@ -1150,21 +1144,21 @@ export function DiagramUtils() {
       type: "smoothstep",
     },
     {
-      id: "e12",
+      id: "dist40/insForkInput",
       source: "InsDistributor",
       sourceHandle: "d",
       target: "InsFork",
       type: "smoothstep",
     },
     {
-      id: "e13",
+      id: "dist310/signExtendDistInput",
       source: "InsDistributor",
       sourceHandle: "e",
       target: "SignExtendDist",
       type: "smoothstep",
     },
     {
-      id: "e14",
+      id: "insForkOutput1/insMuxValue2",
       source: "InsFork",
       sourceHandle: "a",
       targetHandle: "b",
@@ -1172,7 +1166,7 @@ export function DiagramUtils() {
       type: "smoothstep",
     },
     {
-      id: "e15",
+      id: "insForkOutput2/writeReg",
       source: "InsFork",
       sourceHandle: "b",
       targetHandle: "c",
@@ -1180,14 +1174,14 @@ export function DiagramUtils() {
       type: "smoothstep",
     },
     {
-      id: "e16",
+      id: "signextend310/signExtendIn",
       source: "SignExtendDist",
       sourceHandle: "a",
       target: "SignExtend",
       type: "smoothstep",
     },
     {
-      id: "e17",
+      id: "signextend3121/opcode",
       source: "SignExtendDist",
       sourceHandle: "b",
       target: "ALUControl",
@@ -1195,13 +1189,13 @@ export function DiagramUtils() {
       type: "smoothstep",
     },
     {
-      id: "e18",
+      id: "signExtendResult/regMuxFork2Input",
       source: "SignExtend",
       target: "RegMuxFork2",
       type: "smoothstep",
     },
     {
-      id: "e19",
+      id: "regMuxFork2Output1/regMuxInput2",
       source: "RegMuxFork2",
       sourceHandle: "b",
       target: "MuxReg",
@@ -1209,7 +1203,7 @@ export function DiagramUtils() {
       type: "smoothstep",
     },
     {
-      id: "e20",
+      id: "regMuxFork1Output1/regMuxInput1",
       source: "RegMuxFork1",
       sourceHandle: "b",
       target: "MuxReg",
@@ -1217,7 +1211,7 @@ export function DiagramUtils() {
       type: "smoothstep",
     },
     {
-      id: "e21",
+      id: "regMuxFork1Output2/writeData",
       source: "RegMuxFork1",
       sourceHandle: "a",
       target: "DataMemory",
@@ -1225,21 +1219,21 @@ export function DiagramUtils() {
       type: "smoothstep",
     },
     {
-      id: "e22",
+      id: "regMuxFork2Output2/shiftLeftInput",
       source: "RegMuxFork2",
       sourceHandle: "a",
       target: "ShiftLeft",
       type: "smoothstep",
     },
     {
-      id: "e23",
+      id: "shiftLeftOutput/addBranchValue2",
       source: "ShiftLeft",
       target: "AddBranch",
       targetHandle: "b",
       type: "smoothstep",
     },
     {
-      id: "e24",
+      id: "readData1/ALUInput1",
       source: "RegBank",
       sourceHandle: "a",
       targetHandle: "a",
@@ -1247,7 +1241,7 @@ export function DiagramUtils() {
       type: "smoothstep",
     },
     {
-      id: "e25",
+      id: "readData2/regMuxFork1Input",
       source: "RegBank",
       sourceHandle: "b",
       target: "RegMuxFork1",
@@ -1255,21 +1249,21 @@ export function DiagramUtils() {
       type: "smoothstep",
     },
     {
-      id: "e26",
+      id: "regMuxResult/ALUInput2",
       source: "MuxReg",
       targetHandle: "b",
       target: "ALU",
       type: "smoothstep",
     },
     {
-      id: "e27",
+      id: "aluResult/aluForkInput",
       source: "ALU",
       sourceHandle: "b",
       target: "ALUFork",
       type: "smoothstep",
     },
     {
-      id: "e28",
+      id: "aluForkOutput1/memoryAddress",
       source: "ALUFork",
       sourceHandle: "a",
       target: "DataMemory",
@@ -1277,7 +1271,7 @@ export function DiagramUtils() {
       type: "smoothstep",
     },
     {
-      id: "e29",
+      id: "aluForkOutput2/muxMemValue1",
       source: "ALUFork",
       sourceHandle: "b",
       target: "MuxMem",
@@ -1285,26 +1279,26 @@ export function DiagramUtils() {
       type: "smoothstep",
     },
     {
-      id: "e30",
+      id: "readData/muxMemValue2",
       source: "DataMemory",
       target: "MuxMem",
       targetHandle: "a",
       type: "smoothstep",
     },
     {
-      id: "e31Aux",
+      id: "muxMemResult/writeData/Aux1",
       source: "MuxMem",
       target: "MemAuxNode",
       type: "smoothstep",
     },
     {
-      id: "e31Aux2",
+      id: "muxMemResult/writeData/Aux2",
       source: "MemAuxNode",
       target: "MemLeftAuxNode",
       type: "smoothstep",
     },
     {
-      id: "e31",
+      id: "muxMemResult/writeData",
       source: "MemLeftAuxNode",
       target: "RegBank",
       targetHandle: "d",
@@ -2466,7 +2460,6 @@ export function DiagramUtils() {
     forwardingUnitNode: ForwardingUnitNode,
     pipeMuxNode: PipeMuxNode,
     pipePCNode: PipePCNode,
-    addAuxNode: AddAuxNode,
   };
 
   return { nodes, edges, pipelineNodes, pipelineEdges, customNodeTypes };

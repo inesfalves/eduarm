@@ -28,8 +28,6 @@ function Registers(props) {
 
   useEffect(() => {
     if (props.registerValues.length > 0) {
-      //let inputElement = document.getElementById("Reg" + props.registerID);
-      //inputElement.value = props.registerValues[props.registerID][1];
       setInput(props.registerValues[props.registerID][1]);
     }
   }, [props.registerValues]);
@@ -59,8 +57,6 @@ function Registers(props) {
         placeholder="0"
         aria-label="Username"
         aria-describedby="basic-addon1"
-        min="-9223372036854775808"
-        max="9223372036854775807"
       ></input>
     </div>
   );

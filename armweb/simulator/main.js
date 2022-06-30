@@ -45,6 +45,11 @@ app.get("/getRelevantLines", (req, res) => {
   res.send(relevantLines);
 });
 
+app.get("/getCriticalPath", (req, res) => {
+  console.log(cpu.returnCriticalPath());
+  res.send(cpu.returnCriticalPath());
+});
+
 app.get("/reset", (req, res) => {
   cpuStates = [];
   instructionGroup = [];

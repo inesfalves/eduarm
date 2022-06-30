@@ -90,6 +90,8 @@ function ViewTab(props) {
             setCpuState={props.setCpuState}
             cpuState={props.cpuState}
             relevantLines={props.relevantLines}
+            criticalPath={props.criticalPath}
+            perfMode={props.perfMode}
           ></Datapath>
         </div>
         <div

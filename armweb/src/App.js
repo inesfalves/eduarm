@@ -17,16 +17,31 @@ function App() {
   const [numberFormat, setNumberFormat] = useState("DEC");
   const [defineLatency, setDefineLatency] = useState(false);
   const [relevantLines, setRelevantLines] = useState([]);
+  const [criticalPath, setCriticalPath] = useState([]);
   const [assemblyCode, setAssemblyCode] = useState(``);
   const [showRegisterArea, setShowRegisterArea] = useState(false);
   const [currentInput, setCurrentInput] = useState(0);
   const [selectedRegister, setSelectedRegister] = useState(null);
+  const [perfMode, setPerfMode] = useState(false);
 
   let tempReg = [];
   for (let i = 0; i < 32; i++) {
     let registerMap = [i, ""];
     tempReg.push(registerMap);
   }
+
+  const get64binary = (int) => {
+    if (int === "") {
+      int = 0;
+    }
+    if (int >= 0) return parseInt(int, 10).toString(2).padStart(64, "0");
+    return (-parseInt(int, 10) - 1)
+      .toString(2)
+      .replace(/[01]/g, function (d) {
+        return +!+d;
+      })
+      .padStart(64, "1");
+  };
 
   useEffect(() => {
     if (defineLatency) {
@@ -97,6 +112,13 @@ function App() {
     }
   };
 
+  const performanceMode = () => {
+    setPerfMode(true);
+    axios.get("http://localhost:3001/getCriticalPath").then(function (res) {
+      setCriticalPath(res.data);
+    });
+  };
+
   const resetProgram = () => {
     axios.get("http://localhost:3001/reset").then(function (res) {
       setCompiling(false);
@@ -154,6 +176,8 @@ function App() {
               relevantLines={relevantLines}
               assemblyCode={assemblyCode}
               setAssemblyCode={setAssemblyCode}
+              criticalPath={criticalPath}
+              perfMode={perfMode}
             ></ViewTab>
             <div className="buttonsArea container">
               <div className="row justify-content-between py-3">
@@ -192,7 +216,11 @@ function App() {
                 >
                   Next
                 </button>
-                <button type="button" className="btn btn-outline-dark col-2">
+                <button
+                  onClick={performanceMode}
+                  type="button"
+                  className="btn btn-outline-dark col-2"
+                >
                   Performance
                 </button>
               </div>
@@ -202,18 +230,20 @@ function App() {
             <p className="text-uppercase text-center fw-normal mt-2">
               Registers
             </p>
-            <div className="container px-0 row">
+            <div className="container px-0 mx-auto row">
               <div className="col-3 px-2">{registerList.slice(0, 8)}</div>
               <div className="col-3 px-2">{registerList.slice(8, 16)}</div>
               <div className="col-3 px-2">{registerList.slice(16, 24)}</div>
               <div className="col-3 px-2">{registerList.slice(24, 32)}</div>
             </div>
             {showRegisterArea ? (
-              <div className="container-fluid px-0">
-                <div className="row">
-                  <ul className="list-group mx-auto my-3 w-75">
+              <div className="container row px-0 mx-auto">
+                <div className="px-2">
+                  <ul className="list-group my-3">
                     <div className="input-group">
-                      <span class="input-group-text numFormatField">HEX</span>
+                      <span className="input-group-text numFormatField">
+                        HEX
+                      </span>
                       <input
                         type="text"
                         value={(parseInt(currentInput, 10) >>> 0).toString(16)}
@@ -227,14 +257,16 @@ function App() {
                           ).toString(10);
                           setRegisterValues(auxRegs);
                         }}
-                        class="form-control"
+                        className="form-control"
                       ></input>
                     </div>
                     <div className="input-group">
-                      <span class="input-group-text numFormatField">BIN </span>
+                      <span className="input-group-text numFormatField">
+                        BIN{" "}
+                      </span>
                       <input
                         type="text"
-                        value={(parseInt(currentInput, 10) >>> 0).toString(2)}
+                        value={get64binary(currentInput)}
                         onChange={(e) => {
                           setCurrentInput(
                             (parseInt(e.target.value, 2) >>> 0).toString(10)
@@ -245,7 +277,8 @@ function App() {
                           ).toString(10);
                           setRegisterValues(auxRegs);
                         }}
-                        class="form-control"
+                        className="form-control"
+                        style={{ fontSize: 15 + "px" }}
                       ></input>
                     </div>
                   </ul>

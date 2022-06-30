@@ -26,9 +26,15 @@ function Datapath(props) {
 
   useEffect(() => {
     if (props.executed) {
-      colorLines(props.relevantLines);
+      colorLines(props.relevantLines, "black");
     }
   }, [props.relevantLines]);
+
+  useEffect(() => {
+    if (props.executed && props.perfMode) {
+      colorLines(props.criticalPath, "red");
+    }
+  }, [props.criticalPath]);
 
   useEffect(() => {
     if (props.executed) {
@@ -45,11 +51,12 @@ function Datapath(props) {
     }
   }, [componentLatency]);
 
-  const colorLines = (lines) => {
+  const colorLines = (lines, color) => {
     for (let e of edges) {
+      let splitID = e.id.split("/");
       for (let l of lines) {
-        if (e.source === l[0].component && e.target === l[1].component) {
-          e.style = { stroke: "grey" };
+        if (splitID[0] === l[0].id && splitID[1] === l[1].id) {
+          e.style = { stroke: color };
         }
       }
     }
@@ -258,6 +265,8 @@ function Datapath(props) {
       onInit={createTooltips}
       onNodeMouseEnter={showNodeInformation}
       onNodeMouseLeave={hideNodeInformation}
+      nodesConnectable={false}
+      nodesDraggable={false}
       onNodeClick={setLatency}
       defaultZoom="1.04"
     />

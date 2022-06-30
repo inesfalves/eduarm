@@ -46,7 +46,6 @@ function Assembly(props) {
           instructions: tempIns,
         })
         .then((instructionCodes) => {
-          console.log(instructionCodes);
           props.setMachineCodes(instructionCodes.data);
         });
     }

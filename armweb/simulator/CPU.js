@@ -149,7 +149,7 @@ class CPU {
           this.connections[i][1].id === cpuConnections[j].input &&
           this.connections[i][0].id === cpuConnections[j].output
         ) {
-          if (cpuConnections[j][instructionType]) {
+          if (cpuConnections[j][instructionType] === "true") {
             relevantLines.push(this.connections[i]);
           }
         }
@@ -157,6 +157,16 @@ class CPU {
     }
 
     return relevantLines;
+  }
+
+  returnCriticalPath() {
+    let criticalPath = [];
+    for (let i = 0; i < this.connections.length; i++) {
+      if (this.connections[i][1].highestLatency) {
+        criticalPath.push(this.connections[i]);
+      }
+    }
+    return criticalPath;
   }
 }
 
