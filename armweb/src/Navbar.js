@@ -22,23 +22,20 @@ function Navbar(props) {
 
   return (
     <nav className="navbar navbar-expand-md navbar-light bg-light">
-      {props.assembly ? (
-        <div>
-          <button type="button" className="btn btn-light">
-            <label htmlFor="file-upload">Load</label>
-          </button>
-          <input id="file-upload" type="file" onChange={showFile} />
-          <button
-            type="button"
-            className="btn btn-light"
-            onClick={downloadTxtFile}
-          >
-            Save
-          </button>
-        </div>
-      ) : (
-        <div></div>
-      )}
+      <div style={{ visibility: props.assembly ? "visible" : "hidden" }}>
+        <button type="button" className="btn btn-light">
+          <label htmlFor="file-upload">Load</label>
+        </button>
+        <input id="file-upload" type="file" onChange={showFile} />
+        <button
+          type="button"
+          className="btn btn-light"
+          onClick={downloadTxtFile}
+        >
+          Save
+        </button>
+      </div>
+
       <div className="mx-auto order-0">
         <a className="navbar-brand mx-auto" href="#">
           EduARM

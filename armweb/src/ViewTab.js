@@ -14,6 +14,15 @@ import {
 function ViewTab(props) {
   const [machineCodes, setMachineCodes] = useState([]);
   const [instructions, setInstructions] = useState([]);
+  const [fileManage, setFileManage] = useState(false);
+
+  useEffect(() => {
+    if (fileManage) {
+      props.setAssembly(true);
+    } else {
+      props.setAssembly(false);
+    }
+  }, [fileManage]);
 
   return (
     <div className="viewtab">
@@ -28,6 +37,7 @@ function ViewTab(props) {
             role="tab"
             aria-controls="cpu"
             aria-selected="true"
+            onClick={() => setFileManage(false)}
           >
             <FontAwesomeIcon icon={faMicrochip} className="mx-2" />
             CPU
@@ -43,6 +53,7 @@ function ViewTab(props) {
             role="tab"
             aria-controls="assembly"
             aria-selected="false"
+            onClick={() => setFileManage(true)}
           >
             <FontAwesomeIcon icon={faCode} className="mx-2" />
             ASSEMBLY
@@ -58,6 +69,7 @@ function ViewTab(props) {
             role="tab"
             aria-controls="machine"
             aria-selected="false"
+            onClick={() => setFileManage(false)}
           >
             <FontAwesomeIcon icon={fa0} />
             <FontAwesomeIcon icon={fa1} className="me-2" />
