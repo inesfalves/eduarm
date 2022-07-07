@@ -9,7 +9,7 @@ let cpu = new CPU("basicCPU");
 let instructionCode = "";
 let instructionGroup = [];
 let registers = [];
-let memory = new Array(21).fill(0);
+let memory = new Array(11).fill(0);
 let instructionTypeGroup = [];
 let cpuStates = [];
 let relevantLines = [];
@@ -46,7 +46,6 @@ app.get("/getRelevantLines", (req, res) => {
 });
 
 app.get("/getCriticalPath", (req, res) => {
-  console.log(cpu.returnCriticalPath());
   res.send(cpu.returnCriticalPath());
 });
 

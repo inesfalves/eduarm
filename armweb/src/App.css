@@ -14,12 +14,9 @@ input[type=number] {
   width: 3.5em;
 }
 
-.registersArea {
-  border-left: 1px solid rgb(211, 211, 211);
-}
-
-.formatArea {
-  margin-top: auto;
+.viewtab {
+  border-right: 1px solid rgb(211, 211, 211);
+  border-bottom: 1px solid rgb(211, 211, 211);
 }
 
 .react-flow__attribution a{

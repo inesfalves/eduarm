@@ -16,13 +16,26 @@ const {
 } = DiagramUtils();
 
 function Datapath(props) {
-  const [nodes] = useNodesState(initialNodes);
-  const [edges] = useEdgesState(initialEdges);
-  const [plNodes, setNodes, onNodesChange] = useNodesState(pipeNodes);
-  const [plEdges, setEdges, onEdgesChange] = useEdgesState(pipeEdges);
+  const [nodes, setNodes] = useNodesState(initialNodes);
+  const [edges, setEdges] = useEdgesState(initialEdges);
+  // const [plNodes, setNodes, onNodesChange] = useNodesState(pipeNodes);
+  // const [plEdges, setEdges, onEdgesChange] = useEdgesState(pipeEdges);
   const [editingLatency, setEditingLatency] = useState(false);
   const [componentLatency, setComponentLatency] = useState(0);
   const [componentID, setComponentID] = useState("");
+  const [nodeBg, setNodeBg] = useState("#1a192b");
+
+  useEffect(() => {
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.id === "PC") {
+          node.style = { ...node.style, borderColor: nodeBg };
+        }
+
+        return node;
+      })
+    );
+  }, [nodeBg, setNodes]);
 
   useEffect(() => {
     if (props.executed) {
@@ -55,8 +68,10 @@ function Datapath(props) {
     for (let e of edges) {
       let splitID = e.id.split("/");
       for (let l of lines) {
+        let node = nodes.find((x) => x.id === l[0].component);
         if (splitID[0] === l[0].id && splitID[1] === l[1].id) {
           e.style = { stroke: color };
+          setNodeBg(color);
         }
       }
     }
@@ -72,8 +87,7 @@ function Datapath(props) {
   };
 
   const setLatency = (event, node) => {
-    console.log(editingLatency);
-    if (props.compiling && !editingLatency) {
+    if (props.executed && !editingLatency) {
       let nodeElement = document.querySelector(`[data-id=${node.id}`);
       let latencyInput = nodeElement.getElementsByClassName("latencyNode");
       let component = props.cpuState.find((x) => x.id === node.id);
@@ -268,7 +282,7 @@ function Datapath(props) {
       nodesConnectable={false}
       nodesDraggable={false}
       onNodeClick={setLatency}
-      defaultZoom="1.04"
+      defaultZoom="1.02"
     />
   );
 }

@@ -41,7 +41,7 @@ class Component {
         higherInput = inp;
       }
     }
-    higherInput.highestLatency = true;
+    if (higherInput !== null) higherInput.highestLatency = true;
     return (this.totalLatency = this.latency + higherLatency);
   }
 }

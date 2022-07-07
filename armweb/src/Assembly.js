@@ -15,10 +15,10 @@ function Assembly(props) {
   }, [code]);
 
   useEffect(() => {
-    if (!props.compiling && code.length > 0) {
+    if (!props.executed && code.length > 0) {
       setCode(``);
     }
-    if (props.compiling) {
+    if (props.executed) {
       let lines = code.split("\n");
       let tempIns = [];
       let jumpLabel = "";
@@ -49,7 +49,7 @@ function Assembly(props) {
           props.setMachineCodes(instructionCodes.data);
         });
     }
-  }, [props.compiling]);
+  }, [props.executed]);
 
   return (
     <CodeEditor

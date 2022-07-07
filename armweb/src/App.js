@@ -3,6 +3,17 @@ import Navbar from "./Navbar.js";
 import Registers from "./Registers.js";
 import ViewTab from "./ViewTab.js";
 import "./App.css";
+import DataMemoryDisplay from "./DataMemoryDisplay";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBackward,
+  faForward,
+  faPlay,
+  faLayerGroup,
+  faCubesStacked,
+  faRotateLeft,
+  faGaugeSimpleHigh,
+} from "@fortawesome/free-solid-svg-icons";
 
 const axios = require("axios");
 
@@ -11,7 +22,6 @@ function App() {
   const [cpuIndex, setCpuIndex] = useState(0);
   const [registerValues, setRegisterValues] = useState([]);
   const [memoryValues, setMemoryValues] = useState([]);
-  const [compiling, setCompiling] = useState(false);
   const [executed, setExecuted] = useState(false);
   const [savedCPUStates, setSavedCPUStates] = useState([]);
   const [numberFormat, setNumberFormat] = useState("DEC");
@@ -19,10 +29,11 @@ function App() {
   const [relevantLines, setRelevantLines] = useState([]);
   const [criticalPath, setCriticalPath] = useState([]);
   const [assemblyCode, setAssemblyCode] = useState(``);
-  const [showRegisterArea, setShowRegisterArea] = useState(false);
+  const [showRegisterArea, setShowRegisterArea] = useState(true);
   const [currentInput, setCurrentInput] = useState(0);
-  const [selectedRegister, setSelectedRegister] = useState(null);
+  const [selectedRegister, setSelectedRegister] = useState(0);
   const [perfMode, setPerfMode] = useState(false);
+  const [assembly, setAssembly] = useState(false);
 
   let tempReg = [];
   for (let i = 0; i < 32; i++) {
@@ -121,16 +132,11 @@ function App() {
 
   const resetProgram = () => {
     axios.get("http://localhost:3001/reset").then(function (res) {
-      setCompiling(false);
       setExecuted(false);
       setSavedCPUStates(res.data);
       setCpuIndex(0);
       setRegisterValues(tempReg);
     });
-  };
-
-  const compileProgram = () => {
-    setCompiling(true);
   };
 
   let registerList = [];
@@ -158,6 +164,7 @@ function App() {
       <Navbar
         setAssemblyCode={setAssemblyCode}
         assemblyCode={assemblyCode}
+        assembly={assembly}
       ></Navbar>
       <div className="container-fluid">
         <div className="row">
@@ -166,9 +173,7 @@ function App() {
               numberFormat={numberFormat}
               setCpuState={setCpuState}
               cpuState={cpuState}
-              compiling={compiling}
               executed={executed}
-              setCompiling={setCompiling}
               setMemoryValues={setMemoryValues}
               memoryValues={memoryValues}
               defineLatency={defineLatency}
@@ -178,123 +183,164 @@ function App() {
               setAssemblyCode={setAssemblyCode}
               criticalPath={criticalPath}
               perfMode={perfMode}
+              setAssembly={setAssembly}
             ></ViewTab>
-            <div className="buttonsArea container">
-              <div className="row justify-content-between py-3">
-                <button
-                  onClick={compileProgram}
-                  type="button"
-                  className="btn btn-outline-dark col-2"
-                >
-                  Compile
-                </button>
-                <button
-                  onClick={resetProgram}
-                  type="button"
-                  className="btn btn-outline-dark col-2"
-                >
-                  Reset
-                </button>
-                <button
-                  onClick={getPrevious}
-                  type="button"
-                  className="btn btn-outline-dark col-2"
-                >
-                  Previous
-                </button>
-                <button
-                  onClick={executeProgram}
-                  type="button"
-                  className="btn btn-outline-primary col-2"
-                >
-                  Execute
-                </button>
-                <button
-                  onClick={getNext}
-                  type="button"
-                  className="btn btn-outline-dark col-2"
-                >
-                  Next
-                </button>
-                <button
-                  onClick={performanceMode}
-                  type="button"
-                  className="btn btn-outline-dark col-2"
-                >
-                  Performance
-                </button>
-              </div>
-            </div>
           </div>
-          <div className="registersArea col-4">
-            <p className="text-uppercase text-center fw-normal mt-2">
-              Registers
-            </p>
-            <div className="container px-0 mx-auto row">
-              <div className="col-3 px-2">{registerList.slice(0, 8)}</div>
-              <div className="col-3 px-2">{registerList.slice(8, 16)}</div>
-              <div className="col-3 px-2">{registerList.slice(16, 24)}</div>
-              <div className="col-3 px-2">{registerList.slice(24, 32)}</div>
-            </div>
-            {showRegisterArea ? (
-              <div className="container row px-0 mx-auto">
-                <div className="px-2">
-                  <ul className="list-group my-3">
-                    <div className="input-group">
-                      <span className="input-group-text numFormatField">
-                        HEX
-                      </span>
-                      <input
-                        type="text"
-                        value={(parseInt(currentInput, 10) >>> 0).toString(16)}
-                        onChange={(e) => {
-                          setCurrentInput(
-                            (parseInt(e.target.value, 16) >>> 0).toString(10)
-                          );
-                          let auxRegs = registerValues.slice();
-                          auxRegs[selectedRegister][1] = (
-                            parseInt(e.target.value, 16) >>> 0
-                          ).toString(10);
-                          setRegisterValues(auxRegs);
-                        }}
-                        className="form-control"
-                      ></input>
-                    </div>
-                    <div className="input-group">
-                      <span className="input-group-text numFormatField">
-                        BIN{" "}
-                      </span>
-                      <input
-                        type="text"
-                        value={get64binary(currentInput)}
-                        onChange={(e) => {
-                          setCurrentInput(
-                            (parseInt(e.target.value, 2) >>> 0).toString(10)
-                          );
-                          let auxRegs = registerValues.slice();
-                          auxRegs[selectedRegister][1] = (
-                            parseInt(e.target.value, 2) >>> 0
-                          ).toString(10);
-                          setRegisterValues(auxRegs);
-                        }}
-                        className="form-control"
-                        style={{ fontSize: 15 + "px" }}
-                      ></input>
-                    </div>
-                  </ul>
+          <div className="col-4 p-0">
+            <ul className="nav nav-tabs" role="tablist">
+              <li className="nav-item col-6" role="presentation">
+                <button
+                  className="nav-link active col-12"
+                  id="reg-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#reg"
+                  type="button"
+                  role="tab"
+                  aria-controls="reg"
+                  aria-selected="true"
+                >
+                  <FontAwesomeIcon icon={faCubesStacked} className="mx-2" />
+                  REGISTERS
+                </button>
+              </li>
+              <li className="nav-item col-6" role="presentation">
+                <button
+                  className="nav-link col-12"
+                  id="memory-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#memory"
+                  type="button"
+                  role="tab"
+                  aria-controls="memory"
+                  aria-selected="false"
+                >
+                  <FontAwesomeIcon icon={faLayerGroup} className="mx-2" />
+                  DATA MEMORY
+                </button>
+              </li>
+            </ul>
+            <div className="tab-content">
+              <div
+                className="tab-pane fade show active"
+                id="reg"
+                role="tabpanel"
+                aria-labelledby="reg-tab"
+              >
+                <div className="container px-0 mx-auto row">
+                  <div className="col-3 px-2">{registerList.slice(0, 8)}</div>
+                  <div className="col-3 px-2">{registerList.slice(8, 16)}</div>
+                  <div className="col-3 px-2">{registerList.slice(16, 24)}</div>
+                  <div className="col-3 px-2">{registerList.slice(24, 32)}</div>
+                </div>
+                <div className="container text-center mt-5">
+                  <div className="btn-group btn-group w-75" role="group">
+                    <button
+                      onClick={getPrevious}
+                      type="button"
+                      className="btn btn-outline-dark col-3 p-2"
+                    >
+                      <FontAwesomeIcon icon={faBackward} className="mx-2" />
+                      Previous
+                    </button>
+                    <button
+                      onClick={executeProgram}
+                      type="button"
+                      className="btn btn-outline-primary col-5 p-2"
+                    >
+                      <FontAwesomeIcon icon={faPlay} className="mx-2" />
+                      Execute
+                    </button>
+                    <button
+                      onClick={getNext}
+                      type="button"
+                      className="btn btn-outline-dark col-3 p-2"
+                    >
+                      <FontAwesomeIcon icon={faForward} className="mx-2" />
+                      Next
+                    </button>
+                  </div>
+                  <div className="row justify-content-around py-3 mx-auto">
+                    <button
+                      onClick={resetProgram}
+                      type="button"
+                      className="btn btn-outline-dark col-3 p-2"
+                    >
+                      <FontAwesomeIcon icon={faRotateLeft} className="mx-2" />
+                      Reset
+                    </button>
+                    <button
+                      onClick={performanceMode}
+                      type="button"
+                      className="btn btn-outline-dark col-3 p-2"
+                    >
+                      <FontAwesomeIcon
+                        icon={faGaugeSimpleHigh}
+                        className="mx-2"
+                      />
+                      Performance
+                    </button>
+                  </div>
                 </div>
               </div>
-            ) : (
-              <div></div>
-            )}
-            <div className="formatArea text-center m-4">
               <div
-                className="w-50 btn-group btn-group-sm"
-                role="group"
-                aria-label="Basic example"
-              ></div>
+                className="tab-pane fade"
+                id="memory"
+                role="tabpanel"
+                aria-labelledby="memory-tab"
+              >
+                <DataMemoryDisplay
+                  executed={executed}
+                  cpuState={cpuState}
+                  memoryValues={memoryValues}
+                ></DataMemoryDisplay>
+              </div>
             </div>
           </div>
+          {showRegisterArea ? (
+            <div className="row mx-auto my-2">
+              <span>Register X{selectedRegister}</span>
+              <div className="w-50 input-group">
+                <span className="input-group-text numFormatField">HEX</span>
+                <input
+                  type="text"
+                  value={parseInt(get64binary(currentInput), 2).toString(16)}
+                  onChange={(e) => {
+                    setCurrentInput(
+                      (parseInt(e.target.value, 16) >>> 0).toString(10)
+                    );
+                    let auxRegs = registerValues.slice();
+                    auxRegs[selectedRegister][1] = (
+                      parseInt(e.target.value, 16) >>> 0
+                    ).toString(10);
+                    setRegisterValues(auxRegs);
+                  }}
+                  className="form-control"
+                  style={{ fontSize: 18 + "px" }}
+                ></input>
+              </div>
+              <div className="w-50 input-group">
+                <span className="input-group-text numFormatField">BIN </span>
+                <input
+                  type="text"
+                  value={get64binary(currentInput)}
+                  onChange={(e) => {
+                    setCurrentInput(
+                      (parseInt(e.target.value, 2) >>> 0).toString(10)
+                    );
+                    let auxRegs = registerValues.slice();
+                    auxRegs[selectedRegister][1] = (
+                      parseInt(e.target.value, 2) >>> 0
+                    ).toString(10);
+                    setRegisterValues(auxRegs);
+                  }}
+                  className="form-control"
+                  style={{ fontSize: 18 + "px" }}
+                ></input>
+              </div>
+            </div>
+          ) : (
+            <div></div>
+          )}
         </div>
       </div>
     </div>

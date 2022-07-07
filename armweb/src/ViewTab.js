@@ -2,18 +2,25 @@ import "bootstrap/dist/js/bootstrap.js";
 import Datapath from "./Datapath.js";
 import Assembly from "./Assembly.js";
 import MachineCode from "./MachineCode.js";
-import DataMemoryDisplay from "./DataMemoryDisplay";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faMicrochip,
+  faCode,
+  fa0,
+  fa1,
+} from "@fortawesome/free-solid-svg-icons";
 
 function ViewTab(props) {
   const [machineCodes, setMachineCodes] = useState([]);
   const [instructions, setInstructions] = useState([]);
+
   return (
-    <div style={{ height: 89 + "%", width: 100 + "%" }}>
+    <div className="viewtab">
       <ul className="nav nav-tabs" id="myTab" role="tablist">
-        <li className="nav-item" role="presentation">
+        <li className="nav-item col-4" role="presentation">
           <button
-            className="nav-link active"
+            className="nav-link active col-12"
             id="cpu-tab"
             data-bs-toggle="tab"
             data-bs-target="#cpu"
@@ -22,12 +29,13 @@ function ViewTab(props) {
             aria-controls="cpu"
             aria-selected="true"
           >
+            <FontAwesomeIcon icon={faMicrochip} className="mx-2" />
             CPU
           </button>
         </li>
-        <li className="nav-item" role="presentation">
+        <li className="nav-item col-4" role="presentation">
           <button
-            className="nav-link"
+            className="nav-link col-12"
             id="assembly-tab"
             data-bs-toggle="tab"
             data-bs-target="#assembly"
@@ -36,12 +44,13 @@ function ViewTab(props) {
             aria-controls="assembly"
             aria-selected="false"
           >
+            <FontAwesomeIcon icon={faCode} className="mx-2" />
             ASSEMBLY
           </button>
         </li>
-        <li className="nav-item" role="presentation">
+        <li className="nav-item col-4" role="presentation">
           <button
-            className="nav-link"
+            className="nav-link col-12"
             id="machine-tab"
             data-bs-toggle="tab"
             data-bs-target="#machine"
@@ -50,21 +59,9 @@ function ViewTab(props) {
             aria-controls="machine"
             aria-selected="false"
           >
+            <FontAwesomeIcon icon={fa0} />
+            <FontAwesomeIcon icon={fa1} className="me-2" />
             MACHINE CODE
-          </button>
-        </li>
-        <li className="nav-item" role="presentation">
-          <button
-            className="nav-link"
-            id="memory-tab"
-            data-bs-toggle="tab"
-            data-bs-target="#memory"
-            type="button"
-            role="tab"
-            aria-controls="memory"
-            aria-selected="false"
-          >
-            DATA MEMORY
           </button>
         </li>
       </ul>
@@ -75,9 +72,9 @@ function ViewTab(props) {
           role="tabpanel"
           aria-labelledby="cpu-tab"
           style={{
-            height: 35.5 + "em",
+            height: 35 + "em",
             width: 64 + "em",
-            maxHeight: 35.5 + "em",
+            maxHeight: 50 + "em",
             maxWidth: 80 + "em",
           }}
         >
@@ -86,7 +83,6 @@ function ViewTab(props) {
             setDefineLatency={props.setDefineLatency}
             numberFormat={props.numberFormat}
             executed={props.executed}
-            compiling={props.compiling}
             setCpuState={props.setCpuState}
             cpuState={props.cpuState}
             relevantLines={props.relevantLines}
@@ -100,16 +96,15 @@ function ViewTab(props) {
           role="tabpanel"
           aria-labelledby="assembly-tab"
           style={{
-            height: 35.5 + "em",
+            height: 35 + "em",
             width: 64 + "em",
-            maxHeight: 35.5 + "em",
+            maxHeight: 50 + "em",
             maxWidth: 80 + "em",
           }}
         >
           {" "}
           <Assembly
-            compiling={props.compiling}
-            setCompiling={props.setCompiling}
+            executed={props.executed}
             machineCodes={machineCodes}
             setMachineCodes={setMachineCodes}
             setInstructions={setInstructions}
@@ -123,25 +118,18 @@ function ViewTab(props) {
           id="machine"
           role="tabpanel"
           aria-labelledby="machine-tab"
+          style={{
+            height: 35 + "em",
+            width: 64 + "em",
+            maxHeight: 50 + "em",
+            maxWidth: 80 + "em",
+          }}
         >
           <MachineCode
-            compiling={props.compiling}
-            setCompiling={props.setCompiling}
+            executed={props.executed}
             machineCodes={machineCodes}
             instructions={instructions}
           ></MachineCode>
-        </div>
-        <div
-          className="tab-pane fade"
-          id="memory"
-          role="tabpanel"
-          aria-labelledby="memory-tab"
-        >
-          <DataMemoryDisplay
-            executed={props.executed}
-            cpuState={props.cpuState}
-            memoryValues={props.memoryValues}
-          ></DataMemoryDisplay>
         </div>
       </div>
     </div>
