@@ -13,6 +13,10 @@ function Registers(props) {
     props.setShowRegisterArea(
       !props.showRegisterArea || props.registerID !== props.selectedRegister
     );
+    switchSelectedRegister();
+  };
+
+  const switchSelectedRegister = () => {
     props.setSelectedRegister(props.registerID);
     props.setCurrentInput(input);
   };
@@ -52,7 +56,7 @@ function Registers(props) {
         onInput={(e) => {
           setInput(e.target.value);
         }}
-        onClick={showArea}
+        onClick={switchSelectedRegister}
         className="form-control"
         placeholder="0"
         aria-label="Username"

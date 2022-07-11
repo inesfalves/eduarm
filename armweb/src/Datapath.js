@@ -26,18 +26,6 @@ function Datapath(props) {
   const [nodeBg, setNodeBg] = useState("#1a192b");
 
   useEffect(() => {
-    setNodes((nds) =>
-      nds.map((node) => {
-        if (node.id === "PC") {
-          node.style = { ...node.style, borderColor: nodeBg };
-        }
-
-        return node;
-      })
-    );
-  }, [nodeBg, setNodes]);
-
-  useEffect(() => {
     if (props.executed) {
       colorLines(props.relevantLines, "black");
     }
@@ -68,10 +56,25 @@ function Datapath(props) {
     for (let e of edges) {
       let splitID = e.id.split("/");
       for (let l of lines) {
-        let node = nodes.find((x) => x.id === l[0].component);
         if (splitID[0] === l[0].id && splitID[1] === l[1].id) {
           e.style = { stroke: color };
-          setNodeBg(color);
+          let currentNode = nodes.find((x) => x.id === l[0].component);
+          setNodes(
+            nodes.map((node) => {
+              if (node.id === currentNode.id) {
+                node.style = {
+                  ...node.style,
+                  borderColor: color,
+                };
+                node.data = {
+                  ...node.data,
+                  borderColor: color,
+                };
+              }
+
+              return node;
+            })
+          );
         }
       }
     }

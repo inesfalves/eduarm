@@ -31,6 +31,8 @@ function App() {
   const [assemblyCode, setAssemblyCode] = useState(``);
   const [showRegisterArea, setShowRegisterArea] = useState(true);
   const [currentInput, setCurrentInput] = useState(0);
+  const [currentHexInput, setCurrentHexInput] = useState(0);
+  const [currentBinInput, setCurrentBinInput] = useState(0);
   const [selectedRegister, setSelectedRegister] = useState(0);
   const [perfMode, setPerfMode] = useState(false);
   const [assembly, setAssembly] = useState(false);
@@ -45,13 +47,19 @@ function App() {
     if (int === "") {
       int = 0;
     }
-    if (int >= 0) return parseInt(int, 10).toString(2).padStart(64, "0");
-    return (-parseInt(int, 10) - 1)
-      .toString(2)
-      .replace(/[01]/g, function (d) {
-        return +!+d;
-      })
-      .padStart(64, "1");
+    if (int >= 0) return parseInt(int, 10).toString(2);
+    return (-parseInt(int, 10) - 1).toString(2).replace(/[01]/g, function (d) {
+      return +!+d;
+    });
+  };
+
+  const pad64Binary = (str) => {
+    let int = parseInt(str, 2).toString(10);
+    if (int >= 0) {
+      return str.padStart(64, "0");
+    } else {
+      return str.padStart(64, "1");
+    }
   };
 
   const get64Hexadecimal = (int) => {
@@ -60,14 +68,19 @@ function App() {
     }
     let hexa = (parseInt(int, 10) >>> 0).toString(16);
 
-    for (let i = hexa.length * 4; i < 64; i += 4) {
+    return hexa;
+  };
+
+  const pad64Hexadecimal = (str) => {
+    let int = parseInt(str, 16).toString(10);
+    for (let i = str.length; i < 16; i++) {
       if (int >= 0) {
-        hexa = "0" + hexa;
+        str = "0" + str;
       } else {
-        hexa = "f" + hexa;
+        str = "f" + str;
       }
     }
-    return hexa;
+    return str;
   };
 
   useEffect(() => {
@@ -168,7 +181,11 @@ function App() {
         registerID={i}
         showRegisterArea={showRegisterArea}
         setShowRegisterArea={setShowRegisterArea}
-        setCurrentInput={setCurrentInput}
+        setCurrentInput={(input) => {
+          setCurrentInput(input);
+          setCurrentHexInput(pad64Hexadecimal(get64Hexadecimal(input)));
+          setCurrentBinInput(pad64Binary(get64binary(input)));
+        }}
       ></Registers>
     );
 
@@ -322,39 +339,55 @@ function App() {
                     Register X{selectedRegister}
                   </span>
                 </div>
-                <div className="col-5 input-group" style={{ width: 40 + "%" }}>
+                <div
+                  className="col-4 input-group formatInputArea mx-2"
+                  style={{ width: "40%", padding: 0 }}
+                >
                   <span className="input-group-text numFormatField">HEX</span>
                   <input
                     type="text"
-                    value={get64Hexadecimal(currentInput)}
+                    value={currentHexInput}
+                    onKeyPress={(e) => {
+                      if (e.key === "Enter") {
+                        let val = parseInt(currentHexInput, 16);
+                        setCurrentInput(val);
+                        setCurrentBinInput(val);
+
+                        let auxRegs = registerValues.slice();
+                        auxRegs[selectedRegister][1] = (val >>> 0).toString(10);
+                        setRegisterValues(auxRegs);
+                      }
+                    }}
                     onChange={(e) => {
-                      setCurrentInput(
-                        (parseInt(e.target.value, 16) >>> 0).toString(10)
+                      setCurrentHexInput(
+                        e.target.value.replace(/[^0-9A-Fa-f]/g, "")
                       );
-                      let auxRegs = registerValues.slice();
-                      auxRegs[selectedRegister][1] = (
-                        parseInt(e.target.value, 16) >>> 0
-                      ).toString(10);
-                      setRegisterValues(auxRegs);
                     }}
                     className="form-control"
                     style={{ fontSize: 18 + "px" }}
                   ></input>
                 </div>
-                <div className="col w-50 input-group">
+                <div
+                  className="col-2 input-group formatInputArea"
+                  style={{ width: "50%", padding: 0 }}
+                >
                   <span className="input-group-text numFormatField">BIN </span>
                   <input
                     type="text"
-                    value={get64binary(currentInput)}
+                    value={currentBinInput}
+                    onKeyPress={(e) => {
+                      if (e.key === "Enter") {
+                        let val = parseInt(currentBinInput, 2);
+                        setCurrentInput(val);
+                        setCurrentHexInput(val);
+
+                        let auxRegs = registerValues.slice();
+                        auxRegs[selectedRegister][1] = (val >>> 0).toString(10);
+                        setRegisterValues(auxRegs);
+                      }
+                    }}
                     onChange={(e) => {
-                      setCurrentInput(
-                        (parseInt(e.target.value, 2) >>> 0).toString(10)
-                      );
-                      let auxRegs = registerValues.slice();
-                      auxRegs[selectedRegister][1] = (
-                        parseInt(e.target.value, 2) >>> 0
-                      ).toString(10);
-                      setRegisterValues(auxRegs);
+                      setCurrentBinInput(e.target.value.replace(/[^0-1]/g, ""));
                     }}
                     className="form-control"
                     style={{ fontSize: 18 + "px" }}

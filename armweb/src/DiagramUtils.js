@@ -2,7 +2,12 @@ import { Handle, Position } from "react-flow-renderer";
 
 function ForkNode({ data }) {
   return (
-    <div className="fork-node">
+    <div
+      className="fork-node"
+      style={
+        data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
+      }
+    >
       <Handle className="side-node" type="target" position={Position.Left} />
       <Handle
         className="top-node"
@@ -22,7 +27,12 @@ function ForkNode({ data }) {
 
 function PipePCNode({ data }) {
   return (
-    <div className="alu-node">
+    <div
+      className="alu-node"
+      style={
+        data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
+      }
+    >
       <label htmlFor="text">{data.label}</label>
       <Handle type="target" position={Position.Left} id="a" />
       <Handle type="target" position={Position.Top} id="b" />
@@ -33,7 +43,12 @@ function PipePCNode({ data }) {
 
 function PCAuxNode({ data }) {
   return (
-    <div className="aux-node">
+    <div
+      className="aux-node"
+      style={
+        data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
+      }
+    >
       <Handle className="side-node" type="source" position={Position.Left} />
       <Handle className="top-node" type="target" position={Position.Bottom} />
     </div>
@@ -42,7 +57,12 @@ function PCAuxNode({ data }) {
 
 function PCTopAuxNode({ data }) {
   return (
-    <div className="aux-node">
+    <div
+      className="aux-node"
+      style={
+        data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
+      }
+    >
       <Handle className="top-node" type="source" position={Position.Bottom} />
       <Handle className="side-node" type="target" position={Position.Right} />
     </div>
@@ -51,7 +71,12 @@ function PCTopAuxNode({ data }) {
 
 function MemAuxNode({ data }) {
   return (
-    <div className="aux-node">
+    <div
+      className="aux-node"
+      style={
+        data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
+      }
+    >
       <Handle className="side-node" type="source" position={Position.Left} />
       <Handle className="top-node" type="target" position={Position.Top} />
     </div>
@@ -60,7 +85,12 @@ function MemAuxNode({ data }) {
 
 function MemLeftAuxNode({ data }) {
   return (
-    <div className="aux-node">
+    <div
+      className="aux-node"
+      style={
+        data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
+      }
+    >
       <Handle className="top-node" type="source" position={Position.Top} />
       <Handle className="side-node" type="target" position={Position.Right} />
     </div>
@@ -78,7 +108,12 @@ function ControlMemAuxNode({ data }) {
 
 function ForkNodeSecond({ data }) {
   return (
-    <div className="fork-node">
+    <div
+      className="fork-node"
+      style={
+        data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
+      }
+    >
       <Handle type="target" className="top-node" position={Position.Bottom} />
       <Handle
         type="source"
@@ -98,7 +133,12 @@ function ForkNodeSecond({ data }) {
 
 function SignExtendDist({ data }) {
   return (
-    <div className="fork-node">
+    <div
+      className="fork-node"
+      style={
+        data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
+      }
+    >
       <Handle type="target" className="side-node" position={Position.Left} />
       <Handle
         type="source"
@@ -118,7 +158,12 @@ function SignExtendDist({ data }) {
 
 function PipeSignExtendDist({ data }) {
   return (
-    <div className="fork-node">
+    <div
+      className="fork-node"
+      style={
+        data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
+      }
+    >
       <Handle type="target" className="side-node" position={Position.Left} />
       <Handle
         type="source"
@@ -156,7 +201,12 @@ function ALUControlNode({ data }) {
 
 function ALUNode({ data }) {
   return (
-    <div className="alu-node">
+    <div
+      className="alu-node"
+      style={
+        data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
+      }
+    >
       <label htmlFor="text">{data.label}</label>
       <Handle
         type="target"
@@ -189,7 +239,12 @@ function ALUNode({ data }) {
 
 function MuxNode({ data }) {
   return (
-    <div className="mux-node">
+    <div
+      className="mux-node"
+      style={
+        data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
+      }
+    >
       <Handle
         type="target"
         position={Position.Left}
@@ -210,7 +265,12 @@ function MuxNode({ data }) {
 
 function PipeMuxNode({ data }) {
   return (
-    <div className="mux-node">
+    <div
+      className="mux-node"
+      style={
+        data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
+      }
+    >
       <Handle
         type="target"
         position={Position.Left}
@@ -237,7 +297,12 @@ function PipeMuxNode({ data }) {
 
 function AndNode({ data }) {
   return (
-    <div className="alucontrol-node">
+    <div
+      className="alucontrol-node"
+      style={
+        data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
+      }
+    >
       <label htmlFor="text">{data.label}</label>
       <Handle
         type="target"
@@ -258,7 +323,12 @@ function AndNode({ data }) {
 
 function AddNode({ data }) {
   return (
-    <div className="add-node">
+    <div
+      className="add-node"
+      style={
+        data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
+      }
+    >
       <label htmlFor="text">{data.label}</label>
       <Handle
         type="target"
@@ -279,7 +349,12 @@ function AddNode({ data }) {
 
 function DistributorNode({ data }) {
   return (
-    <div className="distributor-node">
+    <div
+      className="distributor-node"
+      style={
+        data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
+      }
+    >
       <Handle type="target" className="side-node" position={Position.Left} />
       <Handle
         type="source"
@@ -317,7 +392,12 @@ function DistributorNode({ data }) {
 
 function PipeDistNode({ data }) {
   return (
-    <div className="distributor-node">
+    <div
+      className="distributor-node"
+      style={
+        data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
+      }
+    >
       <Handle type="target" className="side-node" position={Position.Left} />
       <Handle
         type="source"
@@ -361,7 +441,12 @@ function PipeDistNode({ data }) {
 
 function RegBankNode({ data }) {
   return (
-    <div className="regbank-node">
+    <div
+      className="regbank-node"
+      style={
+        data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
+      }
+    >
       <label htmlFor="text">{data.label}</label>
       <Handle
         type="target"
@@ -406,7 +491,12 @@ function RegBankNode({ data }) {
 
 function DataMemoryNode({ data }) {
   return (
-    <div className="datamemory-node">
+    <div
+      className="datamemory-node"
+      style={
+        data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
+      }
+    >
       <label htmlFor="text">{data.label}</label>
       <Handle
         type="target"
@@ -429,7 +519,12 @@ function DataMemoryNode({ data }) {
 
 function IFIDNode({ data }) {
   return (
-    <div className="pipeline-node">
+    <div
+      className="pipeline-node"
+      style={
+        data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
+      }
+    >
       <label htmlFor="text">{data.label}</label>
       <Handle
         type="target"
@@ -462,7 +557,12 @@ function IFIDNode({ data }) {
 
 function IDEXNode({ data }) {
   return (
-    <div className="pipeline-node">
+    <div
+      className="pipeline-node"
+      style={
+        data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
+      }
+    >
       <label htmlFor="text">{data.label}</label>
       <Handle
         type="target"
@@ -542,7 +642,12 @@ function IDEXNode({ data }) {
 
 function EXMEMNode({ data }) {
   return (
-    <div className="pipeline-node">
+    <div
+      className="pipeline-node"
+      style={
+        data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
+      }
+    >
       <label htmlFor="text">{data.label}</label>
       <Handle
         type="target"
@@ -616,7 +721,12 @@ function EXMEMNode({ data }) {
 
 function MEMWBNode({ data }) {
   return (
-    <div className="pipeline-node">
+    <div
+      className="pipeline-node"
+      style={
+        data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
+      }
+    >
       <label htmlFor="text">{data.label}</label>
       <Handle
         type="target"
@@ -739,7 +849,12 @@ function PipeControlNode({ data }) {
 
 function HazardDetectionNode({ data }) {
   return (
-    <div className="pipeunit-node">
+    <div
+      className="pipeunit-node"
+      style={
+        data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
+      }
+    >
       <label htmlFor="text">{data.label}</label>
       <Handle
         type="source"
@@ -784,7 +899,12 @@ function HazardDetectionNode({ data }) {
 
 function ForwardingUnitNode({ data }) {
   return (
-    <div className="pipeunit-node">
+    <div
+      className="pipeunit-node"
+      style={
+        data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
+      }
+    >
       <label htmlFor="text">{data.label}</label>
       <Handle
         type="source"
@@ -858,21 +978,25 @@ export function DiagramUtils() {
     {
       id: "PCAuxNode",
       position: { x: 980, y: 10 },
+      data: {},
       type: "pcAuxNode",
     },
     {
       id: "PCTopAuxNode",
       position: { x: 12, y: 10 },
+      data: {},
       type: "pcTopAuxNode",
     },
     {
       id: "PCounterFork",
       position: { x: 101, y: 333 },
+      data: {},
       type: "forkNode",
     },
     {
       id: "PCAddFork",
       position: { x: 99.5, y: 117.5 },
+      data: {},
       type: "forkNodeSecond",
     },
     {
@@ -915,6 +1039,7 @@ export function DiagramUtils() {
     {
       id: "MuxTop",
       position: { x: 945, y: 105 },
+      data: {},
       type: "muxNode",
     },
     {
@@ -940,16 +1065,19 @@ export function DiagramUtils() {
     {
       id: "InsDistributor",
       position: { x: 276, y: 295 },
+      data: {},
       type: "distributorNode",
     },
     {
       id: "InsFork",
       position: { x: 352, y: 387.5 },
+      data: {},
       type: "forkNode",
     },
     {
       id: "MuxIns",
       position: { x: 401, y: 315 },
+      data: {},
       type: "muxNode",
     },
     {
@@ -961,6 +1089,7 @@ export function DiagramUtils() {
     {
       id: "SignExtendDist",
       position: { x: 402, y: 467.5 },
+      data: {},
       type: "signExtendDist",
     },
     {
@@ -974,11 +1103,13 @@ export function DiagramUtils() {
     {
       id: "RegMuxFork1",
       position: { x: 575, y: 382.5 },
+      data: {},
       type: "forkNode",
     },
     {
       id: "RegMuxFork2",
       position: { x: 600, y: 402.5 },
+      data: {},
       type: "forkNodeSecond",
     },
     {
@@ -990,12 +1121,14 @@ export function DiagramUtils() {
     {
       id: "MuxReg",
       position: { x: 653, y: 365 },
+      data: {},
       type: "muxNode",
     },
     {
       id: "ALUControl",
       data: { label: "ALU Control" },
       position: { x: 660, y: 475 },
+      data: {},
       type: "aluControlNode",
     },
     {
@@ -1007,6 +1140,7 @@ export function DiagramUtils() {
     {
       id: "ALUFork",
       position: { x: 790, y: 327.5 },
+      data: {},
       type: "signExtendDist",
     },
     {
@@ -1018,21 +1152,25 @@ export function DiagramUtils() {
     {
       id: "ControlMemAuxNode",
       position: { x: 810, y: 430 },
+      data: {},
       type: "controlMemAuxNode",
     },
     {
       id: "MuxMem",
       position: { x: 943, y: 405 },
+      data: {},
       type: "muxNode",
     },
     {
       id: "MemAuxNode",
       position: { x: 970, y: 530 },
+      data: {},
       type: "memAuxNode",
     },
     {
       id: "MemLeftAuxNode",
       position: { x: 430, y: 530 },
+      data: {},
       type: "memLeftAuxNode",
     },
   ];
@@ -1314,7 +1452,7 @@ export function DiagramUtils() {
       style: { stroke: "#00ADEE" },
     },
     {
-      id: "e33",
+      id: "insMuxResult/readReg2",
       source: "MuxIns",
       target: "RegBank",
       targetHandle: "b",
