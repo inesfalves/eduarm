@@ -54,6 +54,22 @@ function App() {
       .padStart(64, "1");
   };
 
+  const get64Hexadecimal = (int) => {
+    if (int === "") {
+      int = 0;
+    }
+    let hexa = (parseInt(int, 10) >>> 0).toString(16);
+
+    for (let i = hexa.length * 4; i < 64; i += 4) {
+      if (int >= 0) {
+        hexa = "0" + hexa;
+      } else {
+        hexa = "f" + hexa;
+      }
+    }
+    return hexa;
+  };
+
   useEffect(() => {
     if (defineLatency) {
       console.log("Setting component latency");
@@ -232,12 +248,12 @@ function App() {
                   <div className="col-3 px-2">{registerList.slice(16, 24)}</div>
                   <div className="col-3 px-2">{registerList.slice(24, 32)}</div>
                 </div>
-                <div className="container text-center mt-5">
+                <div className="container text-center mt-3">
                   <div className="btn-group btn-group w-75" role="group">
                     <button
                       onClick={getPrevious}
                       type="button"
-                      className="btn btn-outline-dark col-3 p-2"
+                      className="btn btn-outline-dark col-3 p-1"
                     >
                       <FontAwesomeIcon icon={faBackward} className="mx-2" />
                       Previous
@@ -245,7 +261,7 @@ function App() {
                     <button
                       onClick={executeProgram}
                       type="button"
-                      className="btn btn-outline-primary col-5 p-2"
+                      className="btn btn-outline-primary col-5 p-1"
                     >
                       <FontAwesomeIcon icon={faPlay} className="mx-2" />
                       Execute
@@ -253,7 +269,7 @@ function App() {
                     <button
                       onClick={getNext}
                       type="button"
-                      className="btn btn-outline-dark col-3 p-2"
+                      className="btn btn-outline-dark col-3 p-1"
                     >
                       <FontAwesomeIcon icon={faForward} className="mx-2" />
                       Next
@@ -263,7 +279,7 @@ function App() {
                     <button
                       onClick={resetProgram}
                       type="button"
-                      className="btn btn-outline-dark col-3 p-2"
+                      className="btn btn-outline-dark col-3 p-0"
                     >
                       <FontAwesomeIcon icon={faRotateLeft} className="mx-2" />
                       Reset
@@ -271,7 +287,7 @@ function App() {
                     <button
                       onClick={performanceMode}
                       type="button"
-                      className="btn btn-outline-dark col-3 p-2"
+                      className="btn btn-outline-dark col-3 p-0"
                     >
                       <FontAwesomeIcon
                         icon={faGaugeSimpleHigh}
@@ -280,6 +296,8 @@ function App() {
                       Performance
                     </button>
                   </div>
+                  <div className="row mx-auto">hi</div>
+                  {/* buscar a instruçao atual atraves do cpu state? */}
                 </div>
               </div>
               <div
@@ -297,45 +315,51 @@ function App() {
             </div>
           </div>
           {showRegisterArea ? (
-            <div className="row mx-auto my-2">
-              <span>Register X{selectedRegister}</span>
-              <div className="w-50 input-group">
-                <span className="input-group-text numFormatField">HEX</span>
-                <input
-                  type="text"
-                  value={parseInt(get64binary(currentInput), 2).toString(16)}
-                  onChange={(e) => {
-                    setCurrentInput(
-                      (parseInt(e.target.value, 16) >>> 0).toString(10)
-                    );
-                    let auxRegs = registerValues.slice();
-                    auxRegs[selectedRegister][1] = (
-                      parseInt(e.target.value, 16) >>> 0
-                    ).toString(10);
-                    setRegisterValues(auxRegs);
-                  }}
-                  className="form-control"
-                  style={{ fontSize: 18 + "px" }}
-                ></input>
-              </div>
-              <div className="w-50 input-group">
-                <span className="input-group-text numFormatField">BIN </span>
-                <input
-                  type="text"
-                  value={get64binary(currentInput)}
-                  onChange={(e) => {
-                    setCurrentInput(
-                      (parseInt(e.target.value, 2) >>> 0).toString(10)
-                    );
-                    let auxRegs = registerValues.slice();
-                    auxRegs[selectedRegister][1] = (
-                      parseInt(e.target.value, 2) >>> 0
-                    ).toString(10);
-                    setRegisterValues(auxRegs);
-                  }}
-                  className="form-control"
-                  style={{ fontSize: 18 + "px" }}
-                ></input>
+            <div className="container my-4">
+              <div className="row align-items-center">
+                <div className="col-1 text-center">
+                  <span style={{ fontSize: 17 + "px" }}>
+                    Register X{selectedRegister}
+                  </span>
+                </div>
+                <div className="col-5 input-group" style={{ width: 40 + "%" }}>
+                  <span className="input-group-text numFormatField">HEX</span>
+                  <input
+                    type="text"
+                    value={get64Hexadecimal(currentInput)}
+                    onChange={(e) => {
+                      setCurrentInput(
+                        (parseInt(e.target.value, 16) >>> 0).toString(10)
+                      );
+                      let auxRegs = registerValues.slice();
+                      auxRegs[selectedRegister][1] = (
+                        parseInt(e.target.value, 16) >>> 0
+                      ).toString(10);
+                      setRegisterValues(auxRegs);
+                    }}
+                    className="form-control"
+                    style={{ fontSize: 18 + "px" }}
+                  ></input>
+                </div>
+                <div className="col w-50 input-group">
+                  <span className="input-group-text numFormatField">BIN </span>
+                  <input
+                    type="text"
+                    value={get64binary(currentInput)}
+                    onChange={(e) => {
+                      setCurrentInput(
+                        (parseInt(e.target.value, 2) >>> 0).toString(10)
+                      );
+                      let auxRegs = registerValues.slice();
+                      auxRegs[selectedRegister][1] = (
+                        parseInt(e.target.value, 2) >>> 0
+                      ).toString(10);
+                      setRegisterValues(auxRegs);
+                    }}
+                    className="form-control"
+                    style={{ fontSize: 18 + "px" }}
+                  ></input>
+                </div>
               </div>
             </div>
           ) : (
