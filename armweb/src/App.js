@@ -152,6 +152,16 @@ function App() {
     }
   };
 
+  const getCurrentInstruction = () => {
+    let insMem = cpuState.find((element) => element.id === "InsMem");
+    if (insMem === undefined) {
+      return "";
+    }
+    let instruction =
+      insMem.assembledInstructions[insMem.assembledInstructions.length - 1];
+    return instruction;
+  };
+
   const performanceMode = () => {
     setPerfMode(true);
     axios.get("http://localhost:3001/getCriticalPath").then(function (res) {
@@ -313,8 +323,7 @@ function App() {
                       Performance
                     </button>
                   </div>
-                  <div className="row mx-auto">hi</div>
-                  {/* buscar a instruçao atual atraves do cpu state? */}
+                  <div className="row mx-auto">{getCurrentInstruction()}</div>
                 </div>
               </div>
               <div
