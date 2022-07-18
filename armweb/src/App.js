@@ -36,6 +36,7 @@ function App() {
   const [selectedRegister, setSelectedRegister] = useState(0);
   const [perfMode, setPerfMode] = useState(false);
   const [assembly, setAssembly] = useState(false);
+  const [instructionDisplayed, setInstructionDisplayed] = useState(false);
 
   let tempReg = [];
   for (let i = 0; i < 32; i++) {
@@ -43,19 +44,41 @@ function App() {
     tempReg.push(registerMap);
   }
 
+  //Convert a two's compliment hexadecimal string into a BigInt
+  function hexToBigInt(hex) {
+    return BigInt(`0x${hex}`);
+  }
+
+  const getTwosComplementFromNegativeBinary = (num) => {
+    let binary = num.toString(2);
+    let complement = "";
+    for (let i = 0; i < binary.length; i++) {
+      if (binary[i] === "1") {
+        complement += "0";
+      } else {
+        complement += "1";
+      }
+    }
+    let aux = BigInt("0b" + complement);
+    return aux.toString(2);
+  };
+
   const get64binary = (int) => {
     if (int === "") {
       int = 0;
     }
-    if (int >= 0) return parseInt(int, 10).toString(2);
-    return (-parseInt(int, 10) - 1).toString(2).replace(/[01]/g, function (d) {
-      return +!+d;
-    });
+    int = parseInt(int, 10);
+    if (int >= 0) return "0" + parseInt(int, 10).toString(2);
+    else {
+      return getTwosComplementFromNegativeBinary(int);
+    }
   };
 
   const pad64Binary = (str) => {
-    let int = parseInt(str, 2).toString(10);
-    if (int >= 0) {
+    if (str.length === 0) {
+      return str.padStart(64, "0");
+    }
+    if (str[0] === "0") {
       return str.padStart(64, "0");
     } else {
       return str.padStart(64, "1");
@@ -72,7 +95,7 @@ function App() {
   };
 
   const pad64Hexadecimal = (str) => {
-    let int = parseInt(str, 16).toString(10);
+    let int = ~~parseInt(str, 16);
     for (let i = str.length; i < 16; i++) {
       if (int >= 0) {
         str = "0" + str;
@@ -123,6 +146,9 @@ function App() {
 
   const executeProgram = () => {
     setExecuted(true);
+    setInstructionDisplayed(
+      assemblyCode.split("\n")[assemblyCode.split("\n").length - 1]
+    );
     axios
       .post("http://localhost:3001/sendRegisters", registerValues)
       .then(() => {
@@ -138,6 +164,11 @@ function App() {
 
   const getPrevious = () => {
     if (cpuIndex > 0) {
+      let currInst = getPreviousElement(
+        assemblyCode.split("\n"),
+        instructionDisplayed
+      );
+      setInstructionDisplayed(currInst);
       setCpuState(savedCPUStates[cpuIndex - 1]);
       updateRegisters(savedCPUStates[cpuIndex - 1]);
       setCpuIndex(cpuIndex - 1);
@@ -146,9 +177,32 @@ function App() {
 
   const getNext = () => {
     if (cpuIndex < savedCPUStates.length - 1) {
+      let currInst = getNextElement(
+        assemblyCode.split("\n"),
+        instructionDisplayed
+      );
+      setInstructionDisplayed(currInst);
       setCpuState(savedCPUStates[cpuIndex + 1]);
       updateRegisters(savedCPUStates[cpuIndex + 1]);
       setCpuIndex(cpuIndex + 1);
+    }
+  };
+
+  const getPreviousElement = (array, element) => {
+    let index = array.indexOf(element);
+    if (index > 0) {
+      return array[index - 1];
+    } else {
+      return null;
+    }
+  };
+
+  const getNextElement = (array, element) => {
+    let index = array.indexOf(element);
+    if (index < array.length - 1) {
+      return array[index + 1];
+    } else {
+      return null;
     }
   };
 
@@ -159,7 +213,43 @@ function App() {
     }
     let instruction =
       insMem.assembledInstructions[insMem.assembledInstructions.length - 1];
-    return instruction;
+    return [instruction, instructionDisplayed];
+  };
+
+  const getInstructionTypeCodes = (instructionCode, instruction) => {
+    let instructionMap = new Map();
+    if (instruction === "" || instruction === undefined) {
+      return "";
+    }
+    let ins = instruction.split(" ");
+    let type = ins[0];
+    switch (type) {
+      case "add":
+      case "sub":
+      case "and":
+      case "or":
+        instructionMap.set("opcode", instructionCode.substring(0, 11));
+        instructionMap.set("rm", instructionCode.substring(11, 16));
+        instructionMap.set("shamt", instructionCode.substring(16, 22));
+        instructionMap.set("rn", instructionCode.substring(22, 27));
+        instructionMap.set("rd", instructionCode.substring(27, 32));
+        return instructionMap;
+      case "stur":
+      case "ldur":
+        instructionMap.set("opcode", instructionCode.substring(0, 11));
+        instructionMap.set("address", instructionCode.substring(11, 20));
+        instructionMap.set("0", instructionCode.substring(20, 22));
+        instructionMap.set("rn", instructionCode.substring(22, 27));
+        instructionMap.set("rd", instructionCode.substring(27, 32));
+        return instructionMap;
+      case "cbz":
+        instructionMap.set("opcode", instructionCode.substring(0, 8));
+        instructionMap.set("address", instructionCode.substring(8, 27));
+        instructionMap.set("rt", instructionCode.substring(27, 32));
+        return instructionMap;
+      case "b":
+        return "B";
+    }
   };
 
   const performanceMode = () => {
@@ -275,7 +365,7 @@ function App() {
                   <div className="col-3 px-2">{registerList.slice(16, 24)}</div>
                   <div className="col-3 px-2">{registerList.slice(24, 32)}</div>
                 </div>
-                <div className="container text-center mt-3">
+                <div className="container text-center my-2">
                   <div className="btn-group btn-group w-75" role="group">
                     <button
                       onClick={getPrevious}
@@ -323,7 +413,39 @@ function App() {
                       Performance
                     </button>
                   </div>
-                  <div className="row mx-auto">{getCurrentInstruction()}</div>
+                  <div className="container my-1">
+                    <div className="text-center mt-1 row">
+                      {getInstructionTypeCodes(
+                        getCurrentInstruction()[0],
+                        getCurrentInstruction()[1]
+                      ) !== ""
+                        ? Array.from(
+                            getInstructionTypeCodes(
+                              getCurrentInstruction()[0],
+                              getCurrentInstruction()[1]
+                            ).entries()
+                          ).map(([key, value]) => (
+                            <div className="col p-0">
+                              <div className="row m-0 text-center">
+                                <span key={key}>{value}</span>
+                              </div>
+                              <div
+                                className="row m-0 text-center"
+                                style={{ color: "purple" }}
+                              >
+                                <span key={value}>{key}</span>
+                              </div>
+                            </div>
+                          ))
+                        : ""}
+                    </div>
+                    <div
+                      className="text-center mt-2"
+                      style={{ color: "#0d6dfd" }}
+                    >
+                      {getCurrentInstruction()[1]}
+                    </div>
+                  </div>
                 </div>
               </div>
               <div
@@ -358,12 +480,41 @@ function App() {
                     value={currentHexInput}
                     onKeyPress={(e) => {
                       if (e.key === "Enter") {
-                        let val = parseInt(currentHexInput, 16);
+                        console.log(currentHexInput);
+                        let isNegative = [
+                          "8",
+                          "9",
+                          "A",
+                          "B",
+                          "C",
+                          "D",
+                          "E",
+                          "F",
+                          "a",
+                          "b",
+                          "c",
+                          "d",
+                          "e",
+                          "f",
+                        ].includes(currentHexInput[0]);
+                        let val = null;
+                        if (isNegative) {
+                          val = -parseInt(
+                            getTwosComplementFromNegativeBinary(
+                              BigInt("0x" + currentHexInput)
+                            ),
+                            2
+                          );
+                          console.log(val);
+                        } else {
+                          val = parseInt(currentHexInput, 16).toString(10);
+                        }
+
                         setCurrentInput(val);
-                        setCurrentBinInput(val);
+                        setCurrentBinInput(val.toString(2));
 
                         let auxRegs = registerValues.slice();
-                        auxRegs[selectedRegister][1] = (val >>> 0).toString(10);
+                        auxRegs[selectedRegister][1] = val;
                         setRegisterValues(auxRegs);
                       }
                     }}

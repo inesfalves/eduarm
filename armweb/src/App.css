@@ -104,7 +104,6 @@ input[type=number] {
   height: 4px;
   width: 1px;
   border: 0;
-  background: #a4a4a9;
   border-radius: 0;
 }
 
@@ -112,14 +111,12 @@ input[type=number] {
   height: 1px;
   width: 4px;
   border: 0;
-  background: #a4a4a9;
   border-radius: 0;
 }
 
 .distributor-node {
   height: 80px;
   width: 1px;
-  background: #a4a4a9;
 }
 
 .mux-node {

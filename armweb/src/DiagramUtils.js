@@ -8,18 +8,37 @@ function ForkNode({ data }) {
         data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
       }
     >
-      <Handle className="side-node" type="target" position={Position.Left} />
+      <Handle
+        className="side-node"
+        type="target"
+        position={Position.Left}
+        style={
+          data.borderColor !== undefined
+            ? { backgroundColor: data.borderColor }
+            : { backgroundColor: "#b1b1b7" }
+        }
+      />
       <Handle
         className="top-node"
         type="source"
         position={Position.Top}
         id="a"
+        style={
+          data.borderColor !== undefined
+            ? { backgroundColor: data.borderColor }
+            : { backgroundColor: "#b1b1b7" }
+        }
       />
       <Handle
         className="side-node"
         type="source"
         position={Position.Right}
         id="b"
+        style={
+          data.borderColor !== undefined
+            ? { backgroundColor: data.borderColor }
+            : { backgroundColor: "#b1b1b7" }
+        }
       />
     </div>
   );
@@ -49,8 +68,26 @@ function PCAuxNode({ data }) {
         data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
       }
     >
-      <Handle className="side-node" type="source" position={Position.Left} />
-      <Handle className="top-node" type="target" position={Position.Bottom} />
+      <Handle
+        className="side-node"
+        type="source"
+        position={Position.Left}
+        style={
+          data.borderColor !== undefined
+            ? { backgroundColor: data.borderColor }
+            : { backgroundColor: "#b1b1b7" }
+        }
+      />
+      <Handle
+        className="top-node"
+        type="target"
+        position={Position.Bottom}
+        style={
+          data.borderColor !== undefined
+            ? { backgroundColor: data.borderColor }
+            : { backgroundColor: "#b1b1b7" }
+        }
+      />
     </div>
   );
 }
@@ -63,8 +100,26 @@ function PCTopAuxNode({ data }) {
         data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
       }
     >
-      <Handle className="top-node" type="source" position={Position.Bottom} />
-      <Handle className="side-node" type="target" position={Position.Right} />
+      <Handle
+        className="top-node"
+        type="source"
+        position={Position.Bottom}
+        style={
+          data.borderColor !== undefined
+            ? { background: data.borderColor }
+            : { backgroundColor: "#b1b1b7" }
+        }
+      />
+      <Handle
+        className="side-node"
+        type="target"
+        position={Position.Right}
+        style={
+          data.borderColor !== undefined
+            ? { background: data.borderColor }
+            : { backgroundColor: "#b1b1b7" }
+        }
+      />
     </div>
   );
 }
@@ -77,8 +132,26 @@ function MemAuxNode({ data }) {
         data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
       }
     >
-      <Handle className="side-node" type="source" position={Position.Left} />
-      <Handle className="top-node" type="target" position={Position.Top} />
+      <Handle
+        className="side-node"
+        type="source"
+        position={Position.Left}
+        style={
+          data.borderColor !== undefined
+            ? { backgroundColor: data.borderColor }
+            : { backgroundColor: "#b1b1b7" }
+        }
+      />
+      <Handle
+        className="top-node"
+        type="target"
+        position={Position.Top}
+        style={
+          data.borderColor !== undefined
+            ? { backgroundColor: data.borderColor }
+            : { backgroundColor: "#b1b1b7" }
+        }
+      />
     </div>
   );
 }
@@ -91,8 +164,26 @@ function MemLeftAuxNode({ data }) {
         data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
       }
     >
-      <Handle className="top-node" type="source" position={Position.Top} />
-      <Handle className="side-node" type="target" position={Position.Right} />
+      <Handle
+        className="top-node"
+        type="source"
+        position={Position.Top}
+        style={
+          data.borderColor !== undefined
+            ? { backgroundColor: data.borderColor }
+            : { backgroundColor: "#b1b1b7" }
+        }
+      />
+      <Handle
+        className="side-node"
+        type="target"
+        position={Position.Right}
+        style={
+          data.borderColor !== undefined
+            ? { backgroundColor: data.borderColor }
+            : { backgroundColor: "#b1b1b7" }
+        }
+      />
     </div>
   );
 }
@@ -100,8 +191,26 @@ function MemLeftAuxNode({ data }) {
 function ControlMemAuxNode({ data }) {
   return (
     <div className="control-aux-node">
-      <Handle className="top-node" type="target" position={Position.Top} />
-      <Handle className="side-node" type="source" position={Position.Right} />
+      <Handle
+        className="top-node"
+        type="target"
+        position={Position.Top}
+        style={
+          data.borderColor !== undefined
+            ? { backgroundColor: data.borderColor }
+            : { backgroundColor: "#b1b1b7" }
+        }
+      />
+      <Handle
+        className="side-node"
+        type="source"
+        position={Position.Right}
+        style={
+          data.borderColor !== undefined
+            ? { backgroundColor: data.borderColor }
+            : { backgroundColor: "#b1b1b7" }
+        }
+      />
     </div>
   );
 }
@@ -114,18 +223,37 @@ function ForkNodeSecond({ data }) {
         data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
       }
     >
-      <Handle type="target" className="top-node" position={Position.Bottom} />
+      <Handle
+        type="target"
+        className="top-node"
+        position={Position.Bottom}
+        style={
+          data.borderColor !== undefined
+            ? { backgroundColor: data.borderColor }
+            : { backgroundColor: "#b1b1b7" }
+        }
+      />
       <Handle
         type="source"
         className="top-node"
         position={Position.Top}
         id="a"
+        style={
+          data.borderColor !== undefined
+            ? { backgroundColor: data.borderColor }
+            : { backgroundColor: "#b1b1b7" }
+        }
       />
       <Handle
         type="source"
         className="side-node"
         position={Position.Right}
         id="b"
+        style={
+          data.borderColor !== undefined
+            ? { backgroundColor: data.borderColor }
+            : { backgroundColor: "#b1b1b7" }
+        }
       />
     </div>
   );
@@ -139,18 +267,37 @@ function SignExtendDist({ data }) {
         data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
       }
     >
-      <Handle type="target" className="side-node" position={Position.Left} />
+      <Handle
+        type="target"
+        className="side-node"
+        position={Position.Left}
+        style={
+          data.borderColor !== undefined
+            ? { backgroundColor: data.borderColor }
+            : { backgroundColor: "#b1b1b7" }
+        }
+      />
       <Handle
         type="source"
         className="side-node"
         position={Position.Right}
         id="a"
+        style={
+          data.borderColor !== undefined
+            ? { backgroundColor: data.borderColor }
+            : { backgroundColor: "#b1b1b7" }
+        }
       />
       <Handle
         type="source"
         className="top-node"
         position={Position.Bottom}
         id="b"
+        style={
+          data.borderColor !== undefined
+            ? { backgroundColor: data.borderColor }
+            : { backgroundColor: "#b1b1b7" }
+        }
       />
     </div>
   );
@@ -352,15 +499,29 @@ function DistributorNode({ data }) {
     <div
       className="distributor-node"
       style={
-        data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
+        data.borderColor !== undefined ? { background: data.borderColor } : {}
       }
     >
-      <Handle type="target" className="side-node" position={Position.Left} />
+      <Handle
+        type="target"
+        className="side-node"
+        position={Position.Left}
+        style={
+          data.borderColor !== undefined
+            ? { backgroundColor: data.borderColor }
+            : { backgroundColor: "#b1b1b7" }
+        }
+      />
       <Handle
         type="source"
         className="top-node"
         position={Position.Top}
         id="a"
+        style={
+          data.borderColor !== undefined
+            ? { backgroundColor: data.borderColor }
+            : { backgroundColor: "#b1b1b7" }
+        }
       />
       <Handle
         type="source"
@@ -385,6 +546,11 @@ function DistributorNode({ data }) {
         className="top-node"
         position={Position.Bottom}
         id="e"
+        style={
+          data.borderColor !== undefined
+            ? { backgroundColor: data.borderColor }
+            : { backgroundColor: "#b1b1b7" }
+        }
       />
     </div>
   );
@@ -1065,6 +1231,7 @@ export function DiagramUtils() {
     {
       id: "InsDistributor",
       position: { x: 276, y: 295 },
+      style: { background: "#555" },
       data: {},
       type: "distributorNode",
     },
@@ -1128,7 +1295,6 @@ export function DiagramUtils() {
       id: "ALUControl",
       data: { label: "ALU Control" },
       position: { x: 660, y: 475 },
-      data: {},
       type: "aluControlNode",
     },
     {
@@ -1443,13 +1609,12 @@ export function DiagramUtils() {
       type: "smoothstep",
     },
     {
-      id: "e32",
+      id: "e32Control",
       source: "Control",
       sourceHandle: "a",
       targetHandle: "c",
       target: "MuxIns",
       type: "smoothstep",
-      style: { stroke: "#00ADEE" },
     },
     {
       id: "insMuxResult/readReg2",
@@ -1459,125 +1624,111 @@ export function DiagramUtils() {
       type: "smoothstep",
     },
     {
-      id: "e34",
+      id: "e34Control",
       source: "Control",
       sourceHandle: "c",
       target: "And",
       targetHandle: "a",
       type: "smoothstep",
-      style: { stroke: "#00ADEE" },
     },
     {
-      id: "e35",
+      id: "e35Control",
       source: "And",
       targetHandle: "b",
       target: "Or",
-      style: { stroke: "#00ADEE" },
       type: "smoothstep",
     },
     {
-      id: "e352",
+      id: "e352Control",
       source: "Control",
       sourceHandle: "b",
       target: "Or",
       targetHandle: "a",
       type: "smoothstep",
-      style: { stroke: "#00ADEE" },
     },
     {
-      id: "e353",
+      id: "e353Control",
       source: "Or",
       targetHandle: "c",
       target: "MuxTop",
-      style: { stroke: "#00ADEE" },
       type: "smoothstep",
     },
     {
-      id: "e36Aux",
+      id: "e36ControlAux",
       source: "Control",
       sourceHandle: "d",
       target: "ControlMemAuxNode",
       type: "smoothstep",
-      style: { stroke: "#00ADEE" },
     },
     {
-      id: "e36",
+      id: "e36Control",
       source: "ControlMemAuxNode",
       target: "DataMemory",
       targetHandle: "d",
       type: "smoothstep",
-      style: { stroke: "#00ADEE" },
     },
     {
-      id: "e37",
+      id: "e37Control",
       source: "Control",
       sourceHandle: "e",
       target: "MuxMem",
       targetHandle: "c",
       type: "smoothstep",
-      style: { stroke: "#00ADEE" },
     },
     {
-      id: "e38",
+      id: "e38Control",
       source: "Control",
       sourceHandle: "f",
       target: "ALUControl",
       targetHandle: "b",
       type: "smoothstep",
-      style: { stroke: "#00ADEE" },
     },
     {
-      id: "e39",
+      id: "e39Control",
       source: "Control",
       sourceHandle: "g",
       target: "ALUControl",
       targetHandle: "b",
       type: "smoothstep",
-      style: { stroke: "#00ADEE" },
     },
     {
-      id: "e40",
+      id: "e40Control",
       source: "ALUControl",
       target: "ALU",
       targetHandle: "c",
       type: "smoothstep",
-      style: { stroke: "#00ADEE" },
     },
     {
-      id: "e41",
+      id: "e41Control",
       source: "ALU",
       sourceHandle: "a",
       target: "And",
       targetHandle: "b",
       type: "smoothstep",
-      style: { stroke: "#00ADEE" },
     },
     {
-      id: "e42",
+      id: "e42Control",
       source: "Control",
       sourceHandle: "h",
       target: "DataMemory",
       targetHandle: "c",
       type: "smoothstep",
-      style: { stroke: "#00ADEE" },
     },
     {
-      id: "e43",
+      id: "e43Control",
       source: "Control",
       sourceHandle: "i",
       target: "MuxReg",
       targetHandle: "c",
       type: "smoothstep",
-      style: { stroke: "#00ADEE" },
     },
     {
-      id: "e44",
+      id: "e44Control",
       source: "Control",
       sourceHandle: "j",
       targetHandle: "f",
       target: "RegBank",
       type: "smoothstep",
-      style: { stroke: "#00ADEE" },
     },
   ];
 

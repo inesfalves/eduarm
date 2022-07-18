@@ -26,6 +26,10 @@ function Datapath(props) {
   const [nodeBg, setNodeBg] = useState("#1a192b");
 
   useEffect(() => {
+    paintControlLines();
+  }, []);
+
+  useEffect(() => {
     if (props.executed) {
       colorLines(props.relevantLines, "black");
     }
@@ -52,16 +56,24 @@ function Datapath(props) {
     }
   }, [componentLatency]);
 
+  const paintControlLines = () => {
+    for (let e of edges) {
+      if (e.id.includes("Control")) {
+        e.style = { stroke: "#00ADEE" };
+      }
+    }
+  };
+
   const colorLines = (lines, color) => {
     for (let e of edges) {
       let splitID = e.id.split("/");
       for (let l of lines) {
         if (splitID[0] === l[0].id && splitID[1] === l[1].id) {
+          let tempNodes = nodes;
           e.style = { stroke: color };
-          let currentNode = nodes.find((x) => x.id === l[0].component);
-          setNodes(
-            nodes.map((node) => {
-              if (node.id === currentNode.id) {
+          if (e.target.includes("Aux") || e.target.includes("Fork")) {
+            tempNodes = tempNodes.map((node) => {
+              if (node.id === e.target) {
                 node.style = {
                   ...node.style,
                   borderColor: color,
@@ -73,8 +85,26 @@ function Datapath(props) {
               }
 
               return node;
-            })
-          );
+            });
+          }
+
+          let currentNode = nodes.find((x) => x.id === l[1].component);
+          tempNodes = tempNodes.map((node) => {
+            if (node.id === currentNode.id) {
+              node.style = {
+                ...node.style,
+                borderColor: color,
+              };
+              node.data = {
+                ...node.data,
+                borderColor: color,
+              };
+            }
+
+            return node;
+          });
+
+          setNodes(tempNodes);
         }
       }
     }
@@ -190,6 +220,7 @@ function Datapath(props) {
   };
 
   const createTooltips = (instance) => {
+    paintControlLines(instance);
     let localNodes = instance.getNodes();
     for (let node of localNodes) {
       let nodeElement = document.querySelector(`[data-id=${node.id}`);
