@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 
 function Registers(props) {
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState(0n);
+  const [textInput, setTextInput] = useState("");
+  const MAX_VALUE = BigInt(2n ** 63n - 1n);
+  const MIN_VALUE = BigInt(-(2n ** 63n));
 
   const mystyle = {
     fontSize: "10px",
@@ -32,6 +35,7 @@ function Registers(props) {
 
   useEffect(() => {
     if (props.registerValues.length > 0) {
+      setTextInput(props.registerValues[props.registerID][1].toString());
       setInput(props.registerValues[props.registerID][1]);
     }
   }, [props.registerValues]);
@@ -52,9 +56,21 @@ function Registers(props) {
       <input
         id={"Reg" + props.registerID}
         type="number"
-        value={input}
+        value={textInput}
         onInput={(e) => {
-          setInput(e.target.value);
+          setTextInput(e.target.value);
+        }}
+        onKeyPress={(e) => {
+          if (e.key === "Enter") {
+            let newInput = BigInt(textInput);
+            if (newInput > MAX_VALUE) {
+              newInput = MAX_VALUE;
+            } else if (newInput < MIN_VALUE) {
+              newInput = MIN_VALUE;
+            }
+            setTextInput(newInput.toString());
+            setInput(newInput);
+          }
         }}
         onClick={switchSelectedRegister}
         className="form-control"

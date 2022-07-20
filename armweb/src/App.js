@@ -44,60 +44,65 @@ function App() {
     tempReg.push(registerMap);
   }
 
-  //Convert a two's compliment hexadecimal string into a BigInt
-  function hexToBigInt(hex) {
-    return BigInt(`0x${hex}`);
-  }
-
   const getTwosComplementFromNegativeBinary = (num) => {
-    let binary = num.toString(2);
     let complement = "";
-    for (let i = 0; i < binary.length; i++) {
-      if (binary[i] === "1") {
+    for (let i = 0; i < num.length; i++) {
+      if (num[i] === "1") {
         complement += "0";
       } else {
         complement += "1";
       }
     }
     let aux = BigInt("0b" + complement);
+    aux += 1n;
     return aux.toString(2);
   };
 
-  const get64binary = (int) => {
-    if (int === "") {
-      int = 0;
+  const hex2binary = (str) => {
+    let result = "";
+    for (let i = 0; i < str.length; i++) {
+      let hex = str[i];
+      let binary = parseInt(hex, 16).toString(2).padStart(4, "0");
+      result += binary;
     }
-    int = parseInt(int, 10);
-    if (int >= 0) return "0" + parseInt(int, 10).toString(2);
-    else {
-      return getTwosComplementFromNegativeBinary(int);
-    }
+    return result;
   };
 
-  const pad64Binary = (str) => {
-    if (str.length === 0) {
-      return str.padStart(64, "0");
+  const pad64Binary = (int) => {
+    let isNegative = int < 0;
+    let str = "";
+    if (isNegative) {
+      str = BigInt(
+        "0b" + getTwosComplementFromNegativeBinary(int.toString(2))
+      ).toString(2);
+      if (str.length > 64) {
+        str = str.slice(str.length - 64);
+      }
+    } else {
+      str = int.toString(2);
     }
-    if (str[0] === "0") {
+    if (!isNegative) {
       return str.padStart(64, "0");
     } else {
       return str.padStart(64, "1");
     }
   };
 
-  const get64Hexadecimal = (int) => {
-    if (int === "") {
-      int = 0;
+  const pad64Hexadecimal = (int) => {
+    let isNegative = int < 0;
+    let str = "";
+    if (isNegative) {
+      str = BigInt(
+        "0b" + getTwosComplementFromNegativeBinary(int.toString(2))
+      ).toString(16);
+      if (str.length > 16) {
+        str = str.slice(str.length - 16);
+      }
+    } else {
+      str = int.toString(16);
     }
-    let hexa = (parseInt(int, 10) >>> 0).toString(16);
-
-    return hexa;
-  };
-
-  const pad64Hexadecimal = (str) => {
-    let int = ~~parseInt(str, 16);
     for (let i = str.length; i < 16; i++) {
-      if (int >= 0) {
+      if (!isNegative) {
         str = "0" + str;
       } else {
         str = "f" + str;
@@ -283,8 +288,8 @@ function App() {
         setShowRegisterArea={setShowRegisterArea}
         setCurrentInput={(input) => {
           setCurrentInput(input);
-          setCurrentHexInput(pad64Hexadecimal(get64Hexadecimal(input)));
-          setCurrentBinInput(pad64Binary(get64binary(input)));
+          setCurrentHexInput(pad64Hexadecimal(input));
+          setCurrentBinInput(pad64Binary(input));
         }}
       ></Registers>
     );
@@ -480,7 +485,6 @@ function App() {
                     value={currentHexInput}
                     onKeyPress={(e) => {
                       if (e.key === "Enter") {
-                        console.log(currentHexInput);
                         let isNegative = [
                           "8",
                           "9",
@@ -499,19 +503,16 @@ function App() {
                         ].includes(currentHexInput[0]);
                         let val = null;
                         if (isNegative) {
-                          val = -parseInt(
-                            getTwosComplementFromNegativeBinary(
-                              BigInt("0x" + currentHexInput)
-                            ),
-                            2
-                          );
-                          console.log(val);
+                          val =
+                            BigInt(
+                              "0b" +
+                                getTwosComplementFromNegativeBinary(
+                                  hex2binary(currentHexInput)
+                                )
+                            ) * -1n;
                         } else {
-                          val = parseInt(currentHexInput, 16).toString(10);
+                          val = BigInt("0x" + currentHexInput);
                         }
-
-                        setCurrentInput(val);
-                        setCurrentBinInput(val.toString(2));
 
                         let auxRegs = registerValues.slice();
                         auxRegs[selectedRegister][1] = val;
@@ -537,12 +538,22 @@ function App() {
                     value={currentBinInput}
                     onKeyPress={(e) => {
                       if (e.key === "Enter") {
-                        let val = parseInt(currentBinInput, 2);
-                        setCurrentInput(val);
-                        setCurrentHexInput(val);
+                        let isNegative = currentBinInput[0] === "1";
+                        let val = null;
+                        if (isNegative) {
+                          val =
+                            BigInt(
+                              "0b" +
+                                getTwosComplementFromNegativeBinary(
+                                  currentBinInput
+                                )
+                            ) * -1n;
+                        } else {
+                          val = BigInt("0b" + currentBinInput);
+                        }
 
                         let auxRegs = registerValues.slice();
-                        auxRegs[selectedRegister][1] = (val >>> 0).toString(10);
+                        auxRegs[selectedRegister][1] = val;
                         setRegisterValues(auxRegs);
                       }
                     }}
