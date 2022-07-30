@@ -26,6 +26,7 @@ class Output {
     this.connectedTo = input;
     input.connectedTo = this;
     input.value = this.value;
+    input.data = this.data;
   }
 
   toJSON() {
@@ -36,12 +37,6 @@ class Output {
       data: this.data,
       connectedTo: this.connectedTo?.id,
     };
-  }
-
-  setRelevant() {
-    // if (this.data.value !== 0) {
-    //   this.isRelevant = true;
-    // }
   }
 
   toString() {

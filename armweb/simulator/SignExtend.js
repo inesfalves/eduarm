@@ -14,10 +14,22 @@ class SignExtend extends Component {
     super.latency = json.latency;
   }
 
+  parse(num, length = num.length) {
+    if (num[num.length - length] !== "1") return +("0b" + num);
+    let inverse = "";
+    for (const digit of num.slice(-length)) inverse += +!+digit;
+    return -("0b" + inverse) - 1;
+  }
+
   execute() {
-    this.signExtendOut.value = parseInt(
-      this.signExtendIn.data.getExtendedValue(64).value,
-      2
+    this.signExtendIn.value = this.parse(
+      this.signExtendIn.value.toString(2),
+      this.signExtendIn.data.size
+    );
+
+    this.signExtendOut.value = this.parse(
+      this.signExtendIn.data.getExtendedValue(64).value.toString(2),
+      64
     );
   }
 

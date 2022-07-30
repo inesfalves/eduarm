@@ -1,4 +1,18 @@
+import { useEffect, useState } from "react";
+
 function Navbar(props) {
+  const [format, setFormat] = useState("DEC");
+
+  useEffect(() => {
+    if (format === "DEC") {
+      props.setNumberFormat("DEC");
+    } else if (format === "HEX") {
+      props.setNumberFormat("HEX");
+    } else if (format === "BIN") {
+      props.setNumberFormat("BIN");
+    }
+  }, [format]);
+
   const showFile = (e) => {
     e.preventDefault();
     const reader = new FileReader();
@@ -22,25 +36,75 @@ function Navbar(props) {
 
   return (
     <nav className="navbar navbar-expand-md navbar-light bg-light">
-      <div style={{ visibility: props.assembly ? "visible" : "hidden" }}>
-        <button type="button" className="btn btn-light">
-          <label htmlFor="file-upload">Load</label>
-        </button>
-        <input id="file-upload" type="file" onChange={showFile} />
+      {props.datapath ? (
+        <div className="dropdown" style={{ width: "4em" }}>
+          <a
+            className="btn btn-light dropdown-toggle"
+            href="#"
+            role="button"
+            id="dropdownMenuLink"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Change format
+          </a>
+
+          <ul className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <li>
+              <button
+                className="dropdown-item"
+                onClick={() => setFormat("DEC")}
+              >
+                Decimal
+              </button>
+            </li>
+            <li>
+              <button
+                className="dropdown-item"
+                onClick={() => setFormat("BIN")}
+              >
+                Binary
+              </button>
+            </li>
+            <li>
+              <button
+                className="dropdown-item"
+                onClick={() => setFormat("HEX")}
+              >
+                Hexadecimal
+              </button>
+            </li>
+          </ul>
+        </div>
+      ) : (
         <button
           type="button"
           className="btn btn-light"
-          onClick={downloadTxtFile}
+          style={{
+            width: "4em",
+            visibility: props.assembly ? "visible" : "hidden",
+          }}
         >
-          Save
+          <label htmlFor="file-upload">Load</label>
         </button>
-      </div>
-
-      <div className="mx-auto order-0">
-        <a className="navbar-brand mx-auto" href="#">
-          EduARM
-        </a>
-      </div>
+      )}
+      <input
+        id="file-upload"
+        type="file"
+        onChange={showFile}
+        style={{ visibility: props.assembly ? "visible" : "hidden" }}
+      />
+      <button
+        type="button"
+        className="btn btn-light"
+        onClick={downloadTxtFile}
+        style={{ visibility: props.assembly ? "visible" : "hidden" }}
+      >
+        Save
+      </button>
+      <a className="navbar-brand mx-auto" href="#">
+        EduARM
+      </a>
     </nav>
   );
 }

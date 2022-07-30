@@ -35,6 +35,8 @@ class Control extends Component {
       this.controlInput.value
     );
 
+    console.log(this.controlInput.value);
+
     for (let i = 0; i < this.outputValues.length; i++) {
       this.outputValues[i].value = jsonOutputValues[this.outputValues[i].id];
     }

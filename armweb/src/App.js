@@ -24,6 +24,7 @@ function App() {
   const [memoryValues, setMemoryValues] = useState([]);
   const [executed, setExecuted] = useState(false);
   const [savedCPUStates, setSavedCPUStates] = useState([]);
+  const [savedRelevantLines, setSavedRelevantLines] = useState([]);
   const [numberFormat, setNumberFormat] = useState("DEC");
   const [defineLatency, setDefineLatency] = useState(false);
   const [relevantLines, setRelevantLines] = useState([]);
@@ -37,6 +38,8 @@ function App() {
   const [perfMode, setPerfMode] = useState(false);
   const [assembly, setAssembly] = useState(false);
   const [instructionDisplayed, setInstructionDisplayed] = useState(false);
+  const [datapath, setDatapath] = useState(true);
+  const [instructionFlow, setInstructionFlow] = useState(null);
 
   let tempReg = [];
   for (let i = 0; i < 32; i++) {
@@ -118,25 +121,6 @@ function App() {
   }, [defineLatency]);
 
   useEffect(() => {
-    let tempArray = registerValues.slice();
-    for (let i = 0; i < tempArray.length; i++) {
-      if (!isNaN(tempArray[i][1])) {
-        switch (numberFormat) {
-          case "BIN":
-            tempArray[i][1] = parseInt(tempArray[i][1], 10).toString(2);
-            break;
-          case "HEX":
-            tempArray[i][1] = parseInt(tempArray[i][1], 10).toString(16);
-            break;
-          case "DEC":
-            tempArray[i][1] = parseInt(tempArray[i][1], 10).toString(10);
-            break;
-        }
-      }
-    }
-  }, [numberFormat]);
-
-  useEffect(() => {
     setRegisterValues(tempReg);
     resetProgram();
   }, []);
@@ -158,10 +142,14 @@ function App() {
       .post("http://localhost:3001/sendRegisters", registerValues)
       .then(() => {
         axios.get("http://localhost:3001/execute").then(function (res) {
+          setInstructionFlow(res.data.instructionFlow);
           setSavedCPUStates(res.data.cpuStates);
+          setSavedRelevantLines(res.data.relevantLines);
           setCpuState(res.data.cpuStates[res.data.cpuStates.length - 1]);
           setCpuIndex(res.data.cpuStates.length - 1);
-          setRelevantLines(res.data.relevantLines);
+          setRelevantLines(
+            res.data.relevantLines[res.data.cpuStates.length - 1]
+          );
           updateRegisters(res.data.cpuStates[res.data.cpuStates.length - 1]);
         });
       });
@@ -169,12 +157,10 @@ function App() {
 
   const getPrevious = () => {
     if (cpuIndex > 0) {
-      let currInst = getPreviousElement(
-        assemblyCode.split("\n"),
-        instructionDisplayed
-      );
+      let currInst = getPreviousElement(assemblyCode.split("\n"));
       setInstructionDisplayed(currInst);
       setCpuState(savedCPUStates[cpuIndex - 1]);
+      setRelevantLines(savedRelevantLines[cpuIndex - 1]);
       updateRegisters(savedCPUStates[cpuIndex - 1]);
       setCpuIndex(cpuIndex - 1);
     }
@@ -182,30 +168,29 @@ function App() {
 
   const getNext = () => {
     if (cpuIndex < savedCPUStates.length - 1) {
-      let currInst = getNextElement(
-        assemblyCode.split("\n"),
-        instructionDisplayed
-      );
+      let currInst = getNextElement(assemblyCode.split("\n"));
       setInstructionDisplayed(currInst);
       setCpuState(savedCPUStates[cpuIndex + 1]);
+      setRelevantLines(savedRelevantLines[cpuIndex + 1]);
       updateRegisters(savedCPUStates[cpuIndex + 1]);
       setCpuIndex(cpuIndex + 1);
     }
   };
 
-  const getPreviousElement = (array, element) => {
-    let index = array.indexOf(element);
-    if (index > 0) {
-      return array[index - 1];
+  const getPreviousElement = (array) => {
+    console.log(instructionFlow);
+    console.log(cpuIndex);
+    console.log(array);
+    if (cpuIndex > 0) {
+      return array[instructionFlow[cpuIndex - 1]];
     } else {
       return null;
     }
   };
 
-  const getNextElement = (array, element) => {
-    let index = array.indexOf(element);
-    if (index < array.length - 1) {
-      return array[index + 1];
+  const getNextElement = (array) => {
+    if (cpuIndex < savedCPUStates.length - 1) {
+      return array[instructionFlow[cpuIndex + 1]];
     } else {
       return null;
     }
@@ -227,12 +212,22 @@ function App() {
       return "";
     }
     let ins = instruction.split(" ");
+
+    if (ins[0].endsWith(":")) {
+      ins = ins.slice(1);
+    }
+
+    console.log("INSTRUCTION");
+    console.log(instructionCode);
+    console.log(ins);
+
     let type = ins[0];
+
     switch (type) {
       case "add":
       case "sub":
       case "and":
-      case "or":
+      case "orr":
         instructionMap.set("opcode", instructionCode.substring(0, 11));
         instructionMap.set("rm", instructionCode.substring(11, 16));
         instructionMap.set("shamt", instructionCode.substring(16, 22));
@@ -253,7 +248,10 @@ function App() {
         instructionMap.set("rt", instructionCode.substring(27, 32));
         return instructionMap;
       case "b":
-        return "B";
+        instructionMap.set("opcode", instructionCode.substring(0, 8));
+        instructionMap.set("address", instructionCode.substring(8, 27));
+        instructionMap.set("rt", instructionCode.substring(27, 32));
+        return instructionMap;
     }
   };
 
@@ -270,6 +268,7 @@ function App() {
       setSavedCPUStates(res.data);
       setCpuIndex(0);
       setRegisterValues(tempReg);
+      setRelevantLines([]);
     });
   };
 
@@ -287,9 +286,9 @@ function App() {
         showRegisterArea={showRegisterArea}
         setShowRegisterArea={setShowRegisterArea}
         setCurrentInput={(input) => {
-          setCurrentInput(input);
-          setCurrentHexInput(pad64Hexadecimal(input));
-          setCurrentBinInput(pad64Binary(input));
+          setCurrentInput(BigInt(input));
+          setCurrentHexInput(pad64Hexadecimal(BigInt(input)));
+          setCurrentBinInput(pad64Binary(BigInt(input)));
         }}
       ></Registers>
     );
@@ -303,6 +302,8 @@ function App() {
         setAssemblyCode={setAssemblyCode}
         assemblyCode={assemblyCode}
         assembly={assembly}
+        datapath={datapath}
+        setNumberFormat={setNumberFormat}
       ></Navbar>
       <div className="container-fluid">
         <div className="row">
@@ -312,13 +313,12 @@ function App() {
               setCpuState={setCpuState}
               cpuState={cpuState}
               executed={executed}
-              setMemoryValues={setMemoryValues}
-              memoryValues={memoryValues}
               defineLatency={defineLatency}
               setDefineLatency={setDefineLatency}
               relevantLines={relevantLines}
               assemblyCode={assemblyCode}
               setAssemblyCode={setAssemblyCode}
+              setDatapath={setDatapath}
               criticalPath={criticalPath}
               perfMode={perfMode}
               setAssembly={setAssembly}

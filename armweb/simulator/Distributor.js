@@ -24,9 +24,6 @@ class Distributor extends Component {
   loadInstructionType(insType) {
     switch (insType) {
       case "loadType":
-        this.from[0] = 20;
-        this.to[0] = 12;
-        break;
       case "storeType":
         this.from[0] = 20;
         this.to[0] = 12;
@@ -49,6 +46,7 @@ class Distributor extends Component {
         this.createMask(this.from[i], this.to[i]),
         this.to[i]
       );
+      this.output[i].data.size = this.from[i] - this.to[i] + 1;
     }
   }
 

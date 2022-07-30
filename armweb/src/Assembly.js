@@ -21,8 +21,7 @@ function Assembly(props) {
     if (props.executed) {
       let lines = code.split("\n");
       let tempIns = [];
-      let jumpLabel = "";
-      let jumpPoint = 0;
+      let jumpMap = new Map();
       for (let i = 0; i < lines.length; i++) {
         tempIns.push(
           lines[i]
@@ -34,11 +33,27 @@ function Assembly(props) {
             .split(/\s+/)
         );
         if (tempIns[i][0].endsWith(":")) {
-          jumpLabel = tempIns[i][0].replace(/:/g, "");
-          jumpPoint = i;
+          jumpMap.set(tempIns[i][0].replace(/:/g, ""), i);
           tempIns[i].splice(0, 1);
         }
       }
+
+      for (let i = 0; i < tempIns.length; i++) {
+        if (tempIns[i][0].toLowerCase() === "b") {
+          if (isNaN(tempIns[i][1])) {
+            let diff = jumpMap.get(tempIns[i][1]) - i;
+            tempIns[i][1] = diff.toString();
+          }
+        }
+
+        if (tempIns[i][0].toLowerCase() === "cbz") {
+          if (isNaN(tempIns[i][2])) {
+            let diff = jumpMap.get(tempIns[i][2]) - i;
+            tempIns[i][2] = diff.toString();
+          }
+        }
+      }
+
       props.setInstructions(lines);
 
       axios

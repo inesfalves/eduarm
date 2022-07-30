@@ -23,7 +23,6 @@ function Datapath(props) {
   const [editingLatency, setEditingLatency] = useState(false);
   const [componentLatency, setComponentLatency] = useState(0);
   const [componentID, setComponentID] = useState("");
-  const [nodeBg, setNodeBg] = useState("#1a192b");
 
   useEffect(() => {
     paintControlLines();
@@ -66,38 +65,26 @@ function Datapath(props) {
 
   const colorLines = (lines, color) => {
     for (let e of edges) {
+      let defaultColor = "#b1b1b7";
+      if (e.id.includes("Control")) {
+        defaultColor = "#00ADEE";
+      }
       let splitID = e.id.split("/");
+
+      let tempNodes = nodes;
       for (let l of lines) {
         if (splitID[0] === l[0].id && splitID[1] === l[1].id) {
-          let tempNodes = nodes;
-          e.style = { stroke: color };
-          if (e.target.includes("Aux") || e.target.includes("Fork")) {
-            tempNodes = tempNodes.map((node) => {
-              if (node.id === e.target) {
-                node.style = {
-                  ...node.style,
-                  borderColor: color,
-                };
-                node.data = {
-                  ...node.data,
-                  borderColor: color,
-                };
-              }
-
-              return node;
-            });
-          }
-
+          defaultColor = color;
           let currentNode = nodes.find((x) => x.id === l[1].component);
           tempNodes = tempNodes.map((node) => {
             if (node.id === currentNode.id) {
               node.style = {
                 ...node.style,
-                borderColor: color,
+                borderColor: defaultColor,
               };
               node.data = {
                 ...node.data,
-                borderColor: color,
+                borderColor: defaultColor,
               };
             }
 
@@ -107,6 +94,25 @@ function Datapath(props) {
           setNodes(tempNodes);
         }
       }
+
+      if (e.target.includes("Aux") || e.target.includes("Fork")) {
+        tempNodes = tempNodes.map((node) => {
+          if (node.id === e.target) {
+            node.style = {
+              ...node.style,
+              borderColor: defaultColor,
+            };
+            node.data = {
+              ...node.data,
+              borderColor: defaultColor,
+            };
+          }
+
+          return node;
+        });
+      }
+
+      e.style = { stroke: defaultColor };
     }
   };
 

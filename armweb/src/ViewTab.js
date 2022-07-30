@@ -15,6 +15,7 @@ function ViewTab(props) {
   const [machineCodes, setMachineCodes] = useState([]);
   const [instructions, setInstructions] = useState([]);
   const [fileManage, setFileManage] = useState(false);
+  const [formatChange, setFormatChange] = useState(true);
 
   useEffect(() => {
     if (fileManage) {
@@ -23,6 +24,14 @@ function ViewTab(props) {
       props.setAssembly(false);
     }
   }, [fileManage]);
+
+  useEffect(() => {
+    if (formatChange) {
+      props.setDatapath(true);
+    } else {
+      props.setDatapath(false);
+    }
+  }, [formatChange]);
 
   return (
     <div className="viewtab">
@@ -37,7 +46,10 @@ function ViewTab(props) {
             role="tab"
             aria-controls="cpu"
             aria-selected="true"
-            onClick={() => setFileManage(false)}
+            onClick={() => {
+              setFileManage(false);
+              setFormatChange(true);
+            }}
           >
             <FontAwesomeIcon icon={faMicrochip} className="mx-2" />
             CPU
@@ -53,7 +65,10 @@ function ViewTab(props) {
             role="tab"
             aria-controls="assembly"
             aria-selected="false"
-            onClick={() => setFileManage(true)}
+            onClick={() => {
+              setFileManage(true);
+              setFormatChange(false);
+            }}
           >
             <FontAwesomeIcon icon={faCode} className="mx-2" />
             ASSEMBLY
@@ -69,7 +84,10 @@ function ViewTab(props) {
             role="tab"
             aria-controls="machine"
             aria-selected="false"
-            onClick={() => setFileManage(false)}
+            onClick={() => {
+              setFileManage(false);
+              setFormatChange(false);
+            }}
           >
             <FontAwesomeIcon icon={fa0} />
             <FontAwesomeIcon icon={fa1} className="me-2" />

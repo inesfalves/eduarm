@@ -28,7 +28,7 @@ function Registers(props) {
     props.setCurrentInput(input);
     if (props.registerValues.length > 0) {
       let auxRegs = props.registerValues.slice();
-      auxRegs[props.registerID][1] = input;
+      auxRegs[props.registerID][1] = input.toString();
       props.setRegisterValues(auxRegs);
     }
   }, [input]);

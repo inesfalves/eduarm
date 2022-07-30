@@ -81,24 +81,30 @@ class CPU {
     }
   }
 
-  executeCPU(instruction, instructionType) {
+  setInsMemInstructions(instructions) {
     for (let i = 0; i < this.cpuComponents.length; i++) {
       if (this.cpuComponents[i].id === "InsMem") {
-        this.cpuComponents[i].assembledInstructions.push(instruction);
+        this.cpuComponents[i].assembledInstructions = instructions;
       }
-      if (
-        this.cpuComponents[i].id === "InsDistributor" &&
-        instructionType === "cBranchType"
-      ) {
-        this.cpuComponents[i].from[0] = 31;
-        this.cpuComponents[i].to[0] = 24;
-      }
-      if (
-        this.cpuComponents[i].id === "InsDistributor" &&
-        instructionType === "uncondBranchType"
-      ) {
-        this.cpuComponents[i].from[0] = 31;
-        this.cpuComponents[i].to[0] = 26;
+    }
+  }
+
+  executeCPU(instruction, instructionType) {
+    for (let i = 0; i < this.cpuComponents.length; i++) {
+      // if (this.cpuComponents[i].id === "InsMem") {
+      //   this.cpuComponents[i].assembledInstructions.push(instruction);
+      // }
+      if (this.cpuComponents[i].id === "InsDistributor") {
+        if (instructionType === "cBranchType") {
+          this.cpuComponents[i].from[0] = 31;
+          this.cpuComponents[i].to[0] = 24;
+        } else if (instructionType === "uncondBranchType") {
+          this.cpuComponents[i].from[0] = 31;
+          this.cpuComponents[i].to[0] = 26;
+        } else {
+          this.cpuComponents[i].from[0] = 31;
+          this.cpuComponents[i].to[0] = 21;
+        }
       }
       if (this.cpuComponents[i].id === "SignExtendDist") {
         this.cpuComponents[i].loadInstructionType(instructionType);

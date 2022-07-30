@@ -29,20 +29,21 @@ app.use((req, res, next) => {
 
 app.get("/execute", (req, res) => {
   cpu.initializeCPU(registers, memory);
-  for (let i = 0; i < instructionGroup.length; i++) {
+  cpu.setInsMemInstructions(instructionGroup);
+  let instructionFlow = [];
+  for (let i = 0; i < instructionGroup.length; ) {
+    instructionFlow.push(i);
     let state = cpu.executeCPU(instructionGroup[i], instructionTypeGroup[i]);
+    i = state[0].updatedPC.data.value / 4;
     cpuStates.push(JSON.parse(JSON.stringify(state)));
-    relevantLines = cpu.returnCPURelevantLines(instructionTypeGroup[i]);
+    relevantLines.push(cpu.returnCPURelevantLines(instructionTypeGroup[i]));
   }
 
   res.send({
     cpuStates: cpuStates,
+    instructionFlow: instructionFlow,
     relevantLines: relevantLines,
   });
-});
-
-app.get("/getRelevantLines", (req, res) => {
-  res.send(relevantLines);
 });
 
 app.get("/getCriticalPath", (req, res) => {
@@ -53,6 +54,8 @@ app.get("/reset", (req, res) => {
   cpuStates = [];
   instructionGroup = [];
   instructionTypeGroup = [];
+  memory = new Array(15).fill(0);
+  relevantLines = [];
   cpu.resetCPU();
   res.send(cpuStates);
 });
@@ -100,11 +103,13 @@ app.post("/readInstruction", (req, res) => {
         break;
       case "b":
         address = (instruction[1] >>> 0).toString(2).padStart(26, "0");
+        address = address.substring(address.length - 26);
         instructionCodes.push(assembleJumpBInstruction(address));
         break;
       case "cbz":
         rd = (instruction[1] >>> 0).toString(2).padStart(5, "0");
         address = (instruction[2] >>> 0).toString(2).padStart(19, "0");
+        address = address.substring(address.length - 19);
         instructionCodes.push(assembleJumpCondInstruction(address, rd));
         break;
     }
@@ -193,7 +198,7 @@ app.get("/assembleJumpCondInstruction/:cond/:label", (req, res) => {
   res.send(JSON.stringify(instructionCode));
 });
 
-const assembleJumpCondInstruction = (rd, address) => {
+const assembleJumpCondInstruction = (address, rd) => {
   let opcode = "10110100";
   instructionTypeGroup.push("cBranchType");
   instructionCode = opcode + address + rd;
