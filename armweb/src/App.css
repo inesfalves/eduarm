@@ -10,6 +10,11 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
+
+.form-control:focus {
+  box-shadow: none !important;
+}  
+
 .numFormatField {
   width: 3.5em;
 }
@@ -19,8 +24,9 @@ input[type=number] {
   border-bottom: 1px solid rgb(211, 211, 211);
 }
 
+
 .formatInputArea:focus-within, .formatInputArea:active{
-  outline: 5px solid yellow;
+  outline: 4px solid #69c2e3;
 }
 
 .react-flow__attribution a{
@@ -218,8 +224,3 @@ input[type=number] {
 input[type="file"] {
   display: none;
 }
-
-
-
-
-

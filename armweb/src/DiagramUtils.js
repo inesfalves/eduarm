@@ -1766,51 +1766,61 @@ export function DiagramUtils() {
     {
       id: "PCAuxNode",
       position: { x: 227, y: 115 },
+      data: {},
       type: "pcAuxNode",
     },
     {
       id: "PCTopAuxNode",
       position: { x: 8, y: 115 },
+      data: {},
       type: "pcTopAuxNode",
     },
     {
       id: "PCounterFork",
       position: { x: 127, y: 332 },
+      data: {},
       type: "forkNode",
     },
     {
       id: "PCAddFork",
       position: { x: 128, y: 232.5 },
+      data: {},
       type: "forkNodeSecond",
     },
     {
       id: "HazardFork1",
       position: { x: 330, y: 123 },
+      data: {},
       type: "forkNodeSecond",
     },
     {
       id: "HazardFork2",
       position: { x: 330, y: 70.5 },
+      data: {},
       type: "forkNodeSecond",
     },
     {
       id: "HazardIDEXFork",
       position: { x: 612, y: 625 },
+      data: {},
       type: "forkNodeSecond",
     },
     {
       id: "ForwardIDEXFork1",
       position: { x: 612, y: 535 },
+      data: {},
       type: "forkNodeSecond",
     },
     {
       id: "ForwardIDEXFork2",
       position: { x: 612, y: 585 },
+      data: {},
       type: "forkNodeSecond",
     },
     {
       id: "ForwardEXMEMFork",
       position: { x: 916, y: 625.5 },
+      data: {},
       type: "forkNodeSecond",
     },
     {
@@ -1836,6 +1846,7 @@ export function DiagramUtils() {
     {
       id: "MuxTop",
       position: { x: 19, y: 305 },
+      data: {},
       type: "muxNode",
     },
     {
@@ -1855,11 +1866,13 @@ export function DiagramUtils() {
     {
       id: "InsDistributor",
       position: { x: 332, y: 284 },
+      data: {},
       type: "pipeDistNode",
     },
     {
       id: "MuxIns",
       position: { x: 370, y: 339 },
+      data: {},
       type: "muxNode",
     },
     {
@@ -1871,6 +1884,7 @@ export function DiagramUtils() {
     {
       id: "PipeSignExtendDist",
       position: { x: 328, y: 488.5 },
+      data: {},
       type: "pipesignExtendDist",
     },
     {
@@ -1884,11 +1898,13 @@ export function DiagramUtils() {
     {
       id: "RegMuxFork1",
       position: { x: 674, y: 474.5 },
+      data: {},
       type: "forkNode",
     },
     {
       id: "RegMuxFork2",
       position: { x: 665, y: 425.5 },
+      data: {},
       type: "forkNodeSecond",
     },
     {
@@ -1912,6 +1928,7 @@ export function DiagramUtils() {
     {
       id: "MuxControl",
       position: { x: 514, y: 105.5 },
+      data: {},
       type: "muxNode",
     },
     {
@@ -1995,26 +2012,31 @@ export function DiagramUtils() {
     {
       id: "ControlLineFork",
       position: { x: 644, y: 91 },
+      data: {},
       type: "forkNode",
     },
     {
       id: "ControlLineFork2",
       position: { x: 916, y: 91 },
+      data: {},
       type: "forkNode",
     },
     {
       id: "PipeMux1",
       position: { x: 630, y: 348 },
+      data: {},
       type: "pipeMuxNode",
     },
     {
       id: "PipeMux2",
       position: { x: 630, y: 436 },
+      data: {},
       type: "pipeMuxNode",
     },
     {
       id: "MuxReg",
       position: { x: 702, y: 388 },
+      data: {},
       type: "muxNode",
     },
     {
@@ -2032,6 +2054,7 @@ export function DiagramUtils() {
     {
       id: "ALUFork",
       position: { x: 943, y: 435 },
+      data: {},
       type: "signExtendDist",
     },
     {
@@ -2043,16 +2066,19 @@ export function DiagramUtils() {
     {
       id: "MuxMem",
       position: { x: 1150, y: 417 },
+      data: {},
       type: "muxNode",
     },
     {
       id: "MemAuxNode",
       position: { x: 1185, y: 641 },
+      data: {},
       type: "memAuxNode",
     },
     {
       id: "MemLeftAuxNode",
       position: { x: 376, y: 641 },
+      data: {},
       type: "memLeftAuxNode",
     },
   ];

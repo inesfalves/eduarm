@@ -42,7 +42,10 @@ function Registers(props) {
 
   return (
     <div
-      className={"input-group input-group-sm my-2 register" + props.registerID}
+      className={
+        "formatInputArea input-group input-group-sm my-2 register" +
+        props.registerID
+      }
     >
       <button
         style={mystyle}

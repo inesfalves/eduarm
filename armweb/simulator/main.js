@@ -13,6 +13,7 @@ let memory = new Array(15).fill(0);
 let instructionTypeGroup = [];
 let cpuStates = [];
 let relevantLines = [];
+let criticalPath = [];
 
 app.use(cors());
 app.use(express.json());
@@ -34,20 +35,18 @@ app.get("/execute", (req, res) => {
   for (let i = 0; i < instructionGroup.length; ) {
     instructionFlow.push(i);
     let state = cpu.executeCPU(instructionGroup[i], instructionTypeGroup[i]);
+    relevantLines.push(cpu.returnCPURelevantLines(instructionTypeGroup[i]));
+    criticalPath.push(cpu.returnCriticalPath(instructionTypeGroup[i]));
     i = state[0].updatedPC.data.value / 4;
     cpuStates.push(JSON.parse(JSON.stringify(state)));
-    relevantLines.push(cpu.returnCPURelevantLines(instructionTypeGroup[i]));
   }
 
   res.send({
     cpuStates: cpuStates,
     instructionFlow: instructionFlow,
     relevantLines: relevantLines,
+    criticalPath: criticalPath,
   });
-});
-
-app.get("/getCriticalPath", (req, res) => {
-  res.send(cpu.returnCriticalPath());
 });
 
 app.get("/reset", (req, res) => {
@@ -56,6 +55,7 @@ app.get("/reset", (req, res) => {
   instructionTypeGroup = [];
   memory = new Array(15).fill(0);
   relevantLines = [];
+  criticalPath = [];
   cpu.resetCPU();
   res.send(cpuStates);
 });

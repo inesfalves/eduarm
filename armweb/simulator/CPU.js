@@ -165,11 +165,21 @@ class CPU {
     return relevantLines;
   }
 
-  returnCriticalPath() {
+  returnCriticalPath(instructionType) {
     let criticalPath = [];
+    let cpuConnections = jsonFile.cpuConnections;
     for (let i = 0; i < this.connections.length; i++) {
-      if (this.connections[i][1].highestLatency) {
-        criticalPath.push(this.connections[i]);
+      for (let j = 0; j < cpuConnections.length; j++) {
+        if (
+          this.connections[i][1].id === cpuConnections[j].input &&
+          this.connections[i][0].id === cpuConnections[j].output
+        ) {
+          if (cpuConnections[j][instructionType + "CP"] !== undefined) {
+            if (cpuConnections[j][instructionType + "CP"] === "true") {
+              criticalPath.push(this.connections[i]);
+            }
+          }
+        }
       }
     }
     return criticalPath;

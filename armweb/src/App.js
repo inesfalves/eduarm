@@ -25,7 +25,9 @@ function App() {
   const [executed, setExecuted] = useState(false);
   const [savedCPUStates, setSavedCPUStates] = useState([]);
   const [savedRelevantLines, setSavedRelevantLines] = useState([]);
+  const [savedCriticalPath, setSavedCriticalPath] = useState([]);
   const [numberFormat, setNumberFormat] = useState("DEC");
+  const [cpuVer, setCpuVer] = useState("Unicycle");
   const [defineLatency, setDefineLatency] = useState(false);
   const [relevantLines, setRelevantLines] = useState([]);
   const [criticalPath, setCriticalPath] = useState([]);
@@ -145,11 +147,13 @@ function App() {
           setInstructionFlow(res.data.instructionFlow);
           setSavedCPUStates(res.data.cpuStates);
           setSavedRelevantLines(res.data.relevantLines);
+          setSavedCriticalPath(res.data.criticalPath);
           setCpuState(res.data.cpuStates[res.data.cpuStates.length - 1]);
           setCpuIndex(res.data.cpuStates.length - 1);
           setRelevantLines(
             res.data.relevantLines[res.data.cpuStates.length - 1]
           );
+          setCriticalPath(res.data.criticalPath[res.data.cpuStates.length - 1]);
           updateRegisters(res.data.cpuStates[res.data.cpuStates.length - 1]);
         });
       });
@@ -161,6 +165,7 @@ function App() {
       setInstructionDisplayed(currInst);
       setCpuState(savedCPUStates[cpuIndex - 1]);
       setRelevantLines(savedRelevantLines[cpuIndex - 1]);
+      setCriticalPath(savedCriticalPath[cpuIndex - 1]);
       updateRegisters(savedCPUStates[cpuIndex - 1]);
       setCpuIndex(cpuIndex - 1);
     }
@@ -172,15 +177,13 @@ function App() {
       setInstructionDisplayed(currInst);
       setCpuState(savedCPUStates[cpuIndex + 1]);
       setRelevantLines(savedRelevantLines[cpuIndex + 1]);
+      setCriticalPath(savedCriticalPath[cpuIndex + 1]);
       updateRegisters(savedCPUStates[cpuIndex + 1]);
       setCpuIndex(cpuIndex + 1);
     }
   };
 
   const getPreviousElement = (array) => {
-    console.log(instructionFlow);
-    console.log(cpuIndex);
-    console.log(array);
     if (cpuIndex > 0) {
       return array[instructionFlow[cpuIndex - 1]];
     } else {
@@ -201,8 +204,7 @@ function App() {
     if (insMem === undefined) {
       return "";
     }
-    let instruction =
-      insMem.assembledInstructions[insMem.assembledInstructions.length - 1];
+    let instruction = insMem.assembledInstructions[instructionFlow[cpuIndex]];
     return [instruction, instructionDisplayed];
   };
 
@@ -216,11 +218,6 @@ function App() {
     if (ins[0].endsWith(":")) {
       ins = ins.slice(1);
     }
-
-    console.log("INSTRUCTION");
-    console.log(instructionCode);
-    console.log(ins);
-
     let type = ins[0];
 
     switch (type) {
@@ -248,18 +245,14 @@ function App() {
         instructionMap.set("rt", instructionCode.substring(27, 32));
         return instructionMap;
       case "b":
-        instructionMap.set("opcode", instructionCode.substring(0, 8));
-        instructionMap.set("address", instructionCode.substring(8, 27));
-        instructionMap.set("rt", instructionCode.substring(27, 32));
+        instructionMap.set("opcode", instructionCode.substring(0, 6));
+        instructionMap.set("address", instructionCode.substring(6, 32));
         return instructionMap;
     }
   };
 
   const performanceMode = () => {
     setPerfMode(true);
-    axios.get("http://localhost:3001/getCriticalPath").then(function (res) {
-      setCriticalPath(res.data);
-    });
   };
 
   const resetProgram = () => {
@@ -269,8 +262,14 @@ function App() {
       setCpuIndex(0);
       setRegisterValues(tempReg);
       setRelevantLines([]);
+      setCriticalPath([]);
+      setPerfMode(false);
     });
   };
+
+  useEffect(() => {
+    resetProgram();
+  }, [cpuVer]);
 
   let registerList = [];
 
@@ -304,12 +303,15 @@ function App() {
         assembly={assembly}
         datapath={datapath}
         setNumberFormat={setNumberFormat}
+        setCpuVer={setCpuVer}
+        cpuVer={cpuVer}
       ></Navbar>
       <div className="container-fluid">
         <div className="row">
           <div className="col-8 px-0">
             <ViewTab
               numberFormat={numberFormat}
+              cpuVer={cpuVer}
               setCpuState={setCpuState}
               cpuState={cpuState}
               executed={executed}
@@ -430,11 +432,15 @@ function App() {
                               getCurrentInstruction()[1]
                             ).entries()
                           ).map(([key, value]) => (
-                            <div className="col p-0">
-                              <div className="row m-0 text-center">
+                            <div key={"div" + key} className="col p-0">
+                              <div
+                                key={"row" + key}
+                                className="row m-0 text-center"
+                              >
                                 <span key={key}>{value}</span>
                               </div>
                               <div
+                                key={"div2" + key}
                                 className="row m-0 text-center"
                                 style={{ color: "purple" }}
                               >

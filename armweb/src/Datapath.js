@@ -18,8 +18,8 @@ const {
 function Datapath(props) {
   const [nodes, setNodes] = useNodesState(initialNodes);
   const [edges, setEdges] = useEdgesState(initialEdges);
-  // const [plNodes, setNodes, onNodesChange] = useNodesState(pipeNodes);
-  // const [plEdges, setEdges, onEdgesChange] = useEdgesState(pipeEdges);
+  const [plNodes, setPipeNodes, onPipeNodesChange] = useNodesState(pipeNodes);
+  const [plEdges, setPipeEdges, onPipeEdgesChange] = useEdgesState(pipeEdges);
   const [editingLatency, setEditingLatency] = useState(false);
   const [componentLatency, setComponentLatency] = useState(0);
   const [componentID, setComponentID] = useState("");
@@ -31,14 +31,11 @@ function Datapath(props) {
   useEffect(() => {
     if (props.executed) {
       colorLines(props.relevantLines, "black");
+      if (props.perfMode) {
+        colorLines(props.criticalPath, "red", false);
+      }
     }
-  }, [props.relevantLines]);
-
-  useEffect(() => {
-    if (props.executed && props.perfMode) {
-      colorLines(props.criticalPath, "red");
-    }
-  }, [props.criticalPath]);
+  }, [props.perfMode, props.criticalPath, props.relevantLines]);
 
   useEffect(() => {
     if (props.executed) {
@@ -63,7 +60,7 @@ function Datapath(props) {
     }
   };
 
-  const colorLines = (lines, color) => {
+  const colorLines = (lines, color, overwrite = true) => {
     for (let e of edges) {
       let defaultColor = "#b1b1b7";
       if (e.id.includes("Control")) {
@@ -75,9 +72,32 @@ function Datapath(props) {
       for (let l of lines) {
         if (splitID[0] === l[0].id && splitID[1] === l[1].id) {
           defaultColor = color;
-          let currentNode = nodes.find((x) => x.id === l[1].component);
+          if (defaultColor !== "#b1b1b7" || overwrite) {
+            let currentNode = nodes.find((x) => x.id === l[1].component);
+            tempNodes = tempNodes.map((node) => {
+              if (node.id === currentNode.id) {
+                node.style = {
+                  ...node.style,
+                  borderColor: defaultColor,
+                };
+                node.data = {
+                  ...node.data,
+                  borderColor: defaultColor,
+                };
+              }
+
+              return node;
+            });
+
+            setNodes(tempNodes);
+          }
+        }
+      }
+
+      if (e.target.includes("Aux") || e.target.includes("Fork")) {
+        if (defaultColor !== "#b1b1b7" || overwrite) {
           tempNodes = tempNodes.map((node) => {
-            if (node.id === currentNode.id) {
+            if (node.id === e.target) {
               node.style = {
                 ...node.style,
                 borderColor: defaultColor,
@@ -90,29 +110,12 @@ function Datapath(props) {
 
             return node;
           });
-
-          setNodes(tempNodes);
         }
       }
 
-      if (e.target.includes("Aux") || e.target.includes("Fork")) {
-        tempNodes = tempNodes.map((node) => {
-          if (node.id === e.target) {
-            node.style = {
-              ...node.style,
-              borderColor: defaultColor,
-            };
-            node.data = {
-              ...node.data,
-              borderColor: defaultColor,
-            };
-          }
-
-          return node;
-        });
+      if (defaultColor !== "#b1b1b7" || overwrite) {
+        e.style = { stroke: defaultColor };
       }
-
-      e.style = { stroke: defaultColor };
     }
   };
 
@@ -249,81 +252,84 @@ function Datapath(props) {
     }
   };
 
-  const showNodeInf = (event, node) => {
-    console.log(node);
-  };
-
-  // return (
-  //   <div
-  //     style={{
-  //       height: 35.5 + "em",
-  //       width: 63.3 + "em",
-  //       maxHeight: 35.5 + "em",
-  //       maxWidth: 80 + "em",
-  //     }}
-  //   >
-  //     <div className="container px-0">
-  //       <div
-  //         className="row pb-0 mb-0"
-  //         style={{
-  //           height: 1 + "em",
-  //         }}
-  //       >
-  //         <button type="button" className="btn btn-sm btn-outline-info col-3">
-  //           IF
-  //         </button>
-  //         <button
-  //           type="button"
-  //           className="btn btn-sm btn-outline-success col-3"
-  //         >
-  //           ID
-  //         </button>
-  //         <button
-  //           type="button"
-  //           className="btn btn-sm btn-outline-warning col-3"
-  //         >
-  //           EX
-  //         </button>
-  //         <button type="button" className="btn btn-sm btn-outline-danger col-2">
-  //           MEM
-  //         </button>
-  //         <button
-  //           type="button"
-  //           className="btn btn-sm btn-outline-primary col-1"
-  //         >
-  //           WB
-  //         </button>
-  //       </div>
-  //     </div>
-  //     <ReactFlowProvider>
-  //       <ReactFlow
-  //         onlyRenderVisibleElements={true}
-  //         nodes={plNodes}
-  //         edges={plEdges}
-  //         nodeTypes={nodeTypes}
-  //         onNodesChange={onNodesChange}
-  //         onEdgesChange={onEdgesChange}
-  //         onNodeClick={showNodeInf}
-  //         panOnDrag={false}
-  //         defaultZoom="0.85"
-  //       />
-  //     </ReactFlowProvider>
-  //   </div>
-  // );
-
   return (
-    <ReactFlow
-      nodeTypes={nodeTypes}
-      nodes={nodes}
-      edges={edges}
-      onInit={createTooltips}
-      onNodeMouseEnter={showNodeInformation}
-      onNodeMouseLeave={hideNodeInformation}
-      nodesConnectable={false}
-      nodesDraggable={false}
-      onNodeClick={setLatency}
-      defaultZoom="1.02"
-    />
+    <>
+      {props.cpuVer === "Unicycle" ? (
+        <ReactFlow
+          nodeTypes={nodeTypes}
+          nodes={nodes}
+          edges={edges}
+          onInit={createTooltips}
+          onNodeMouseEnter={showNodeInformation}
+          onNodeMouseLeave={hideNodeInformation}
+          nodesConnectable={false}
+          nodesDraggable={false}
+          onNodeClick={setLatency}
+          defaultZoom="1.02"
+        />
+      ) : (
+        <div
+          style={{
+            height: 35 + "em",
+            width: 64 + "em",
+            maxHeight: 50 + "em",
+            maxWidth: 80 + "em",
+          }}
+        >
+          <div className="container px-0">
+            <div
+              className="row pb-0 m-0 w-100"
+              style={{
+                height: 1 + "em",
+              }}
+            >
+              <button
+                type="button"
+                className="btn btn-sm btn-outline-info col-3"
+              >
+                IF
+              </button>
+              <button
+                type="button"
+                className="btn btn-sm btn-outline-success col-3"
+              >
+                ID
+              </button>
+              <button
+                type="button"
+                className="btn btn-sm btn-outline-warning col-3"
+              >
+                EX
+              </button>
+              <button
+                type="button"
+                className="btn btn-sm btn-outline-danger col-2"
+              >
+                MEM
+              </button>
+              <button
+                type="button"
+                className="btn btn-sm btn-outline-primary col-1"
+              >
+                WB
+              </button>
+            </div>
+          </div>
+          <ReactFlowProvider>
+            <ReactFlow
+              onlyRenderVisibleElements={true}
+              nodes={plNodes}
+              edges={plEdges}
+              nodeTypes={nodeTypes}
+              onNodesChange={onPipeNodesChange}
+              onEdgesChange={onPipeEdgesChange}
+              panOnDrag={false}
+              defaultZoom="0.85"
+            />
+          </ReactFlowProvider>
+        </div>
+      )}
+    </>
   );
 }
 

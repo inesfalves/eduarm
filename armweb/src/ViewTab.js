@@ -112,6 +112,7 @@ function ViewTab(props) {
             defineLatency={props.defineLatency}
             setDefineLatency={props.setDefineLatency}
             numberFormat={props.numberFormat}
+            cpuVer={props.cpuVer}
             executed={props.executed}
             setCpuState={props.setCpuState}
             cpuState={props.cpuState}

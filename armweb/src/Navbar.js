@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 function Navbar(props) {
   const [format, setFormat] = useState("DEC");
+  const [cpuVersion, setCpuVersion] = useState("Unicycle");
 
   useEffect(() => {
     if (format === "DEC") {
@@ -34,47 +35,59 @@ function Navbar(props) {
     element.click();
   };
 
+  const checkCPUVersion = () => {
+    if (props.cpuVer === "Unicycle") {
+      alert("You are now using the Pipeline CPU version!");
+      props.setCpuVer("Pipeline");
+    } else if (props.cpuVer === "Pipeline") {
+      alert("You are now using the Unicycle CPU version!");
+      props.setCpuVer("Unicycle");
+    }
+  };
+
   return (
     <nav className="navbar navbar-expand-md navbar-light bg-light">
       {props.datapath ? (
-        <div className="dropdown" style={{ width: "4em" }}>
-          <a
-            className="btn btn-light dropdown-toggle"
-            href="#"
-            role="button"
-            id="dropdownMenuLink"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            Change format
-          </a>
+        <div>
+          <div className="dropdown" style={{ width: "4em" }}>
+            <a
+              className="btn btn-light dropdown-toggle"
+              href="#"
+              role="button"
+              id="dropdownMenuLink"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Change format
+            </a>
 
-          <ul className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <li>
-              <button
-                className="dropdown-item"
-                onClick={() => setFormat("DEC")}
-              >
-                Decimal
-              </button>
-            </li>
-            <li>
-              <button
-                className="dropdown-item"
-                onClick={() => setFormat("BIN")}
-              >
-                Binary
-              </button>
-            </li>
-            <li>
-              <button
-                className="dropdown-item"
-                onClick={() => setFormat("HEX")}
-              >
-                Hexadecimal
-              </button>
-            </li>
-          </ul>
+            <ul className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <li>
+                <button
+                  className="dropdown-item"
+                  onClick={() => setFormat("DEC")}
+                >
+                  Decimal
+                </button>
+              </li>
+              <li>
+                <button
+                  className="dropdown-item"
+                  onClick={() => setFormat("BIN")}
+                >
+                  Binary
+                </button>
+              </li>
+              <li>
+                <button
+                  className="dropdown-item"
+                  onClick={() => setFormat("HEX")}
+                >
+                  Hexadecimal
+                </button>
+              </li>
+            </ul>
+          </div>
         </div>
       ) : (
         <button
@@ -105,6 +118,13 @@ function Navbar(props) {
       <a className="navbar-brand mx-auto" href="#">
         EduARM
       </a>
+      <button
+        type="button"
+        className="btn btn-light mx-2"
+        onClick={checkCPUVersion}
+      >
+        Change version
+      </button>
     </nav>
   );
 }
