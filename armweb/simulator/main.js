@@ -1,79 +1,106 @@
 const express = require("express");
-const CPU = require("./CPU.js");
 const app = express();
+const sessions = require("express-session");
 const cors = require("cors");
 const port = 3001;
 
-let cpu = new CPU("basicCPU");
+const UserSession = require("./UserSession.js");
+const { userSession } = require("./modules.js");
 
-let instructionCode = "";
-let instructionGroup = [];
-let registers = [];
-let memory = new Array(15).fill(0);
-let instructionTypeGroup = [];
-let cpuStates = [];
-let relevantLines = [];
-let criticalPath = [];
-
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: "http://localhost:3000",
+  })
+);
 app.use(express.json());
+app.use(
+  sessions({
+    secret: "gaming",
+    name: "gaming",
+    cookie: { maxAge: 3600 * 1000 * 4, sameSite: false },
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  res.setHeader("Access-Control-Expose-Headers", "Set-Cookie");
   res.setHeader(
     "Access-Control-Allow-Headers",
-    "Content-Type, Access-Control-Allow-Headers"
+    "Content-Type, Access-Control-Allow-Headers, Origin"
   );
   next();
 });
 
 app.get("/execute", (req, res) => {
-  cpu.initializeCPU(registers, memory);
-  cpu.setInsMemInstructions(instructionGroup);
+  let userSession = new UserSession();
+  userSession.fromJSON(req.session.userSession);
+  userSession.cpu.initializeCPU(userSession.registers, userSession.memory);
+  userSession.cpu.setInsMemInstructions(userSession.instructionGroup);
   let instructionFlow = [];
-  for (let i = 0; i < instructionGroup.length; ) {
+  for (let i = 0; i < userSession.instructionGroup.length; ) {
     instructionFlow.push(i);
-    let state = cpu.executeCPU(instructionGroup[i], instructionTypeGroup[i]);
-    relevantLines.push(cpu.returnCPURelevantLines(instructionTypeGroup[i]));
-    criticalPath.push(cpu.returnCriticalPath(instructionTypeGroup[i]));
+    let state = userSession.cpu.executeCPU(
+      userSession.instructionGroup[i],
+      userSession.instructionTypeGroup[i]
+    );
+    userSession.relevantLines.push(
+      cpu.returnCPURelevantLines(userSession.instructionTypeGroup[i])
+    );
+    userSession.criticalPath.push(
+      cpu.returnCriticalPath(userSession.instructionTypeGroup[i])
+    );
     i = state[0].updatedPC.data.value / 4;
-    cpuStates.push(JSON.parse(JSON.stringify(state)));
+    userSession.cpuStates.push(JSON.parse(JSON.stringify(state)));
   }
+  req.session.userSession = userSession;
+  req.session.save();
 
   res.send({
-    cpuStates: cpuStates,
-    instructionFlow: instructionFlow,
-    relevantLines: relevantLines,
-    criticalPath: criticalPath,
+    cpuStates: userSession.cpuStates,
+    instructionFlow: userSession.instructionFlow,
+    relevantLines: userSession.relevantLines,
+    criticalPath: userSession.criticalPath,
   });
 });
 
 app.get("/reset", (req, res) => {
-  cpuStates = [];
-  instructionGroup = [];
-  instructionTypeGroup = [];
-  memory = new Array(15).fill(0);
-  relevantLines = [];
-  criticalPath = [];
-  cpu.resetCPU();
-  res.send(cpuStates);
+  let userSession = new UserSession();
+  if (req.session.userSession !== undefined) {
+    userSession.fromJSON(req.session.userSession);
+  }
+
+  req.session.userSession = userSession;
+  req.session.save();
+  res.send(req.session.userSession.cpuStates);
 });
 
 app.get("/recalculateLatency/:newLatency/:componentID", (req, res) => {
-  let newCpuState = cpu.recalculateComponentLatency(
+  let newCpuState = req.session.userSession.cpu.recalculateComponentLatency(
     req.params.newLatency,
     req.params.componentID
   );
+  req.session.save();
   res.send(newCpuState);
 });
 
 app.post("/sendRegisters", (req, res) => {
-  registers = req.body;
+  let userSession = new UserSession();
+  userSession.fromJSON(req.session.userSession);
+  userSession.registers = req.body;
+  req.session.userSession = userSession;
+  req.session.save();
   res.send("Registers");
 });
 
 app.post("/readInstruction", (req, res) => {
+  let userSession = new UserSession();
+  userSession.fromJSON(req.session.userSession);
+
   let instructions = req.body.instructions;
   let instructionCodes = [];
   let address,
@@ -91,6 +118,8 @@ app.post("/readInstruction", (req, res) => {
         instructionCodes.push(
           assembleALInstruction(instruction[0], rm, rn, rd)
         );
+        userSession.instructionTypeGroup.push("rType");
+        userSession.instructionGroup.push(instructionCode);
         break;
       case "ldur":
       case "stur":
@@ -115,6 +144,8 @@ app.post("/readInstruction", (req, res) => {
         break;
     }
   }
+  req.session.userSession = userSession;
+  req.session.save();
   res.send(JSON.stringify(instructionCodes));
 });
 
@@ -125,6 +156,12 @@ app.get("/assembleALInstruction/:op/:dest/:first/:second", (req, res) => {
   let rd = (req.params.dest >>> 0).toString(2).padStart(5, "0");
 
   let instructionCode = assembleALInstruction(op, rm, rn, rd);
+  userSession = new UserSession();
+  userSession.fromJSON(req.session.userSession);
+  userSession.instructionTypeGroup.push("rType");
+  userSession.instructionGroup.push(instructionCode);
+  req.session.userSession = userSession;
+  req.session.save();
   res.send(JSON.stringify(instructionCode));
 });
 
@@ -145,9 +182,7 @@ const assembleALInstruction = (op, rm, rn, rd) => {
       opcode = "10101010000";
       break;
   }
-  instructionTypeGroup.push("rType");
-  instructionCode = opcode + rm + shamt + rn + rd;
-  instructionGroup.push(instructionCode);
+  let instructionCode = opcode + rm + shamt + rn + rd;
   return instructionCode;
 };
 

@@ -15,6 +15,11 @@ class CPU {
     this.connections = [];
   }
 
+  fromJSON(json) {
+    this.cpuComponents = json.cpuComponents;
+    this.connections = json.connections;
+  }
+
   initializeCPU(registers, memory) {
     //Read JSON file
     let jsonComponents = Object.entries(jsonFile.cpuComponents);

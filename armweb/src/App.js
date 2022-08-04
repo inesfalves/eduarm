@@ -146,23 +146,30 @@ function App() {
         assemblyCode.split("\n")[assemblyCode.split("\n").length - 1]
       );
       axios
-        .post("http://localhost:3001/sendRegisters", registerValues)
+        .post("http://localhost:3001/sendRegisters", registerValues, {
+          withCredentials: true,
+        })
         .then(() => {
-          axios.get("http://localhost:3001/execute").then(function (res) {
-            setInstructionFlow(res.data.instructionFlow);
-            setSavedCPUStates(res.data.cpuStates);
-            setSavedRelevantLines(res.data.relevantLines);
-            setSavedCriticalPath(res.data.criticalPath);
-            setCpuState(res.data.cpuStates[res.data.cpuStates.length - 1]);
-            setCpuIndex(res.data.cpuStates.length - 1);
-            setRelevantLines(
-              res.data.relevantLines[res.data.cpuStates.length - 1]
-            );
-            setCriticalPath(
-              res.data.criticalPath[res.data.cpuStates.length - 1]
-            );
-            updateRegisters(res.data.cpuStates[res.data.cpuStates.length - 1]);
-          });
+          axios
+            .get("http://localhost:3001/execute", { withCredentials: true })
+            .then(function (res) {
+              console.log(res);
+              setInstructionFlow(res.data.instructionFlow);
+              setSavedCPUStates(res.data.cpuStates);
+              setSavedRelevantLines(res.data.relevantLines);
+              setSavedCriticalPath(res.data.criticalPath);
+              setCpuState(res.data.cpuStates[res.data.cpuStates.length - 1]);
+              setCpuIndex(res.data.cpuStates.length - 1);
+              setRelevantLines(
+                res.data.relevantLines[res.data.cpuStates.length - 1]
+              );
+              setCriticalPath(
+                res.data.criticalPath[res.data.cpuStates.length - 1]
+              );
+              updateRegisters(
+                res.data.cpuStates[res.data.cpuStates.length - 1]
+              );
+            });
         });
     }
   }, [errorsChecked]);
@@ -264,16 +271,18 @@ function App() {
   };
 
   const resetProgram = () => {
-    axios.get("http://localhost:3001/reset").then(function (res) {
-      setSavedCPUStates(res.data);
-      setCpuIndex(0);
-      setRegisterValues(tempReg);
-      setRelevantLines([]);
-      setCriticalPath([]);
-      setPerfMode(false);
-      setInstructionDisplayed(null);
-      setExecuted(false);
-    });
+    axios
+      .get("http://localhost:3001/reset", { withCredentials: true })
+      .then(function (res) {
+        setSavedCPUStates(res.data);
+        setCpuIndex(0);
+        setRegisterValues(tempReg);
+        setRelevantLines([]);
+        setCriticalPath([]);
+        setPerfMode(false);
+        setInstructionDisplayed(null);
+        setExecuted(false);
+      });
   };
 
   useEffect(() => {
