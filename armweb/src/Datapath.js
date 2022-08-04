@@ -270,10 +270,9 @@ function Datapath(props) {
       ) : (
         <div
           style={{
-            height: 35 + "em",
-            width: 64 + "em",
-            maxHeight: 50 + "em",
-            maxWidth: 80 + "em",
+            height: 75 + "vh",
+            width: 66.5 + "vw",
+            maxWidth: 70 + "vw",
           }}
         >
           <div className="container px-0">

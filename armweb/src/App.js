@@ -42,6 +42,7 @@ function App() {
   const [instructionDisplayed, setInstructionDisplayed] = useState(false);
   const [datapath, setDatapath] = useState(true);
   const [instructionFlow, setInstructionFlow] = useState(null);
+  const [errorsChecked, setErrorsChecked] = useState(false);
 
   let tempReg = [];
   for (let i = 0; i < 32; i++) {
@@ -137,27 +138,34 @@ function App() {
 
   const executeProgram = () => {
     setExecuted(true);
-    setInstructionDisplayed(
-      assemblyCode.split("\n")[assemblyCode.split("\n").length - 1]
-    );
-    axios
-      .post("http://localhost:3001/sendRegisters", registerValues)
-      .then(() => {
-        axios.get("http://localhost:3001/execute").then(function (res) {
-          setInstructionFlow(res.data.instructionFlow);
-          setSavedCPUStates(res.data.cpuStates);
-          setSavedRelevantLines(res.data.relevantLines);
-          setSavedCriticalPath(res.data.criticalPath);
-          setCpuState(res.data.cpuStates[res.data.cpuStates.length - 1]);
-          setCpuIndex(res.data.cpuStates.length - 1);
-          setRelevantLines(
-            res.data.relevantLines[res.data.cpuStates.length - 1]
-          );
-          setCriticalPath(res.data.criticalPath[res.data.cpuStates.length - 1]);
-          updateRegisters(res.data.cpuStates[res.data.cpuStates.length - 1]);
-        });
-      });
   };
+
+  useEffect(() => {
+    if (errorsChecked) {
+      setInstructionDisplayed(
+        assemblyCode.split("\n")[assemblyCode.split("\n").length - 1]
+      );
+      axios
+        .post("http://localhost:3001/sendRegisters", registerValues)
+        .then(() => {
+          axios.get("http://localhost:3001/execute").then(function (res) {
+            setInstructionFlow(res.data.instructionFlow);
+            setSavedCPUStates(res.data.cpuStates);
+            setSavedRelevantLines(res.data.relevantLines);
+            setSavedCriticalPath(res.data.criticalPath);
+            setCpuState(res.data.cpuStates[res.data.cpuStates.length - 1]);
+            setCpuIndex(res.data.cpuStates.length - 1);
+            setRelevantLines(
+              res.data.relevantLines[res.data.cpuStates.length - 1]
+            );
+            setCriticalPath(
+              res.data.criticalPath[res.data.cpuStates.length - 1]
+            );
+            updateRegisters(res.data.cpuStates[res.data.cpuStates.length - 1]);
+          });
+        });
+    }
+  }, [errorsChecked]);
 
   const getPrevious = () => {
     if (cpuIndex > 0) {
@@ -257,13 +265,14 @@ function App() {
 
   const resetProgram = () => {
     axios.get("http://localhost:3001/reset").then(function (res) {
-      setExecuted(false);
       setSavedCPUStates(res.data);
       setCpuIndex(0);
       setRegisterValues(tempReg);
       setRelevantLines([]);
       setCriticalPath([]);
       setPerfMode(false);
+      setInstructionDisplayed(null);
+      setExecuted(false);
     });
   };
 
@@ -324,6 +333,7 @@ function App() {
               criticalPath={criticalPath}
               perfMode={perfMode}
               setAssembly={setAssembly}
+              setErrorsChecked={setErrorsChecked}
             ></ViewTab>
           </div>
           <div className="col-4 p-0">
@@ -422,32 +432,34 @@ function App() {
                   </div>
                   <div className="container my-1">
                     <div className="text-center mt-1 row">
-                      {getInstructionTypeCodes(
-                        getCurrentInstruction()[0],
-                        getCurrentInstruction()[1]
-                      ) !== ""
-                        ? Array.from(
-                            getInstructionTypeCodes(
-                              getCurrentInstruction()[0],
-                              getCurrentInstruction()[1]
-                            ).entries()
-                          ).map(([key, value]) => (
-                            <div key={"div" + key} className="col p-0">
-                              <div
-                                key={"row" + key}
-                                className="row m-0 text-center"
-                              >
-                                <span key={key}>{value}</span>
+                      {instructionDisplayed !== null
+                        ? getInstructionTypeCodes(
+                            getCurrentInstruction()[0],
+                            getCurrentInstruction()[1]
+                          ) !== ""
+                          ? Array.from(
+                              getInstructionTypeCodes(
+                                getCurrentInstruction()[0],
+                                getCurrentInstruction()[1]
+                              ).entries()
+                            ).map(([key, value]) => (
+                              <div key={"div" + key} className="col p-0">
+                                <div
+                                  key={"row" + key}
+                                  className="row m-0 text-center"
+                                >
+                                  <span key={key}>{value}</span>
+                                </div>
+                                <div
+                                  key={"div2" + key}
+                                  className="row m-0 text-center"
+                                  style={{ color: "purple" }}
+                                >
+                                  <span key={value}>{key}</span>
+                                </div>
                               </div>
-                              <div
-                                key={"div2" + key}
-                                className="row m-0 text-center"
-                                style={{ color: "purple" }}
-                              >
-                                <span key={value}>{key}</span>
-                              </div>
-                            </div>
-                          ))
+                            ))
+                          : ""
                         : ""}
                     </div>
                     <div

@@ -94,6 +94,7 @@ app.post("/readInstruction", (req, res) => {
         break;
       case "ldur":
       case "stur":
+        if (instruction[3] === undefined) instruction[3] = 0;
         let offset = (instruction[3] >>> 0).toString(2).padStart(9, "0");
         rn = (instruction[2] >>> 0).toString(2).padStart(5, "0");
         rd = (instruction[1] >>> 0).toString(2).padStart(5, "0");

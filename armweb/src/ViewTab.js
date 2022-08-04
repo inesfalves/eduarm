@@ -95,17 +95,20 @@ function ViewTab(props) {
           </button>
         </li>
       </ul>
-      <div className="tab-content h-100" id="myTabContent">
+      <div
+        className="tab-content"
+        id="myTabContent"
+        style={{ height: 75 + "vh" }}
+      >
         <div
           className="tab-pane fade show active"
           id="cpu"
           role="tabpanel"
           aria-labelledby="cpu-tab"
           style={{
-            height: 35 + "em",
-            width: 64 + "em",
-            maxHeight: 50 + "em",
-            maxWidth: 80 + "em",
+            height: 75 + "vh",
+            width: 66.5 + "vw",
+            maxWidth: 70 + "vw",
           }}
         >
           <Datapath
@@ -122,18 +125,11 @@ function ViewTab(props) {
           ></Datapath>
         </div>
         <div
-          className="tab-pane fade"
+          className="tab-pane h-100 fade"
           id="assembly"
           role="tabpanel"
           aria-labelledby="assembly-tab"
-          style={{
-            height: 35 + "em",
-            width: 64 + "em",
-            maxHeight: 50 + "em",
-            maxWidth: 80 + "em",
-          }}
         >
-          {" "}
           <Assembly
             executed={props.executed}
             machineCodes={machineCodes}
@@ -142,6 +138,7 @@ function ViewTab(props) {
             instructions={instructions}
             assemblyCode={props.assemblyCode}
             setAssemblyCode={props.setAssemblyCode}
+            setErrorsChecked={props.setErrorsChecked}
           ></Assembly>
         </div>
         <div
@@ -149,12 +146,6 @@ function ViewTab(props) {
           id="machine"
           role="tabpanel"
           aria-labelledby="machine-tab"
-          style={{
-            height: 35 + "em",
-            width: 64 + "em",
-            maxHeight: 50 + "em",
-            maxWidth: 80 + "em",
-          }}
         >
           <MachineCode
             executed={props.executed}
