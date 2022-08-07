@@ -20,7 +20,6 @@ function Datapath(props) {
   const [edges, setEdges] = useEdgesState(initialEdges);
   const [plNodes, setPipeNodes, onPipeNodesChange] = useNodesState(pipeNodes);
   const [plEdges, setPipeEdges, onPipeEdgesChange] = useEdgesState(pipeEdges);
-  const [editingLatency, setEditingLatency] = useState(false);
   const [componentLatency, setComponentLatency] = useState(0);
   const [componentID, setComponentID] = useState("");
 
@@ -37,20 +36,20 @@ function Datapath(props) {
     }
   }, [props.perfMode, props.criticalPath, props.relevantLines]);
 
-  useEffect(() => {
-    if (props.executed) {
-      axios
-        .get(
-          "http://localhost:3001/recalculateLatency/" +
-            componentLatency +
-            "/" +
-            componentID
-        )
-        .then(function (res) {
-          props.setCpuState(res.data);
-        });
-    }
-  }, [componentLatency]);
+  // useEffect(() => {
+  //   if (props.executed) {
+  //     axios
+  //       .get(
+  //         "http://localhost:3001/recalculateLatency/" +
+  //           componentLatency +
+  //           "/" +
+  //           componentID
+  //       )
+  //       .then(function (res) {
+  //         props.setCpuState(res.data);
+  //       });
+  //   }
+  // }, [componentLatency]);
 
   const paintControlLines = () => {
     for (let e of edges) {
@@ -119,36 +118,36 @@ function Datapath(props) {
     }
   };
 
-  const changeLatency = (component, node, event) => {
-    setComponentID(component.id);
-    let nodeElement = document.querySelector(`[data-id=${node.id}`);
-    let latencyInput = nodeElement.getElementsByClassName("latencyNode");
-    latencyInput[0].innerHTML = "";
-    setComponentLatency(event.target.value);
-    setEditingLatency(false);
-  };
+  // const changeLatency = (component, node, event) => {
+  //   setComponentID(component.id);
+  //   let nodeElement = document.querySelector(`[data-id=${node.id}`);
+  //   let latencyInput = nodeElement.getElementsByClassName("latencyNode");
+  //   latencyInput[0].innerHTML = "";
+  //   setComponentLatency(event.target.value);
+  //   setEditingLatency(false);
+  // };
 
-  const setLatency = (event, node) => {
-    if (props.executed && !editingLatency) {
-      let nodeElement = document.querySelector(`[data-id=${node.id}`);
-      let latencyInput = nodeElement.getElementsByClassName("latencyNode");
-      let component = props.cpuState.find((x) => x.id === node.id);
-      latencyInput[0].innerHTML =
-        "<div className='container'><input type=' text ' name=' input ' value=" +
-        component.latency +
-        " /></div>";
-      latencyInput[0].style.opacity = 1;
-      latencyInput[0].style.position = "absolute";
-      latencyInput[0].style.zIndex = 2000;
-      let input = latencyInput[0].getElementsByTagName("input")[0];
-      input.addEventListener(
-        "change",
-        changeLatency.bind(null, component, node)
-      );
-      input.style.width = "3em";
-      setEditingLatency(true);
-    }
-  };
+  // const setLatency = (event, node) => {
+  //   if (props.executed && !editingLatency) {
+  //     let nodeElement = document.querySelector(`[data-id=${node.id}`);
+  //     let latencyInput = nodeElement.getElementsByClassName("latencyNode");
+  //     let component = props.cpuState.find((x) => x.id === node.id);
+  //     latencyInput[0].innerHTML =
+  //       "<div className='container'><input type=' text ' name=' input ' value=" +
+  //       component.latency +
+  //       " /></div>";
+  //     latencyInput[0].style.opacity = 1;
+  //     latencyInput[0].style.position = "absolute";
+  //     latencyInput[0].style.zIndex = 2000;
+  //     let input = latencyInput[0].getElementsByTagName("input")[0];
+  //     input.addEventListener(
+  //       "change",
+  //       changeLatency.bind(null, component, node)
+  //     );
+  //     input.style.width = "3em";
+  //     setEditingLatency(true);
+  //   }
+  // };
 
   const showNodeInformation = (event, node) => {
     if (props.executed) {
@@ -264,7 +263,7 @@ function Datapath(props) {
           onNodeMouseLeave={hideNodeInformation}
           nodesConnectable={false}
           nodesDraggable={false}
-          onNodeClick={setLatency}
+          //onNodeClick={setLatency}
           defaultZoom="1.02"
         />
       ) : (

@@ -112,8 +112,6 @@ function ViewTab(props) {
           }}
         >
           <Datapath
-            defineLatency={props.defineLatency}
-            setDefineLatency={props.setDefineLatency}
             numberFormat={props.numberFormat}
             cpuVer={props.cpuVer}
             executed={props.executed}

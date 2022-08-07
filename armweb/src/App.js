@@ -29,7 +29,6 @@ function App() {
   const [savedCriticalPath, setSavedCriticalPath] = useState([]);
   const [numberFormat, setNumberFormat] = useState("DEC");
   const [cpuVer, setCpuVer] = useState("Unicycle");
-  const [defineLatency, setDefineLatency] = useState(false);
   const [relevantLines, setRelevantLines] = useState([]);
   const [criticalPath, setCriticalPath] = useState([]);
   const [assemblyCode, setAssemblyCode] = useState(``);
@@ -133,12 +132,6 @@ function App() {
     }
     return str;
   };
-
-  useEffect(() => {
-    if (defineLatency) {
-      console.log("Setting component latency");
-    }
-  }, [defineLatency]);
 
   useEffect(() => {
     setRegisterValues(tempReg);
@@ -359,8 +352,6 @@ function App() {
               setCpuState={setCpuState}
               cpuState={cpuState}
               executed={executed}
-              defineLatency={defineLatency}
-              setDefineLatency={setDefineLatency}
               relevantLines={relevantLines}
               assemblyCode={assemblyCode}
               setAssemblyCode={setAssemblyCode}
