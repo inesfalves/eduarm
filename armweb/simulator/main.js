@@ -34,7 +34,7 @@ app.get("/execute", (req, res) => {
   let instructionFlow = [];
   for (let i = 0; i < instructionGroup.length; ) {
     instructionFlow.push(i);
-    let state = cpu.executeCPU(instructionGroup[i], instructionTypeGroup[i]);
+    let state = cpu.executeCPU(instructionTypeGroup[i]);
     relevantLines.push(cpu.returnCPURelevantLines(instructionTypeGroup[i]));
     criticalPath.push(cpu.returnCriticalPath(instructionTypeGroup[i]));
     i = state[0].updatedPC.data.value / 4;

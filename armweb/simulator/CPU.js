@@ -89,11 +89,8 @@ class CPU {
     }
   }
 
-  executeCPU(instruction, instructionType) {
+  executeCPU(instructionType) {
     for (let i = 0; i < this.cpuComponents.length; i++) {
-      // if (this.cpuComponents[i].id === "InsMem") {
-      //   this.cpuComponents[i].assembledInstructions.push(instruction);
-      // }
       if (this.cpuComponents[i].id === "InsDistributor") {
         if (instructionType === "cBranchType") {
           this.cpuComponents[i].from[0] = 31;

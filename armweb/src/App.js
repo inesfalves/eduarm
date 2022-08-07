@@ -23,6 +23,7 @@ function App() {
   const [registerValues, setRegisterValues] = useState([]);
   const [memoryValues, setMemoryValues] = useState([]);
   const [executed, setExecuted] = useState(false);
+  const [compiled, setCompiled] = useState(false);
   const [savedCPUStates, setSavedCPUStates] = useState([]);
   const [savedRelevantLines, setSavedRelevantLines] = useState([]);
   const [savedCriticalPath, setSavedCriticalPath] = useState([]);
@@ -42,13 +43,29 @@ function App() {
   const [instructionDisplayed, setInstructionDisplayed] = useState(false);
   const [datapath, setDatapath] = useState(true);
   const [instructionFlow, setInstructionFlow] = useState(null);
-  const [errorsChecked, setErrorsChecked] = useState(false);
+  const [errorsFound, setErrorsFound] = useState(false);
+  const [instructions, setInstructions] = useState([]);
 
   let tempReg = [];
   for (let i = 0; i < 32; i++) {
     let registerMap = [i, ""];
     tempReg.push(registerMap);
   }
+
+  const highlightCurrentInstruction = (instruction) => {
+    let codeLines = document.getElementsByClassName("code-line");
+    for (let i = 0; i < codeLines.length; i++) {
+      if (codeLines[i].innerText.includes(instruction) && i === cpuIndex) {
+        codeLines[i].style = "color: #00ADEE";
+      } else {
+        codeLines[i].style = "color: black";
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (executed) highlightCurrentInstruction(instructionDisplayed);
+  }, [cpuIndex]);
 
   const getTwosComplementFromNegativeBinary = (num) => {
     let complement = "";
@@ -136,15 +153,20 @@ function App() {
     }
   };
 
-  const executeProgram = () => {
-    setExecuted(true);
-  };
-
   useEffect(() => {
-    if (errorsChecked) {
-      setInstructionDisplayed(
-        assemblyCode.split("\n")[assemblyCode.split("\n").length - 1]
-      );
+    let tempIns = assemblyCode.split("\n");
+    for (let i = 0; i < tempIns.length; i++) {
+      if (tempIns[i].endsWith(":")) {
+        tempIns.splice(i, 1);
+      }
+    }
+    setInstructions(tempIns);
+  }, [assemblyCode]);
+
+  const executeProgram = () => {
+    if (compiled) {
+      setExecuted(true);
+      setInstructionDisplayed(instructions[instructions.length - 1]);
       axios
         .post("http://localhost:3001/sendRegisters", registerValues)
         .then(() => {
@@ -164,12 +186,24 @@ function App() {
             updateRegisters(res.data.cpuStates[res.data.cpuStates.length - 1]);
           });
         });
+    } else {
+      alert("Please compile the program before executing!");
     }
-  }, [errorsChecked]);
+  };
+
+  const compileProgram = () => {
+    setCompiled(true);
+  };
+
+  useEffect(() => {
+    if (errorsFound) {
+      alert("Please check for syntax errors before compiling!");
+    }
+  }, [errorsFound]);
 
   const getPrevious = () => {
     if (cpuIndex > 0) {
-      let currInst = getPreviousElement(assemblyCode.split("\n"));
+      let currInst = getPreviousElement(instructions);
       setInstructionDisplayed(currInst);
       setCpuState(savedCPUStates[cpuIndex - 1]);
       setRelevantLines(savedRelevantLines[cpuIndex - 1]);
@@ -181,7 +215,7 @@ function App() {
 
   const getNext = () => {
     if (cpuIndex < savedCPUStates.length - 1) {
-      let currInst = getNextElement(assemblyCode.split("\n"));
+      let currInst = getNextElement(instructions);
       setInstructionDisplayed(currInst);
       setCpuState(savedCPUStates[cpuIndex + 1]);
       setRelevantLines(savedRelevantLines[cpuIndex + 1]);
@@ -209,6 +243,7 @@ function App() {
 
   const getCurrentInstruction = () => {
     let insMem = cpuState.find((element) => element.id === "InsMem");
+
     if (insMem === undefined) {
       return "";
     }
@@ -333,7 +368,8 @@ function App() {
               criticalPath={criticalPath}
               perfMode={perfMode}
               setAssembly={setAssembly}
-              setErrorsChecked={setErrorsChecked}
+              setErrorsFound={setErrorsFound}
+              compiled={compiled}
             ></ViewTab>
           </div>
           <div className="col-4 p-0">
@@ -391,6 +427,13 @@ function App() {
                     >
                       <FontAwesomeIcon icon={faBackward} className="mx-2" />
                       Previous
+                    </button>
+                    <button
+                      onClick={compileProgram}
+                      type="button"
+                      className="btn btn-outline-primary col-5 p-1"
+                    >
+                      Compile
                     </button>
                     <button
                       onClick={executeProgram}

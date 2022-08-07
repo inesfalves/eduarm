@@ -131,14 +131,14 @@ function ViewTab(props) {
           aria-labelledby="assembly-tab"
         >
           <Assembly
-            executed={props.executed}
+            compiled={props.compiled}
             machineCodes={machineCodes}
             setMachineCodes={setMachineCodes}
             setInstructions={setInstructions}
             instructions={instructions}
             assemblyCode={props.assemblyCode}
             setAssemblyCode={props.setAssemblyCode}
-            setErrorsChecked={props.setErrorsChecked}
+            setErrorsFound={props.setErrorsFound}
           ></Assembly>
         </div>
         <div
@@ -148,7 +148,7 @@ function ViewTab(props) {
           aria-labelledby="machine-tab"
         >
           <MachineCode
-            executed={props.executed}
+            compiled={props.compiled}
             machineCodes={machineCodes}
             instructions={instructions}
           ></MachineCode>

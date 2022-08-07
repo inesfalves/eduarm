@@ -4,7 +4,7 @@ function MachineCode(props) {
   const [instructions, setInstructions] = useState([]);
 
   useEffect(() => {
-    if (props.executed) {
+    if (props.compiled) {
       let tempIns = [];
       for (var i = 0; i < props.instructions.length; i++) {
         tempIns.push(
