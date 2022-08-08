@@ -141,12 +141,28 @@ app.post("/readInstruction", (req, res) => {
         );
         break;
       case "ldur":
-      case "stur":
         if (instruction[3] === undefined) instruction[3] = 0;
-        let offset = (instruction[3] >>> 0).toString(2).padStart(9, "0");
+        offset = (instruction[3] >>> 0).toString(2).padStart(9, "0");
         rn = (instruction[2] >>> 0).toString(2).padStart(5, "0");
         rd = (instruction[1] >>> 0).toString(2).padStart(5, "0");
+        userSession.instructionTypeGroup.push("loadType");
         instructionCodes.push(
+          assembleMemInstruction(instruction[0], offset, rn, rd)
+        );
+        userSession.instructionGroup.push(
+          assembleMemInstruction(instruction[0], offset, rn, rd)
+        );
+        break;
+      case "stur":
+        if (instruction[3] === undefined) instruction[3] = 0;
+        offset = (instruction[3] >>> 0).toString(2).padStart(9, "0");
+        rn = (instruction[2] >>> 0).toString(2).padStart(5, "0");
+        rd = (instruction[1] >>> 0).toString(2).padStart(5, "0");
+        userSession.instructionTypeGroup.push("storeType");
+        instructionCodes.push(
+          assembleMemInstruction(instruction[0], offset, rn, rd)
+        );
+        userSession.instructionGroup.push(
           assembleMemInstruction(instruction[0], offset, rn, rd)
         );
         break;
@@ -154,12 +170,18 @@ app.post("/readInstruction", (req, res) => {
         address = (instruction[1] >>> 0).toString(2).padStart(26, "0");
         address = address.substring(address.length - 26);
         instructionCodes.push(assembleJumpBInstruction(address));
+        userSession.instructionTypeGroup.push("uncondBranchType");
+        userSession.instructionGroup.push(assembleJumpBInstruction(address));
         break;
       case "cbz":
         rd = (instruction[1] >>> 0).toString(2).padStart(5, "0");
         address = (instruction[2] >>> 0).toString(2).padStart(19, "0");
         address = address.substring(address.length - 19);
         instructionCodes.push(assembleJumpCondInstruction(address, rd));
+        userSession.instructionTypeGroup.push("cBranchType");
+        userSession.instructionGroup.push(
+          assembleJumpCondInstruction(address, rd)
+        );
         break;
     }
   }
@@ -218,15 +240,12 @@ const assembleMemInstruction = (op, offset, rn, rd) => {
   switch (op) {
     case "ldur":
       opcode = "11111000010";
-      instructionTypeGroup.push("loadType");
       break;
     case "stur":
       opcode = "11111000000";
-      instructionTypeGroup.push("storeType");
       break;
   }
   instructionCode = opcode + offset + op2 + rn + rd;
-  instructionGroup.push(instructionCode);
   return instructionCode;
 };
 
@@ -238,9 +257,7 @@ app.get("/assembleJumpBInstruction/:label", (req, res) => {
 
 const assembleJumpBInstruction = (address) => {
   let opcode = "000101";
-  instructionTypeGroup.push("uncondBranchType");
   instructionCode = opcode + address;
-  instructionGroup.push(instructionCode);
   return instructionCode;
 };
 
@@ -253,9 +270,7 @@ app.get("/assembleJumpCondInstruction/:cond/:label", (req, res) => {
 
 const assembleJumpCondInstruction = (address, rd) => {
   let opcode = "10110100";
-  instructionTypeGroup.push("cBranchType");
   instructionCode = opcode + address + rd;
-  instructionGroup.push(instructionCode);
   return instructionCode;
 };
 
