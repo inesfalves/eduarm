@@ -4,8 +4,8 @@ const sessions = require("express-session");
 const cors = require("cors");
 const port = 3001;
 
+const userSessions = {};
 const UserSession = require("./UserSession.js");
-const { userSession } = require("./modules.js");
 
 app.use(
   cors({
@@ -18,9 +18,7 @@ app.use(
   sessions({
     secret: "gaming",
     name: "gaming",
-    cookie: { maxAge: 3600 * 1000 * 4, sameSite: false },
-    resave: false,
-    saveUninitialized: true,
+    cookie: { maxAge: 3600 * 1000 * 4 },
   })
 );
 
@@ -36,9 +34,18 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use((req, res, next) => {
+  let userSession = userSessions[req.session.id];
+  if (userSession === undefined) {
+    userSession = new UserSession();
+    userSessions[req.session.id] = userSession;
+  }
+  next();
+});
+
 app.get("/execute", (req, res) => {
-  let userSession = new UserSession();
-  userSession.fromJSON(req.session.userSession);
+  let userSession = userSessions[req.session.id];
+  console.log(userSession);
   userSession.cpu.initializeCPU(userSession.registers, userSession.memory);
   userSession.cpu.setInsMemInstructions(userSession.instructionGroup);
   let instructionFlow = [];
@@ -57,8 +64,7 @@ app.get("/execute", (req, res) => {
     i = state[0].updatedPC.data.value / 4;
     userSession.cpuStates.push(JSON.parse(JSON.stringify(state)));
   }
-  req.session.userSession = userSession;
-  req.session.save();
+  userSessions[req.session.id] = userSession;
 
   res.send({
     cpuStates: userSession.cpuStates,
@@ -69,14 +75,11 @@ app.get("/execute", (req, res) => {
 });
 
 app.get("/reset", (req, res) => {
-  let userSession = new UserSession();
-  if (req.session.userSession !== undefined) {
-    userSession.fromJSON(req.session.userSession);
-  }
-
-  req.session.userSession = userSession;
+  let userSession = userSessions[req.session.id];
+  userSession.reset();
+  userSessions[req.session.id] = userSession;
   req.session.save();
-  res.send(req.session.userSession.cpuStates);
+  res.send(userSession.cpuStates);
 });
 
 app.get("/recalculateLatency/:newLatency/:componentID", (req, res) => {
@@ -89,17 +92,15 @@ app.get("/recalculateLatency/:newLatency/:componentID", (req, res) => {
 });
 
 app.post("/sendRegisters", (req, res) => {
-  let userSession = new UserSession();
-  userSession.fromJSON(req.session.userSession);
+  let userSession = userSessions[req.session.id];
   userSession.registers = req.body;
-  req.session.userSession = userSession;
-  req.session.save();
+  userSessions[req.session.id] = userSession;
+  console.log(userSession);
   res.send("Registers");
 });
 
 app.post("/readInstruction", (req, res) => {
-  let userSession = new UserSession();
-  userSession.fromJSON(req.session.userSession);
+  let userSession = userSessions[req.session.id];
 
   let instructions = req.body.instructions;
   let instructionCodes = [];
@@ -119,7 +120,9 @@ app.post("/readInstruction", (req, res) => {
           assembleALInstruction(instruction[0], rm, rn, rd)
         );
         userSession.instructionTypeGroup.push("rType");
-        userSession.instructionGroup.push(instructionCode);
+        userSession.instructionGroup.push(
+          assembleALInstruction(instruction[0], rm, rn, rd)
+        );
         break;
       case "ldur":
       case "stur":
@@ -144,8 +147,9 @@ app.post("/readInstruction", (req, res) => {
         break;
     }
   }
-  req.session.userSession = userSession;
-  req.session.save();
+
+  userSessions[req.session.id] = userSession;
+  console.log(userSession);
   res.send(JSON.stringify(instructionCodes));
 });
 
@@ -156,12 +160,10 @@ app.get("/assembleALInstruction/:op/:dest/:first/:second", (req, res) => {
   let rd = (req.params.dest >>> 0).toString(2).padStart(5, "0");
 
   let instructionCode = assembleALInstruction(op, rm, rn, rd);
-  userSession = new UserSession();
-  userSession.fromJSON(req.session.userSession);
+  let userSession = userSessions[req.session.id];
   userSession.instructionTypeGroup.push("rType");
   userSession.instructionGroup.push(instructionCode);
-  req.session.userSession = userSession;
-  req.session.save();
+  userSessions[req.session.id] = userSession;
   res.send(JSON.stringify(instructionCode));
 });
 

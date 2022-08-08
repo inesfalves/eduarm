@@ -26,6 +26,18 @@ class UserSession {
     this.relevantLines = json.relevantLines;
     this.criticalPath = json.criticalPath;
   }
+
+  reset() {
+    this.cpu.resetCPU();
+    this.cpuStates = [];
+    this.instructionGroup = [];
+    this.instructionCode = "";
+    this.registers = [];
+    this.memory = new Array(15).fill(0);
+    this.instructionTypeGroup = [];
+    this.relevantLines = [];
+    this.criticalPath = [];
+  }
 }
 
 module.exports = UserSession;
