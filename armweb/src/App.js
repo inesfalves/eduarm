@@ -16,6 +16,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const axios = require("axios");
+axios.defaults.withCredentials = true;
 
 function App() {
   const [cpuState, setCpuState] = useState([]);
@@ -134,7 +135,6 @@ function App() {
   };
 
   useEffect(() => {
-    setRegisterValues(tempReg);
     resetProgram();
   }, []);
 
@@ -163,12 +163,12 @@ function App() {
       axios
         .post("http://localhost:3001/sendRegisters", registerValues, {
           withCredentials: true,
+          credentials: "include",
         })
         .then(() => {
           axios
             .get("http://localhost:3001/execute", { withCredentials: true })
             .then(function (res) {
-              console.log(res);
               setInstructionFlow(res.data.instructionFlow);
               setSavedCPUStates(res.data.cpuStates);
               setSavedRelevantLines(res.data.relevantLines);
@@ -247,6 +247,7 @@ function App() {
     if (insMem === undefined) {
       return "";
     }
+
     let instruction = insMem.assembledInstructions[instructionFlow[cpuIndex]];
     return [instruction, instructionDisplayed];
   };
@@ -313,9 +314,9 @@ function App() {
       });
   };
 
-  useEffect(() => {
-    resetProgram();
-  }, [cpuVer]);
+  // useEffect(() => {
+  //   resetProgram();
+  // }, [cpuVer]);
 
   let registerList = [];
 

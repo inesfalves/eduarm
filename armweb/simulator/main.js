@@ -6,21 +6,49 @@ const port = 3001;
 
 const userSessions = {};
 const UserSession = require("./UserSession.js");
-
+const RedisStore = require("connect-redis")(sessions);
+const { createClient } = require("redis");
+let redisClient = createClient({ legacyMode: true });
+redisClient.connect().catch(console.error);
 app.use(
   cors({
     credentials: true,
     origin: "http://localhost:3000",
   })
 );
+let store = new RedisStore({
+  client: redisClient,
+});
 app.use(express.json());
 app.use(
   sessions({
     secret: "gaming",
     name: "gaming",
     cookie: { maxAge: 3600 * 1000 * 4 },
+    saveUninitialized: true,
+    resave: true,
+    store: store,
   })
 );
+
+setInterval(() => {
+  store.all((err, sessions) => {
+    if (err) {
+      console.error(err);
+    } else {
+      let activeSessions = [];
+      for (let cookie of sessions) {
+        activeSessions.push(cookie.id);
+      }
+
+      for (let sessionID in userSessions) {
+        if (!activeSessions.includes(sessionID)) {
+          delete userSessions[sessionID];
+        }
+      }
+    }
+  });
+}, 1000 * 60 * 15);
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
@@ -45,7 +73,6 @@ app.use((req, res, next) => {
 
 app.get("/execute", (req, res) => {
   let userSession = userSessions[req.session.id];
-  console.log(userSession);
   userSession.cpu.initializeCPU(userSession.registers, userSession.memory);
   userSession.cpu.setInsMemInstructions(userSession.instructionGroup);
   let instructionFlow = [];
@@ -53,10 +80,12 @@ app.get("/execute", (req, res) => {
     instructionFlow.push(i);
     let state = userSession.cpu.executeCPU(userSession.instructionTypeGroup[i]);
     userSession.relevantLines.push(
-      cpu.returnCPURelevantLines(userSession.instructionTypeGroup[i])
+      userSession.cpu.returnCPURelevantLines(
+        userSession.instructionTypeGroup[i]
+      )
     );
     userSession.criticalPath.push(
-      cpu.returnCriticalPath(userSession.instructionTypeGroup[i])
+      userSession.cpu.returnCriticalPath(userSession.instructionTypeGroup[i])
     );
     i = state[0].updatedPC.data.value / 4;
     userSession.cpuStates.push(JSON.parse(JSON.stringify(state)));
@@ -65,7 +94,7 @@ app.get("/execute", (req, res) => {
 
   res.send({
     cpuStates: userSession.cpuStates,
-    instructionFlow: userSession.instructionFlow,
+    instructionFlow: instructionFlow,
     relevantLines: userSession.relevantLines,
     criticalPath: userSession.criticalPath,
   });
@@ -74,25 +103,15 @@ app.get("/execute", (req, res) => {
 app.get("/reset", (req, res) => {
   let userSession = userSessions[req.session.id];
   userSession.reset();
+  req.session.save();
   userSessions[req.session.id] = userSession;
-  req.session.save();
   res.send(userSession.cpuStates);
-});
-
-app.get("/recalculateLatency/:newLatency/:componentID", (req, res) => {
-  let newCpuState = req.session.userSession.cpu.recalculateComponentLatency(
-    req.params.newLatency,
-    req.params.componentID
-  );
-  req.session.save();
-  res.send(newCpuState);
 });
 
 app.post("/sendRegisters", (req, res) => {
   let userSession = userSessions[req.session.id];
   userSession.registers = req.body;
   userSessions[req.session.id] = userSession;
-  console.log(userSession);
   res.send("Registers");
 });
 
@@ -146,7 +165,6 @@ app.post("/readInstruction", (req, res) => {
   }
 
   userSessions[req.session.id] = userSession;
-  console.log(userSession);
   res.send(JSON.stringify(instructionCodes));
 });
 
