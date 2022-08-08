@@ -28,6 +28,10 @@ function Assembly(props) {
     const arithmeticInstructions = ["add", "sub", "and", "orr"];
     const memInstructions = ["ldur", "stur"];
 
+    if (instruction.length === 0) {
+      return "Please enter a valid instruction.";
+    }
+
     if (!validInstructions.includes(instruction[0].toLowerCase())) {
       return "Please enter a valid instruction.";
     }
@@ -38,16 +42,16 @@ function Assembly(props) {
           //check if rest of string is number
           if (!Number.isInteger(parseInt(instruction[i].slice(1)))) {
             return (
-              "Please make sure the register written in the" +
+              "Please make sure the register written in the " +
               instruction[0] +
-              "instruction exists."
+              " instruction exists."
             );
           }
         } else {
           return (
-            "Please make sure the register written in the" +
+            "Please make sure the register written in the " +
             instruction[0] +
-            "starts with an x."
+            " starts with an x."
           );
         }
       }
@@ -60,16 +64,16 @@ function Assembly(props) {
           !Number.isInteger(parseInt(instruction[2].slice(1)))
         ) {
           return (
-            "Please make sure the register written in the" +
+            "Please make sure the register written in the " +
             instruction[0] +
-            "instruction exists."
+            " instruction exists."
           );
         }
       } else {
         return (
-          "Please make sure the register written in the" +
+          "Please make sure the register written in the " +
           instruction[0] +
-          "starts with an x."
+          " starts with an x."
         );
       }
     }
@@ -78,16 +82,16 @@ function Assembly(props) {
       if (instruction[1][0] === "x") {
         if (!Number.isInteger(parseInt(instruction[1].slice(1)))) {
           return (
-            "Please make sure the register written in the" +
+            "Please make sure the register written in the " +
             instruction[0] +
-            "instruction exists."
+            " instruction exists."
           );
         }
       } else {
         return (
-          "Please make sure the register written in the" +
+          "Please make sure the register written in the " +
           instruction[0] +
-          "starts with an x."
+          " starts with an x."
         );
       }
     }
@@ -96,34 +100,56 @@ function Assembly(props) {
   };
 
   useEffect(() => {
-    if (!props.executed && code.length > 0) {
+    if (!props.compiled && code.length > 0) {
       setCode(``);
     }
-    if (props.executed) {
+    if (props.compiled) {
       let lines = code.split("\n");
-      let tempIns = [];
+      lines = lines.filter((line) => line.length > 0);
       let jumpMap = new Map();
-      for (let i = 0; i < lines.length; i++) {
-        tempIns.push(
-          lines[i]
-            .replace(/,/g, " ")
-            .replace(/\s\[+/gi, " ")
-            .replace(/\s#+/g, " ")
-            .replace(/]+/g, " ")
-            .trim()
-            .split(/\s+/)
-        );
 
-        if (tempIns[i][0].endsWith(":")) {
-          jumpMap.set(tempIns[i][0].replace(/:/g, ""), i);
-          tempIns[i].splice(0, 1);
+      for (let i = 0; i < lines.length; i++) {
+        lines[i] = lines[i].trim();
+        if (lines[i].endsWith(":")) {
+          if (i !== lines.length - 1) {
+            lines[i] = lines[i].concat(" " + lines[i + 1]);
+            lines.splice(i + 1, 1);
+          }
         }
       }
 
+      setCode(lines.join("\n"));
+
+      lines = code.split("\n");
+      lines = lines.filter((line) => line.length > 0);
+
+      let tempIns = lines.map((line) =>
+        line
+          .replace(/,/g, " ")
+          .replace(/\s\[+/gi, " ")
+          .replace(/\s#+/g, " ")
+          .replace(/]+/g, " ")
+          .trim()
+          .split(/\s+/)
+      );
+
       for (let i = 0; i < tempIns.length; i++) {
+        if (tempIns[i][0].endsWith(":")) {
+          jumpMap.set(tempIns[i][0].replace(/:/g, ""), i);
+          tempIns[i].splice(0, 1);
+          if (tempIns[i].length === 0) {
+            tempIns.splice(i, 1);
+            i--;
+          }
+        }
+
         if (checkForSyntaxErrors(tempIns[i]) !== "") {
           console.log(checkForSyntaxErrors(tempIns[i]));
+          props.setErrorsFound(true);
           return;
+        }
+        for (let j = 1; j < tempIns[i].length; j++) {
+          tempIns[i][j] = tempIns[i][j].replace(/x/g, "");
         }
       }
 
@@ -151,10 +177,9 @@ function Assembly(props) {
         })
         .then((instructionCodes) => {
           props.setMachineCodes(instructionCodes.data);
-          props.setErrorsChecked(true);
         });
     }
-  }, [props.executed]);
+  }, [props.compiled]);
 
   return (
     <CodeEditor

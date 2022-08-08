@@ -51,10 +51,7 @@ app.get("/execute", (req, res) => {
   let instructionFlow = [];
   for (let i = 0; i < userSession.instructionGroup.length; ) {
     instructionFlow.push(i);
-    let state = userSession.cpu.executeCPU(
-      userSession.instructionGroup[i],
-      userSession.instructionTypeGroup[i]
-    );
+    let state = userSession.cpu.executeCPU(userSession.instructionTypeGroup[i]);
     userSession.relevantLines.push(
       cpu.returnCPURelevantLines(userSession.instructionTypeGroup[i])
     );
