@@ -1,5 +1,6 @@
 import CodeEditor from "@uiw/react-textarea-code-editor";
 import { useEffect, useState } from "react";
+import { BASE_URL } from "./Constants.js";
 
 const axios = require("axios");
 
@@ -172,7 +173,7 @@ function Assembly(props) {
       props.setInstructions(lines);
 
       axios
-        .post("http://localhost:3001/readInstruction/", {
+        .post(BASE_URL + ":3001/readInstruction/", {
           instructions: tempIns,
         })
         .then((instructionCodes) => {

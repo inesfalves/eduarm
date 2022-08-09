@@ -5,6 +5,7 @@ import ViewTab from "./ViewTab.js";
 import "./App.css";
 import DataMemoryDisplay from "./DataMemoryDisplay";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { BASE_URL } from "./Constants.js";
 import {
   faBackward,
   faForward,
@@ -161,13 +162,13 @@ function App() {
       setExecuted(true);
       setInstructionDisplayed(instructions[instructions.length - 1]);
       axios
-        .post("http://localhost:3001/sendRegisters", registerValues, {
+        .post(BASE_URL + ":3001/sendRegisters", registerValues, {
           withCredentials: true,
           credentials: "include",
         })
         .then(() => {
           axios
-            .get("http://localhost:3001/execute", { withCredentials: true })
+            .get(BASE_URL + ":3001/execute", { withCredentials: true })
             .then(function (res) {
               setInstructionFlow(res.data.instructionFlow);
               setSavedCPUStates(res.data.cpuStates);
@@ -301,7 +302,7 @@ function App() {
 
   const resetProgram = () => {
     axios
-      .get("http://localhost:3001/reset", { withCredentials: true })
+      .get(BASE_URL + ":3001/reset", { withCredentials: true })
       .then(function (res) {
         setSavedCPUStates(res.data);
         setCpuIndex(0);

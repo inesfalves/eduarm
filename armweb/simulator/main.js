@@ -13,7 +13,10 @@ redisClient.connect().catch(console.error);
 app.use(
   cors({
     credentials: true,
-    origin: "http://localhost:3000",
+    origin:
+      (process.env.NODE_ENV === "production"
+        ? "http://eduarm.fe.up.pt"
+        : "http://localhost") + ":3000",
   })
 );
 let store = new RedisStore({
@@ -52,7 +55,12 @@ setInterval(() => {
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    (process.env.NODE_ENV === "production"
+      ? "http://eduarm.fe.up.pt"
+      : "http://localhost") + ":3000"
+  );
   res.setHeader("Access-Control-Allow-Credentials", true);
   res.setHeader("Access-Control-Expose-Headers", "Set-Cookie");
   res.setHeader(
