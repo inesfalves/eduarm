@@ -19,13 +19,15 @@
     "react-dom": "^17.0.2",
     "react-flow-renderer": "^10.0.8",
     "react-scripts": "^5.0.1",
+    "serve": "^14.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "start-prod": "serve -s build"
   },
   "eslintConfig": {
     "extends": [
@@ -38,9 +40,11 @@
   },
   "browserslist": {
     "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
+      "chrome >= 67",
+      "edge >= 79",
+      "firefox >= 68",
+      "opera >= 54",
+      "safari >= 14"
     ],
     "development": [
       "last 1 chrome version",
