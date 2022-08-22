@@ -251,6 +251,10 @@ function Datapath(props) {
     }
   };
 
+  const showNodeInf = (event, node) => {
+    console.log(node);
+  };
+
   return (
     <>
       {props.cpuVer === "Unicycle" ? (
@@ -321,8 +325,9 @@ function Datapath(props) {
               nodeTypes={nodeTypes}
               onNodesChange={onPipeNodesChange}
               onEdgesChange={onPipeEdgesChange}
+              onNodeClick={showNodeInf}
               panOnDrag={false}
-              defaultZoom="0.85"
+              defaultZoom="0.84"
             />
           </ReactFlowProvider>
         </div>

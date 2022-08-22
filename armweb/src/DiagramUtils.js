@@ -156,6 +156,38 @@ function MemAuxNode({ data }) {
   );
 }
 
+function EXMEMAuxNode({ data }) {
+  return (
+    <div
+      className="aux-node"
+      style={
+        data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
+      }
+    >
+      <Handle
+        className="side-node"
+        type="target"
+        position={Position.Right}
+        style={
+          data.borderColor !== undefined
+            ? { backgroundColor: data.borderColor }
+            : { backgroundColor: "#b1b1b7" }
+        }
+      />
+      <Handle
+        className="top-node"
+        type="source"
+        position={Position.Top}
+        style={
+          data.borderColor !== undefined
+            ? { backgroundColor: data.borderColor }
+            : { backgroundColor: "#b1b1b7" }
+        }
+      />
+    </div>
+  );
+}
+
 function MemLeftAuxNode({ data }) {
   return (
     <div
@@ -561,14 +593,28 @@ function PipeDistNode({ data }) {
     <div
       className="distributor-node"
       style={
-        data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
+        data.borderColor !== undefined ? { background: data.borderColor } : {}
       }
     >
-      <Handle type="target" className="side-node" position={Position.Left} />
+      <Handle
+        type="target"
+        style={
+          data.borderColor !== undefined
+            ? { backgroundColor: data.borderColor }
+            : { backgroundColor: "#b1b1b7" }
+        }
+        className="side-node"
+        position={Position.Left}
+      />
       <Handle
         type="source"
         className="top-node"
         position={Position.Top}
+        style={
+          data.borderColor !== undefined
+            ? { backgroundColor: data.borderColor }
+            : { backgroundColor: "#b1b1b7" }
+        }
         id="a"
       />
       <Handle
@@ -600,6 +646,11 @@ function PipeDistNode({ data }) {
         className="top-node"
         position={Position.Bottom}
         id="f"
+        style={
+          data.borderColor !== undefined
+            ? { backgroundColor: data.borderColor }
+            : { backgroundColor: "#b1b1b7" }
+        }
       />
     </div>
   );
@@ -696,7 +747,7 @@ function IFIDNode({ data }) {
         type="target"
         position={Position.Left}
         id="a"
-        style={{ top: 150 }}
+        style={{ top: 120 }}
       />
       <Handle
         type="target"
@@ -1231,7 +1282,7 @@ export function DiagramUtils() {
     {
       id: "InsDistributor",
       position: { x: 276, y: 295 },
-      style: { background: "#555" },
+      style: { background: "#b1b1b7" },
       data: {},
       type: "distributorNode",
     },
@@ -1783,13 +1834,13 @@ export function DiagramUtils() {
     },
     {
       id: "PCAddFork",
-      position: { x: 128, y: 232.5 },
+      position: { x: 128, y: 254.5 },
       data: {},
       type: "forkNodeSecond",
     },
     {
       id: "HazardFork1",
-      position: { x: 330, y: 123 },
+      position: { x: 330, y: 151 },
       data: {},
       type: "forkNodeSecond",
     },
@@ -1801,25 +1852,31 @@ export function DiagramUtils() {
     },
     {
       id: "HazardIDEXFork",
-      position: { x: 612, y: 625 },
+      position: { x: 606, y: 625 },
       data: {},
       type: "forkNodeSecond",
     },
     {
       id: "ForwardIDEXFork1",
-      position: { x: 612, y: 535 },
+      position: { x: 663, y: 535 },
       data: {},
       type: "forkNodeSecond",
     },
     {
       id: "ForwardIDEXFork2",
-      position: { x: 612, y: 585 },
+      position: { x: 674, y: 585 },
       data: {},
       type: "forkNodeSecond",
     },
     {
       id: "ForwardEXMEMFork",
       position: { x: 916, y: 625.5 },
+      data: {},
+      type: "forkNodeSecond",
+    },
+    {
+      id: "ForwardMEMWBFork",
+      position: { x: 1119, y: 641.5 },
       data: {},
       type: "forkNodeSecond",
     },
@@ -1832,7 +1889,7 @@ export function DiagramUtils() {
     {
       id: "ShiftLeft",
       data: { label: "Shift Left" },
-      position: { x: 684, y: 271 },
+      position: { x: 717, y: 280 },
       style: { height: 30 + "px", width: 30 + "px" },
       targetPosition: "left",
       sourcePosition: "right",
@@ -1840,7 +1897,7 @@ export function DiagramUtils() {
     {
       id: "AddBranch",
       data: { label: "Add" },
-      position: { x: 733, y: 166 },
+      position: { x: 793, y: 212 },
       type: "addNode",
     },
     {
@@ -1867,6 +1924,7 @@ export function DiagramUtils() {
       id: "InsDistributor",
       position: { x: 332, y: 284 },
       data: {},
+      style: { background: "#b1b1b7" },
       type: "pipeDistNode",
     },
     {
@@ -1897,13 +1955,19 @@ export function DiagramUtils() {
     },
     {
       id: "RegMuxFork1",
-      position: { x: 674, y: 474.5 },
+      position: { x: 705, y: 461.5 },
       data: {},
       type: "forkNode",
     },
     {
       id: "RegMuxFork2",
-      position: { x: 665, y: 425.5 },
+      position: { x: 700, y: 436.5 },
+      data: {},
+      type: "forkNodeSecond",
+    },
+    {
+      id: "RegMemFork1",
+      position: { x: 620, y: 462.5 },
       data: {},
       type: "forkNodeSecond",
     },
@@ -1916,18 +1980,18 @@ export function DiagramUtils() {
     {
       id: "ForwardingUnit",
       data: { label: "Forwarding Unit" },
-      position: { x: 741, y: 554 },
+      position: { x: 750, y: 559 },
       type: "forwardingUnitNode",
     },
     {
       id: "Control",
       data: { label: "Control" },
-      position: { x: 423, y: 100.5 },
+      position: { x: 373, y: 128.5 },
       type: "pipeControlNode",
     },
     {
       id: "MuxControl",
-      position: { x: 514, y: 105.5 },
+      position: { x: 514, y: 133.5 },
       data: {},
       type: "muxNode",
     },
@@ -1941,8 +2005,8 @@ export function DiagramUtils() {
         borderColor: "#00ADEE",
         color: "#00ADEE",
       },
-      type: "output",
       targetPosition: "left",
+      sourcePosition: "right",
     },
     {
       id: "ControlMIDEX",
@@ -1980,8 +2044,8 @@ export function DiagramUtils() {
         borderColor: "#00ADEE",
         color: "#00ADEE",
       },
-      type: "output",
       targetPosition: "left",
+      sourcePosition: "right",
     },
     {
       id: "ControlWBEXMEM",
@@ -2011,44 +2075,44 @@ export function DiagramUtils() {
     },
     {
       id: "ControlLineFork",
-      position: { x: 644, y: 91 },
+      position: { x: 832, y: 104 },
       data: {},
       type: "forkNode",
     },
     {
       id: "ControlLineFork2",
-      position: { x: 916, y: 91 },
+      position: { x: 937, y: 91 },
       data: {},
       type: "forkNode",
     },
     {
       id: "PipeMux1",
-      position: { x: 630, y: 348 },
+      position: { x: 641, y: 345 },
       data: {},
       type: "pipeMuxNode",
     },
     {
       id: "PipeMux2",
-      position: { x: 630, y: 436 },
+      position: { x: 675, y: 434 },
       data: {},
       type: "pipeMuxNode",
     },
     {
       id: "MuxReg",
-      position: { x: 702, y: 388 },
+      position: { x: 723, y: 397 },
       data: {},
       type: "muxNode",
     },
     {
       id: "ALUControl",
       data: { label: "ALU Control" },
-      position: { x: 706, y: 479 },
+      position: { x: 751, y: 476 },
       type: "aluControlNode",
     },
     {
       id: "ALU",
       data: { label: "ALU" },
-      position: { x: 738, y: 286 },
+      position: { x: 784, y: 307 },
       type: "aluNode",
     },
     {
@@ -2071,15 +2135,69 @@ export function DiagramUtils() {
     },
     {
       id: "MemAuxNode",
-      position: { x: 1185, y: 641 },
+      position: { x: 1180, y: 651 },
       data: {},
       type: "memAuxNode",
     },
     {
       id: "MemLeftAuxNode",
-      position: { x: 376, y: 641 },
+      position: { x: 376, y: 651 },
       data: {},
-      type: "memLeftAuxNode",
+      type: "exMemAuxNode",
+    },
+    {
+      id: "MemMiddleAuxNode",
+      position: { x: 620, y: 650 },
+      data: {},
+      type: "forkNode",
+    },
+    {
+      id: "ALUForkAuxNode",
+      position: { x: 943, y: 640 },
+      data: {},
+      type: "memAuxNode",
+    },
+    {
+      id: "ALUForwardMuxFork",
+      position: { x: 629, y: 638 },
+      data: {},
+      type: "forkNode",
+    },
+    {
+      id: "PCEXMEMAuxNode",
+      position: { x: 910, y: 24 },
+      data: {},
+      type: "pcAuxNode",
+    },
+    {
+      id: "PCEXMEMAuxLeftNode",
+      position: { x: 3, y: 24 },
+      data: {},
+      type: "pcTopAuxNode",
+    },
+    {
+      id: "MEMWBAuxLeftNode",
+      position: { x: 392, y: 644.5 },
+      data: {},
+      type: "exMemAuxNode",
+    },
+    {
+      id: "WBAuxNode",
+      position: { x: 1124, y: 54 },
+      data: {},
+      type: "pcAuxNode",
+    },
+    {
+      id: "WBLeftAuxNode",
+      position: { x: 457, y: 54 },
+      data: {},
+      type: "pcTopAuxNode",
+    },
+    {
+      id: "WBControlAuxNode",
+      position: { x: 1137, y: 603 },
+      data: {},
+      type: "memAuxNode",
     },
   ];
 
@@ -2397,6 +2515,35 @@ export function DiagramUtils() {
       type: "smoothstep",
     },
     {
+      id: "e291",
+      source: "ALUFork",
+      sourceHandle: "b",
+      target: "ALUForkAuxNode",
+      type: "smoothstep",
+    },
+    {
+      id: "e292",
+      source: "ALUForkAuxNode",
+      target: "ALUForwardMuxFork",
+      type: "smoothstep",
+    },
+    {
+      id: "e293",
+      source: "ALUForwardMuxFork",
+      sourceHandle: "a",
+      target: "PipeMux1",
+      targetHandle: "c",
+      type: "smoothstep",
+    },
+    {
+      id: "e294",
+      source: "ALUForwardMuxFork",
+      sourceHandle: "b",
+      target: "PipeMux2",
+      targetHandle: "c",
+      type: "smoothstep",
+    },
+    {
       id: "e30",
       source: "DataMemory",
       target: "MEMWBNode",
@@ -2426,8 +2573,40 @@ export function DiagramUtils() {
       type: "smoothstep",
     },
     {
-      id: "e31Aux2",
+      id: "e31Aux1",
       source: "MemAuxNode",
+      target: "MemMiddleAuxNode",
+      targetHandle: "b",
+      type: "smoothstep",
+    },
+    {
+      id: "e311",
+      source: "MemMiddleAuxNode",
+      sourceHandle: "a",
+      target: "RegMemFork1",
+      targetHandle: "b",
+      type: "smoothstep",
+    },
+    {
+      id: "e312",
+      source: "RegMemFork1",
+      sourceHandle: "a",
+      target: "PipeMux1",
+      targetHandle: "b",
+      type: "smoothstep",
+    },
+    {
+      id: "e313",
+      source: "RegMemFork1",
+      sourceHandle: "b",
+      target: "PipeMux2",
+      targetHandle: "b",
+      type: "smoothstep",
+    },
+    {
+      id: "e31Aux2",
+      source: "MemMiddleAuxNode",
+      sourceHandle: "b",
       target: "MemLeftAuxNode",
       type: "smoothstep",
     },
@@ -2480,9 +2659,21 @@ export function DiagramUtils() {
       style: { stroke: "#00ADEE" },
     },
     {
-      id: "e42",
+      id: "e42Aux",
       source: "EXMEMNode",
       sourceHandle: "a",
+      target: "PCEXMEMAuxNode",
+      type: "smoothstep",
+    },
+    {
+      id: "e42Aux2",
+      source: "PCEXMEMAuxNode",
+      target: "PCEXMEMAuxLeftNode",
+      type: "smoothstep",
+    },
+    {
+      id: "e42Aux3",
+      source: "PCEXMEMAuxLeftNode",
       target: "MuxTop",
       targetHandle: "b",
       type: "smoothstep",
@@ -2591,6 +2782,7 @@ export function DiagramUtils() {
       target: "ForwardEXMEMFork",
       type: "smoothstep",
     },
+
     {
       id: "e491",
       source: "ForwardEXMEMFork",
@@ -2679,9 +2871,49 @@ export function DiagramUtils() {
       style: { stroke: "#00ADEE" },
     },
     {
+      id: "e591",
+      source: "ControlEXIDEX",
+      target: "MuxReg",
+      targetHandle: "c",
+      type: "smoothstep",
+      style: { stroke: "#00ADEE" },
+    },
+    {
+      id: "e592",
+      source: "ControlEXIDEX",
+      target: "ALUControl",
+      targetHandle: "b",
+      type: "smoothstep",
+      style: { stroke: "#00ADEE" },
+    },
+    {
       id: "e60",
       source: "ControlWBEXMEM",
       target: "ControlLineFork2",
+      type: "smoothstep",
+      style: { stroke: "#00ADEE" },
+    },
+    {
+      id: "e601",
+      source: "ControlMEXMEM",
+      target: "And",
+      targetHandle: "a",
+      type: "smoothstep",
+      style: { stroke: "#00ADEE" },
+    },
+    {
+      id: "e602",
+      source: "ControlMEXMEM",
+      target: "DataMemory",
+      targetHandle: "c",
+      type: "smoothstep",
+      style: { stroke: "#00ADEE" },
+    },
+    {
+      id: "e603",
+      source: "ControlMEXMEM",
+      target: "DataMemory",
+      targetHandle: "d",
       type: "smoothstep",
       style: { stroke: "#00ADEE" },
     },
@@ -2729,18 +2961,77 @@ export function DiagramUtils() {
       style: { stroke: "#00ADEE" },
     },
     {
-      id: "e65",
-      source: "MEMWBNode",
-      sourceHandle: "c",
+      id: "e65aux",
+      source: "ForwardMEMWBFork",
+      sourceHandle: "a",
       target: "ForwardingUnit",
       targetHandle: "e",
       type: "smoothstep",
     },
     {
-      id: "e66",
+      id: "e65aux2",
+      source: "ForwardMEMWBFork",
+      sourceHandle: "b",
+      target: "MEMWBAuxLeftNode",
+      type: "smoothstep",
+    },
+    {
+      id: "e65aux3",
+      source: "MEMWBAuxLeftNode",
+      target: "RegBank",
+      targetHandle: "c",
+      type: "smoothstep",
+    },
+
+    {
+      id: "e65",
+      source: "MEMWBNode",
+      sourceHandle: "c",
+      target: "ForwardMEMWBFork",
+      type: "smoothstep",
+    },
+    {
+      id: "e66Aux",
       source: "ControlWBMEMWB",
+      target: "WBControlAuxNode",
+      type: "smoothstep",
+      style: { stroke: "#00ADEE" },
+    },
+    {
+      id: "e66",
+      source: "WBControlAuxNode",
       target: "ForwardingUnit",
       targetHandle: "f",
+      type: "smoothstep",
+      style: { stroke: "#00ADEE" },
+    },
+    {
+      id: "e67Aux",
+      source: "ControlWBMEMWB",
+      target: "WBAuxNode",
+      type: "smoothstep",
+      style: { stroke: "#00ADEE" },
+    },
+    {
+      id: "e67Aux2",
+      source: "WBAuxNode",
+      target: "WBLeftAuxNode",
+      type: "smoothstep",
+      style: { stroke: "#00ADEE" },
+    },
+    {
+      id: "e67",
+      source: "WBLeftAuxNode",
+      target: "RegBank",
+      targetHandle: "f",
+      type: "smoothstep",
+      style: { stroke: "#00ADEE" },
+    },
+    {
+      id: "e68",
+      source: "ControlWBMEMWB",
+      target: "MuxMem",
+      targetHandle: "c",
       type: "smoothstep",
       style: { stroke: "#00ADEE" },
     },
@@ -2775,6 +3066,7 @@ export function DiagramUtils() {
     forwardingUnitNode: ForwardingUnitNode,
     pipeMuxNode: PipeMuxNode,
     pipePCNode: PipePCNode,
+    exMemAuxNode: EXMEMAuxNode,
   };
 
   return { nodes, edges, pipelineNodes, pipelineEdges, customNodeTypes };
