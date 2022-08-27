@@ -1,6 +1,6 @@
 const modules = require("./modules.js");
 
-const json = require("./CPU.json");
+const json = require("./PipelineCPU.json");
 const e = require("cors");
 
 const jsonFile = JSON.parse(JSON.stringify(json));

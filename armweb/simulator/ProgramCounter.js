@@ -8,7 +8,12 @@ class ProgramCounter extends Component {
 
     super.isSynchronous = true;
 
-    this.updatedPC = super.addInput(json.input, new Data(0, 0));
+    if (json.input.length > 1) {
+      this.updatedPC = super.addInput(json.input[0], new Data(0, 0));
+      this.pcWrite = super.addInput(json.input[1], new Data(0, 0));
+    } else {
+      this.updatedPC = super.addInput(json.input, new Data(0, 0));
+    }
 
     this.pcValue = super.addOutput(json.output, new Data(0, 0));
 

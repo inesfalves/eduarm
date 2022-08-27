@@ -14,4 +14,10 @@ module.exports = {
   and: require("./And"),
   datamem: require("./DataMemory"),
   or: require("./Or"),
+  pipelineregister: require("./PipelineRegister"),
+  pipelinecontrol: require("./PipelineControl"),
+  pipelinecontrolmux: require("./PipelineControlMux"),
+  forwardingunit: require("./ForwardingUnit"),
+  hazarddetection: require("./HazardDetection"),
+  pipelinemux: require("./PipelineMux"),
 };
