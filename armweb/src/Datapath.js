@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import ReactFlow, {
   ReactFlowProvider,
@@ -149,6 +148,30 @@ function Datapath(props) {
   //   }
   // };
 
+  const changeNumberFormat = (numbers) => {
+    let tooltipText = "";
+    for (let num of Object.values(numbers)) {
+      if (typeof num.data.value === "object") {
+        tooltipText += num.id + ": " + JSON.stringify(num.data.value) + "\n";
+        continue;
+      }
+      switch (props.numberFormat) {
+        case "HEX":
+          tooltipText +=
+            num.id + ": " + (num.data.value >>> 0).toString(16) + "\n";
+          break;
+        case "BIN":
+          tooltipText +=
+            num.id + ": " + (num.data.value >>> 0).toString(2) + "\n";
+          break;
+        default:
+          tooltipText += num.id + ": " + num.data.value + "\n";
+          break;
+      }
+    }
+    return tooltipText;
+  };
+
   const showNodeInformation = (event, node) => {
     if (props.executed) {
       let nodeElement = document.querySelector(`[data-id=${node.id}`);
@@ -161,47 +184,9 @@ function Datapath(props) {
           tooltipLatText = "";
         let componentInputs = component.inputs;
         let componentOutputs = component.outputs;
-        for (let inp of Object.values(componentInputs)) {
-          switch (props.numberFormat) {
-            case "HEX":
-              tooltipInpText +=
-                inp.id + ": " + (inp.data.value >>> 0).toString(16) + "\n";
-              break;
-            case "BIN":
-              tooltipInpText +=
-                inp.id + ": " + (inp.data.value >>> 0).toString(2) + "\n";
-              break;
-            default:
-              tooltipInpText += inp.id + ": " + inp.data.value + "\n";
-              break;
-          }
-        }
-        for (let out of Object.values(componentOutputs)) {
-          switch (props.numberFormat) {
-            case "HEX":
-              tooltipOutText +=
-                out.id + ": " + (out.data.value >>> 0).toString(16) + "\n";
-              break;
-            case "BIN":
-              tooltipOutText +=
-                out.id + ": " + (out.data.value >>> 0).toString(2) + "\n";
-              break;
-            default:
-              tooltipOutText += out.id + ": " + out.data.value + "\n";
-              break;
-          }
-        }
-        switch (props.numberFormat) {
-          case "HEX":
-            tooltipLatText = component.totalLatency.toString(16) + "\n";
-            break;
-          case "BIN":
-            tooltipLatText = component.totalLatency.toString(2) + "\n";
-            break;
-          default:
-            tooltipLatText = component.totalLatency + "\n";
-            break;
-        }
+        tooltipInpText = changeNumberFormat(componentInputs);
+        tooltipOutText = changeNumberFormat(componentOutputs);
+        tooltipLatText = component.totalLatency + "\n";
         tooltips[0].innerHTML =
           "<div className='container'><div className='row'> Latency: " +
           tooltipLatText +
@@ -319,14 +304,14 @@ function Datapath(props) {
           </div>
           <ReactFlowProvider>
             <ReactFlow
-              onlyRenderVisibleElements={true}
               nodes={plNodes}
               edges={plEdges}
               nodeTypes={nodeTypes}
-              onNodesChange={onPipeNodesChange}
-              onEdgesChange={onPipeEdgesChange}
-              onNodeClick={showNodeInf}
-              panOnDrag={false}
+              onInit={createTooltips}
+              onNodeMouseEnter={showNodeInformation}
+              onNodeMouseLeave={hideNodeInformation}
+              nodesConnectable={false}
+              nodesDraggable={false}
               defaultZoom="0.84"
             />
           </ReactFlowProvider>

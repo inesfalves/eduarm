@@ -5,26 +5,6 @@
         "input": ["updatedPC", "PCWrite"],
         "output":"PC"
       },
-      "IFID": {
-        "componentType": "PipelineRegister",
-        "input": ["pcValue", "instruction", "IFIDWrite"],
-        "output": ["pcValue", "instruction"]
-      },
-      "IDEX": {
-        "componentType": "PipelineRegister",
-        "input": ["pcValue", "readData1", "readData2", "rn", "rm", "rd"],
-        "output": ["pcValue", "readData1", "readData2", "rn", "rm", "rd"]
-      },
-      "EXMEM": {
-        "componentType": "PipelineRegister",
-        "input": ["addResult", "aluZero", "aluResult", "readData2", "rd"],
-        "output": ["addResult", "aluZero", "aluResult", "readData2", "rd"]
-      },
-      "MEMWB": {
-        "componentType": "PipelineRegister",
-        "input": ["readData", "aluResult", "rd"],
-        "output": ["readData", "aluResult", "rd"]
-      },
       "AddPC": {
         "componentType": "Adder",
         "input": ["pcValue", 4],
@@ -60,15 +40,15 @@
         "input": "address",
         "output": "instruction"
       },
+      "IFID": {
+        "componentType": "PipelineRegister",
+        "input": ["pcValue", "instruction", "IFIDWrite"],
+        "output": ["pcValue", "instruction"]
+      },
       "InsDistributor": {
         "componentType": "Distributor",
         "input": "distributorInput",
         "output": [{"id": "dist3121", "from": 31, "to": 21} , {"id": "dist28", "from": 28, "to": 28}, {"id": "dist95", "from": 9, "to": 5}, {"id": "dist2016", "from": 20, "to": 16}, {"id": "dist40", "from": 4, "to": 0}, {"id": "dist310", "from": 31, "to": 0}]
-      },
-      "Control": {
-        "componentType": "Control",
-        "input": "controlInput",
-        "output": ["reg2Loc", "uncondBranch", "branch", "memRead", "memToReg", "ALUOp0", "ALUOp1", "memWrite", "ALUSrc", "regWrite"]
       },
       "MuxIns": {
         "componentType": "MUX",
@@ -90,20 +70,40 @@
         "input": "signExtendIn",
         "output": "signExtendResult"
       },
-      "RegMuxFork2": {
-        "componentType": "Fork",
-        "input": "regMuxFork2Input",
-        "output": ["regMuxFork2Output1", "regMuxFork2Output2"]
+      "MuxControl": {
+        "componentType": "PipelineControlMux",
+        "input": ["reg2Loc", "uncondBranch", "branch", "memRead", "memToReg", "ALUOp0", "ALUOp1", "memWrite", "ALUSrc", "regWrite", 0, "controlMuxSel"],
+        "output": ["IDEXWB", "IDEXM", "IDEXEX"]
       },
-      "HazardDetection": {
-        "componentType": "HazardDetection",
-        "input": ["IFIDRn", "IFIDRm", "IDEXRd", "IDEXMemRead"],
-        "output": ["PCWrite", "IFIDWrite", "controlMuxSel"]
+      "IDEX": {
+        "componentType": "PipelineRegister",
+        "input": ["pcValue", "readData1", "readData2", "rn", "rm", "rd"],
+        "output": ["pcValue", "readData1", "readData2", "rn", "rm", "rd"]
       },
       "ForwardingUnit": {
         "componentType": "ForwardingUnit",
         "input": ["IDEXRn", "IDEXRm", "EXMEMRd", "EXMEMControl", "MEMWBRd", "MEMWBControl"],
         "output": ["ForwardA", "ForwardB"]
+      },
+      "PipeMux1": {
+        "componentType": "PipelineMux",
+        "input": ["pipeMux1Value1", "pipeMux1Value2", "pipeMux1Value3", "forwardA"],
+        "output": "pipeMux1Result"
+      },
+      "PipeMux2": {
+        "componentType": "PipelineMux",
+        "input": ["pipeMux2Value1", "pipeMux2Value2", "pipeMux2Value3", "forwardB"],
+        "output": "pipeMux2Result"
+      },
+      "RegMuxFork2": {
+        "componentType": "Fork",
+        "input": "regMuxFork2Input",
+        "output": ["regMuxFork2Output1", "regMuxFork2Output2"]
+      },  
+      "HazardDetection": {
+        "componentType": "HazardDetection",
+        "input": ["IFIDRn", "IFIDRm", "IDEXRd", "IDEXMemRead"],
+        "output": ["PCWrite", "IFIDWrite", "controlMuxSel"]
       },
       "ShiftLeft": {
         "componentType": "ShiftLeft",
@@ -116,15 +116,16 @@
         "input": ["addBranchValue1", "addBranchValue2"],
         "output": "addBranchResult"
       },
+
       "MuxReg": {
         "componentType": "MUX",
         "input": ["regMuxInput1", "regMuxInput2", "ALUSrc"],
         "output": "regMuxResult"
       },
-      "MuxControl": {
-        "componentType": "PipelineControlMux",
-        "input": ["reg2Loc", "uncondBranch", "branch", "memRead", "memToReg", "ALUOp0", "ALUOp1", "memWrite", "ALUSrc", "regWrite", 0, "controlMuxSel"],
-        "output": ["IDEXWB", "IDEXM", "IDEXEX"]
+      "Control": {
+        "componentType": "Control",
+        "input": "controlInput",
+        "output": ["reg2Loc", "uncondBranch", "branch", "memRead", "memToReg", "ALUOp0", "ALUOp1", "memWrite", "ALUSrc", "regWrite"]
       },
       "ControlEXIDEX": {
         "componentType": "PipelineControl",
@@ -166,16 +167,6 @@
         "input": "controlLineFork2Input",
         "output": ["controlLineFork2Output1", "controlLineFork2Output2"]
       },
-      "PipeMux1": {
-        "componentType": "PipelineMux",
-        "input": ["pipeMux1Value1", "pipeMux1Value2", "pipeMux1Value3", "forwardA"],
-        "output": "pipeMux1Result"
-      },
-      "PipeMux2": {
-        "componentType": "PipelineMux",
-        "input": ["pipeMux2Value1", "pipeMux2Value2", "pipeMux2Value3", "forwardB"],
-        "output": "pipeMux2Result"
-      },
       "ALUControl": {
         "componentType": "ALUControl",
         "input": ["ALUOp", "opcode"],
@@ -196,6 +187,12 @@
         "input": ["topMuxValue1", "topMuxValue2", "topMuxControl"],
         "output": "topMuxResult"
       },
+      "EXMEM": {
+        "componentType": "PipelineRegister",
+        "input": ["addResult", "aluZero", "aluResult", "readData2", "rd"],
+        "output": ["addResult", "aluZero", "aluResult", "readData2", "rd"]
+      },
+
       "ALUFork": {
         "componentType": "Fork",
         "input": "aluForkInput",
@@ -205,6 +202,11 @@
         "componentType": "DataMemory",
         "input": ["memoryAddress", "writeData", "memRead", "memWrite"],
         "output": "readData"
+      },
+      "MEMWB": {
+        "componentType": "PipelineRegister",
+        "input": ["readData", "aluResult", "rd"],
+        "output": ["readData", "aluResult", "rd"]
       },
       "MuxMem": {
         "componentType": "MUX",
