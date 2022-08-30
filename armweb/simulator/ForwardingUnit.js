@@ -19,6 +19,9 @@ class ForwardingUnit extends Component {
   }
 
   execute() {
+    this.EXMEMControl.value = this.EXMEMControl.value.regWrite;
+    this.MEMWBControl.value = this.MEMWBControl.value.memToReg;
+
     if (
       this.EXMEMControl.value === 1 &&
       this.EXMEMRd.value !== 31 &&
@@ -31,6 +34,8 @@ class ForwardingUnit extends Component {
       this.MEMWBRd.value === this.IDEXRn.value
     ) {
       this.ForwardA.value = "01";
+    } else {
+      this.ForwardA.value = "00";
     }
 
     if (
@@ -45,6 +50,8 @@ class ForwardingUnit extends Component {
       this.MEMWBRd.value === this.IDEXRm.value
     ) {
       this.ForwardB.value = "01";
+    } else {
+      this.ForwardB.value = "00";
     }
   }
 }

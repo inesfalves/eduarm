@@ -5,8 +5,15 @@ function DataMemoryDisplay(props) {
 
   useEffect(() => {
     if (props.executed) {
-      let dataMemValues = props.cpuState.find((x) => x.id === "DataMemory")
-        .memory;
+      let dataMemValues = [];
+      if (props.cpuVer === "Unicycle") {
+        dataMemValues = props.cpuState.find((x) => x.id === "DataMemory")
+          .memory;
+      } else {
+        dataMemValues = props.cpuState.find(
+          (x) => x.id === "PipelineDataMemory"
+        ).memory;
+      }
       let tempMem = [];
       for (var i = 0; i < dataMemValues.length; i++) {
         tempMem.push(

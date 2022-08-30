@@ -16,6 +16,9 @@ class And extends Component {
   }
 
   execute() {
+    if (this.id === "PipelineAnd") {
+      this.value1.value = this.value1.value.branch;
+    }
     this.result.value = this.value1.value && this.value2.value;
   }
 

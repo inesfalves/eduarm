@@ -22,6 +22,11 @@ class DataMemory extends Component {
   }
 
   execute() {
+    if (this.id === "PipelineDataMemory") {
+      this.memRead.value = this.memRead.value.memRead;
+      this.memWrite.value = this.memWrite.value.memWrite;
+    }
+
     if (this.memRead.value === 1) {
       //Reading from memory
       this.readData.value = this.memory[this.address.value / 8];

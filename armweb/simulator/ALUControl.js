@@ -11,8 +11,6 @@ class ALUControl extends Component {
 
     //ALUControl input values
 
-    //this.ALUOp = super.addInput("ALUOp", 0);
-
     this.ALUOp0 = super.addInput(json.input[0], new Data(0, 0));
     this.ALUOp1 = super.addInput(json.input[1], new Data(0, 0));
 
@@ -25,6 +23,11 @@ class ALUControl extends Component {
   }
 
   execute() {
+    if (this.id === "PipelineALUControl") {
+      this.ALUOp0.value = this.ALUOp0.value.ALUOp0;
+      this.ALUOp1.value = this.ALUOp1.value.ALUOp1;
+    }
+
     let jsonOutputValue = aluctrlValues.getALUControlValues(
       this.ALUOp0.value,
       this.ALUOp1.value,

@@ -11,7 +11,6 @@ class PipelineControl extends Component {
     this.input = super.addInput(json.input, new Data(0, 0));
 
     //PipelineControl Outputs
-
     for (let i = 0; i < json.output.length; i++) {
       this.output[i] = super.addOutput(json.output[i], new Data(0, 0));
     }

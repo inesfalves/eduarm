@@ -141,7 +141,7 @@ function App() {
 
   const updateRegisters = (data) => {
     for (let comp of data) {
-      if (comp.id === "RegBank") {
+      if (comp.id === "RegBank" || comp.id === "PipelineRegBank") {
         setRegisterValues(comp.registers);
       }
     }
@@ -476,7 +476,7 @@ function App() {
                     </button>
                   </div>
                   <div className="container my-1">
-                    <div className="text-center mt-1 row">
+                    {/* <div className="text-center mt-1 row">
                       {instructionDisplayed !== null
                         ? getInstructionTypeCodes(
                             getCurrentInstruction()[0],
@@ -506,13 +506,13 @@ function App() {
                             ))
                           : ""
                         : ""}
-                    </div>
-                    <div
+                    </div> */}
+                    {/* <div
                       className="text-center mt-2"
                       style={{ color: "#0d6dfd" }}
                     >
                       {getCurrentInstruction()[1]}
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
@@ -523,6 +523,7 @@ function App() {
                 aria-labelledby="memory-tab"
               >
                 <DataMemoryDisplay
+                  cpuVer={cpuVer}
                   executed={executed}
                   cpuState={cpuState}
                   memoryValues={memoryValues}

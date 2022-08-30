@@ -35,7 +35,6 @@ class ALU extends Component {
         this.aluResult.value = this.input2.value;
         break;
       default:
-        console.log("Other operation");
         break;
     }
 

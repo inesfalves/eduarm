@@ -28,6 +28,8 @@ class ALUControlValues {
         }
       }
     }
+
+    return 0;
   }
 }
 

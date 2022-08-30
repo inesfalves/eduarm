@@ -4,6 +4,8 @@ const sessions = require("express-session");
 const cors = require("cors");
 const port = 3001;
 
+let cpuVersion = "PipelineCPU";
+
 const userSessions = {};
 const UserSession = require("./UserSession.js");
 const RedisStore = require("connect-redis")(sessions);
@@ -84,7 +86,10 @@ app.get("/execute", (req, res) => {
   userSession.cpu.initializeCPU(userSession.registers, userSession.memory);
   userSession.cpu.setInsMemInstructions(userSession.instructionGroup);
   let instructionFlow = [];
-  for (let i = 0; i < userSession.instructionGroup.length; ) {
+  let maxPC =
+    userSession.instructionGroup.length +
+    (cpuVersion === "PipelineCPU" ? 4 : 0);
+  for (let i = 0; i < maxPC; ) {
     instructionFlow.push(i);
     let state = userSession.cpu.executeCPU(userSession.instructionTypeGroup[i]);
     userSession.relevantLines.push(

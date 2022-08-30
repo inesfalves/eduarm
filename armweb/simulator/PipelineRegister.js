@@ -8,6 +8,8 @@ class PipelineRegister extends Component {
     this.input = [];
     this.output = [];
 
+    this.isPipeline = true;
+
     //Inputs
     for (let i = 0; i < json.input.length; i++) {
       this.input[i] = super.addInput(json.input[i], new Data(0, 0));
@@ -20,6 +22,10 @@ class PipelineRegister extends Component {
   }
 
   execute() {
+    // Do nothing!
+  }
+
+  executePipelineTransfer() {
     for (let i = 0; i < this.output.length; i++) {
       this.output[i].value = this.input[i].value;
     }

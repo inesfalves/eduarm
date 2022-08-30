@@ -186,11 +186,15 @@ function Datapath(props) {
         let componentOutputs = component.outputs;
         tooltipInpText = changeNumberFormat(componentInputs);
         tooltipOutText = changeNumberFormat(componentOutputs);
-        tooltipLatText = component.totalLatency + "\n";
-        tooltips[0].innerHTML =
-          "<div className='container'><div className='row'> Latency: " +
-          tooltipLatText +
-          "</div><div className='row' style='text-decoration: underline'>Inputs</div><div className='row'>" +
+        if (props.cpuVer === "Unicycle") {
+          tooltipLatText = component.totalLatency + "\n";
+          tooltips[0].innerHTML =
+            "<div className='container'><div className='row'> Latency: " +
+            tooltipLatText +
+            "</div>";
+        }
+        tooltips[0].innerHTML +=
+          "<div className='row' style='text-decoration: underline'>Inputs</div><div className='row'>" +
           tooltipInpText +
           "</div><div className='row' style='text-decoration: underline'>Outputs</div><div className='row'>" +
           tooltipOutText +
@@ -310,6 +314,7 @@ function Datapath(props) {
               onInit={createTooltips}
               onNodeMouseEnter={showNodeInformation}
               onNodeMouseLeave={hideNodeInformation}
+              onNodeClick={showNodeInf}
               nodesConnectable={false}
               nodesDraggable={false}
               defaultZoom="0.84"

@@ -21,13 +21,16 @@ class InstructionMemory extends Component {
 
   execute() {
     //Fetch the instruction using the PC value
-
     let instructionPos = this.address.value / 4;
 
-    this.instruction.value = parseInt(
-      this.assembledInstructions[instructionPos],
-      2
-    );
+    if (instructionPos >= this.assembledInstructions.length) {
+      this.instruction.value = 0;
+    } else {
+      this.instruction.value = parseInt(
+        this.assembledInstructions[instructionPos],
+        2
+      );
+    }
   }
 
   printValues() {

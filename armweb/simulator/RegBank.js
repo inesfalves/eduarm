@@ -30,6 +30,10 @@ class RegBank extends Component {
 
   //allocating the register values
   execute() {
+    if (this.id === "PipelineRegBank") {
+      this.regWrite.value = this.regWrite.value.regWrite;
+    }
+
     let possValue1 = this.registers.find(
       (element) => element[0] === this.readReg1.value
     );

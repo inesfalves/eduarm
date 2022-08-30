@@ -48,7 +48,10 @@ class CPU {
     this.connectComponents();
 
     for (let i = 0; i < this.cpuComponents.length; i++) {
-      if (this.cpuComponents[i].id === "RegBank") {
+      if (
+        this.cpuComponents[i].id === "RegBank" ||
+        this.cpuComponents[i].id === "PipelineRegBank"
+      ) {
         for (let j = 0; j < registers.length; j++) {
           if (registers[j][1] === "") {
             registers[j][1] = "0";
@@ -56,7 +59,10 @@ class CPU {
           this.cpuComponents[i].registers[registers[j][0]][1] = registers[j][1];
         }
       }
-      if (this.cpuComponents[i].id === "DataMemory") {
+      if (
+        this.cpuComponents[i].id === "DataMemory" ||
+        this.cpuComponents[i].id === "PipelineDataMemory"
+      ) {
         this.cpuComponents[i].memory = memory;
       }
     }
@@ -96,6 +102,12 @@ class CPU {
 
   executeCPU(instructionType) {
     for (let i = 0; i < this.cpuComponents.length; i++) {
+      if (this.cpuComponents[i].isPipeline) {
+        this.cpuComponents[i].executePipelineTransfer();
+      }
+    }
+
+    for (let i = 0; i < this.cpuComponents.length; i++) {
       if (this.cpuComponents[i].id === "InsDistributor") {
         if (instructionType === "cBranchType") {
           this.cpuComponents[i].from[0] = 31;
@@ -108,7 +120,10 @@ class CPU {
           this.cpuComponents[i].to[0] = 21;
         }
       }
-      if (this.cpuComponents[i].id === "SignExtendDist") {
+      if (
+        this.cpuComponents[i].id === "SignExtendDist" ||
+        this.cpuComponents[i].id === "PipeSignExtendDist"
+      ) {
         this.cpuComponents[i].loadInstructionType(instructionType);
       }
 

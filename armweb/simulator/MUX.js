@@ -17,8 +17,21 @@ class MUX extends Component {
   }
 
   execute() {
-    //"the selector is a single signal that selects one of the inputs if it is true (1) and the other if it is false (0)"
-    this.muxOut.value = this.selector.value ? this.one.value : this.zero.value;
+    if (this.id === "MuxReg") {
+      this.selector.value = this.selector.value.ALUSrc;
+    }
+
+    if (this.id === "PipelineMuxMem") {
+      this.selector.value = this.selector.value.memToReg;
+      this.muxOut.value = this.selector.value
+        ? this.zero.value
+        : this.one.value;
+    } else {
+      //"the selector is a single signal that selects one of the inputs if it is true (1) and the other if it is false (0)"
+      this.muxOut.value = this.selector.value
+        ? this.one.value
+        : this.zero.value;
+    }
   }
 
   printValues() {

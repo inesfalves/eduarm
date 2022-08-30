@@ -18,6 +18,7 @@ class HazardDetection extends Component {
   }
 
   execute() {
+    this.IDEXMemRead.value = this.IDEXMemRead.value.memRead;
     if (
       this.IDEXMemRead.value == 1 &&
       (this.IDEXRd.value == this.IFIDRn.value ||
