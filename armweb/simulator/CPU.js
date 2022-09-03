@@ -1,9 +1,12 @@
 const modules = require("./modules.js");
 
-const json = require("./PipelineCPU.json");
+const unicycleJson = require("./CPU.json");
+const pipelineJson = require("./PipelineCPU.json");
+const cpuJsonMap = {
+  Unicycle: JSON.parse(JSON.stringify(unicycleJson)),
+  Pipeline: JSON.parse(JSON.stringify(pipelineJson)),
+};
 const e = require("cors");
-
-const jsonFile = JSON.parse(JSON.stringify(json));
 
 //Generic CPU configuration read from a JSON file
 class CPU {
@@ -13,6 +16,7 @@ class CPU {
     //List with all the components of the CPU
     this.cpuComponents = [];
     this.connections = [];
+    this.cpuVersion = "Unicycle";
   }
 
   fromJSON(json) {
@@ -22,6 +26,7 @@ class CPU {
 
   initializeCPU(registers, memory) {
     //Read JSON file
+    let jsonFile = cpuJsonMap[this.cpuVersion];
     let jsonComponents = Object.entries(jsonFile.cpuComponents);
     let componentClasses = Object.values(modules);
     let componentType,
@@ -70,6 +75,7 @@ class CPU {
 
   connectComponents() {
     //Read JSON file
+    let jsonFile = cpuJsonMap[this.cpuVersion];
     let cpuConnections = jsonFile.cpuConnections;
     let originComponent,
       destComponent,
@@ -101,7 +107,7 @@ class CPU {
   }
 
   executeCPU(instructionType) {
-    for (let i = 0; i < this.cpuComponents.length; i++) {
+    for (let i = this.cpuComponents.length - 1; i >= 0; i--) {
       if (this.cpuComponents[i].isPipeline) {
         this.cpuComponents[i].executePipelineTransfer();
       }
@@ -149,6 +155,7 @@ class CPU {
 
   resetCPU() {
     this.cpuComponents = [];
+    this.connections = [];
     return this.cpuComponents;
   }
 
@@ -164,6 +171,7 @@ class CPU {
 
   returnCPURelevantLines(instructionType) {
     let relevantLines = [];
+    let jsonFile = cpuJsonMap[this.cpuVersion];
     let cpuConnections = jsonFile.cpuConnections;
 
     for (let i = 0; i < this.connections.length; i++) {
@@ -184,6 +192,7 @@ class CPU {
 
   returnCriticalPath(instructionType) {
     let criticalPath = [];
+    let jsonFile = cpuJsonMap[this.cpuVersion];
     let cpuConnections = jsonFile.cpuConnections;
     for (let i = 0; i < this.connections.length; i++) {
       for (let j = 0; j < cpuConnections.length; j++) {

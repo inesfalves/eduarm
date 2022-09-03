@@ -1,4 +1,8 @@
 import { useEffect, useState } from "react";
+import { BASE_URL } from "./Constants.js";
+
+const axios = require("axios");
+axios.defaults.withCredentials = true;
 
 function Navbar(props) {
   const [format, setFormat] = useState("DEC");
@@ -38,9 +42,27 @@ function Navbar(props) {
   const checkCPUVersion = () => {
     if (props.cpuVer === "Unicycle") {
       alert("You are now using the Pipeline CPU version!");
+      props.resetFrontend();
+      axios.post(
+        BASE_URL + ":3001/changeCPUVersion",
+        { cpuVer: "Pipeline" },
+        {
+          withCredentials: true,
+          credentials: "include",
+        }
+      );
       props.setCpuVer("Pipeline");
     } else if (props.cpuVer === "Pipeline") {
       alert("You are now using the Unicycle CPU version!");
+      props.resetFrontend();
+      axios.post(
+        BASE_URL + ":3001/changeCPUVersion",
+        { cpuVer: "Unicycle" },
+        {
+          withCredentials: true,
+          credentials: "include",
+        }
+      );
       props.setCpuVer("Unicycle");
     }
   };

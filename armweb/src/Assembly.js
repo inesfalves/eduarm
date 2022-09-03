@@ -101,10 +101,14 @@ function Assembly(props) {
   };
 
   useEffect(() => {
-    if (!props.compiled && code.length > 0) {
-      setCode(``);
-    }
     if (props.compiled) {
+      if (code === ``) {
+        console.log("Please write an instruction!");
+        props.setErrorsFound(true);
+        props.setCompiled(false);
+        return;
+      }
+
       let lines = code.split("\n");
       lines = lines.filter((line) => line.length > 0);
       let jumpMap = new Map();
@@ -147,6 +151,7 @@ function Assembly(props) {
         if (checkForSyntaxErrors(tempIns[i]) !== "") {
           console.log(checkForSyntaxErrors(tempIns[i]));
           props.setErrorsFound(true);
+          props.setCompiled(false);
           return;
         }
         for (let j = 1; j < tempIns[i].length; j++) {

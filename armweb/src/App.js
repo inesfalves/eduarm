@@ -46,12 +46,17 @@ function App() {
   const [instructionFlow, setInstructionFlow] = useState(null);
   const [errorsFound, setErrorsFound] = useState(false);
   const [instructions, setInstructions] = useState([]);
+  const [memoryLines, setMemoryLines] = useState([]);
 
   let tempReg = [];
   for (let i = 0; i < 32; i++) {
     let registerMap = [i, ""];
     tempReg.push(registerMap);
   }
+
+  const setMemoryLinesHelper = (memoryLines) => {
+    setMemoryLines(memoryLines);
+  };
 
   const highlightCurrentInstruction = (instruction) => {
     let codeLines = document.getElementsByClassName("code-line");
@@ -65,7 +70,8 @@ function App() {
   };
 
   useEffect(() => {
-    if (executed) highlightCurrentInstruction(instructionDisplayed);
+    if (executed && cpuVer === "Unicycle")
+      highlightCurrentInstruction(instructionDisplayed);
   }, [cpuIndex]);
 
   const getTwosComplementFromNegativeBinary = (num) => {
@@ -147,6 +153,30 @@ function App() {
     }
   };
 
+  const getPipelineInstructionArray = (num) => {
+    let arr1 = instructionFlow
+      .slice()
+      .splice(Math.max(0, num - 4), Math.min(num + 1, 5));
+    arr1.reverse();
+    let arr2 = [];
+    for (let i = 0; i < 5; i++) {
+      if (i < arr1.length) {
+        if (arr1[i] < instructions.length) {
+          arr2.push(instructions[arr1[i]]);
+        } else {
+          arr2.push("");
+        }
+      } else {
+        arr2.push("");
+      }
+    }
+    return arr2;
+  };
+
+  /*if (instructionFlow !== null) {
+    console.log(getPipelineInstructionArray(cpuIndex));
+  }*/
+
   useEffect(() => {
     let tempIns = assemblyCode.split("\n");
     for (let i = 0; i < tempIns.length; i++) {
@@ -158,8 +188,12 @@ function App() {
   }, [assemblyCode]);
 
   const executeProgram = () => {
+    if (executed) {
+      resetProgram();
+    }
     if (compiled) {
       setExecuted(true);
+      setCompiled(false);
       setInstructionDisplayed(instructions[instructions.length - 1]);
       axios
         .post(BASE_URL + ":3001/sendRegisters", registerValues, {
@@ -193,6 +227,9 @@ function App() {
   };
 
   const compileProgram = () => {
+    if (executed) {
+      resetProgram(false);
+    }
     setCompiled(true);
   };
 
@@ -300,24 +337,33 @@ function App() {
     setPerfMode(true);
   };
 
-  const resetProgram = () => {
+  const resetProgram = (cleanRegisters = true) => {
     axios
       .get(BASE_URL + ":3001/reset", { withCredentials: true })
       .then(function (res) {
-        setSavedCPUStates(res.data);
-        setCpuIndex(0);
-        setRegisterValues(tempReg);
-        setRelevantLines([]);
-        setCriticalPath([]);
-        setPerfMode(false);
-        setInstructionDisplayed(null);
-        setExecuted(false);
+        resetFrontend(cleanRegisters);
       });
   };
 
-  // useEffect(() => {
-  //   resetProgram();
-  // }, [cpuVer]);
+  const resetFrontend = (cleanRegisters) => {
+    setSavedCPUStates([]);
+    setCpuIndex(0);
+    setRelevantLines([]);
+    setCriticalPath([]);
+    setPerfMode(false);
+    setInstructionDisplayed(null);
+    setExecuted(false);
+    setMemoryLines([]);
+
+    if (cleanRegisters) {
+      setRegisterValues(tempReg);
+      setCompiled(false);
+    }
+  };
+
+  useEffect(() => {
+    resetFrontend();
+  }, [cpuVer]);
 
   let registerList = [];
 
@@ -353,6 +399,7 @@ function App() {
         setNumberFormat={setNumberFormat}
         setCpuVer={setCpuVer}
         cpuVer={cpuVer}
+        resetFrontend={resetFrontend}
       ></Navbar>
       <div className="container-fluid">
         <div className="row">
@@ -372,6 +419,7 @@ function App() {
               setAssembly={setAssembly}
               setErrorsFound={setErrorsFound}
               compiled={compiled}
+              setCompiled={setCompiled}
             ></ViewTab>
           </div>
           <div className="col-4 p-0">
@@ -454,7 +502,7 @@ function App() {
                       Next
                     </button>
                   </div>
-                  <div className="row justify-content-around py-3 mx-auto">
+                  <div className="row justify-content-center py-3 mx-auto">
                     <button
                       onClick={resetProgram}
                       type="button"
@@ -463,6 +511,11 @@ function App() {
                       <FontAwesomeIcon icon={faRotateLeft} className="mx-2" />
                       Reset
                     </button>
+                    <div className="col-3 p-0">
+                      {executed
+                        ? cpuIndex + 1 + "/" + savedCPUStates.length
+                        : ""}
+                    </div>
                     <button
                       onClick={performanceMode}
                       type="button"
@@ -476,43 +529,55 @@ function App() {
                     </button>
                   </div>
                   <div className="container my-1">
-                    {/* <div className="text-center mt-1 row">
-                      {instructionDisplayed !== null
-                        ? getInstructionTypeCodes(
-                            getCurrentInstruction()[0],
-                            getCurrentInstruction()[1]
-                          ) !== ""
-                          ? Array.from(
-                              getInstructionTypeCodes(
-                                getCurrentInstruction()[0],
-                                getCurrentInstruction()[1]
-                              ).entries()
-                            ).map(([key, value]) => (
-                              <div key={"div" + key} className="col p-0">
-                                <div
-                                  key={"row" + key}
-                                  className="row m-0 text-center"
-                                >
-                                  <span key={key}>{value}</span>
-                                </div>
-                                <div
-                                  key={"div2" + key}
-                                  className="row m-0 text-center"
-                                  style={{ color: "purple" }}
-                                >
-                                  <span key={value}>{key}</span>
-                                </div>
-                              </div>
-                            ))
-                          : ""
-                        : ""}
-                    </div> */}
-                    {/* <div
-                      className="text-center mt-2"
-                      style={{ color: "#0d6dfd" }}
-                    >
-                      {getCurrentInstruction()[1]}
-                    </div> */}
+                    {cpuVer === "Unicycle" ? (
+                      executed ? (
+                        <div>
+                          <div className="text-center mt-1 row">
+                            {instructionDisplayed !== null
+                              ? getInstructionTypeCodes(
+                                  getCurrentInstruction()[0],
+                                  getCurrentInstruction()[1]
+                                ) !== ""
+                                ? Array.from(
+                                    getInstructionTypeCodes(
+                                      getCurrentInstruction()[0],
+                                      getCurrentInstruction()[1]
+                                    ).entries()
+                                  ).map(([key, value]) => (
+                                    <div key={"div" + key} className="col p-0">
+                                      <div
+                                        key={"row" + key}
+                                        className="row m-0 text-center"
+                                      >
+                                        <span key={key}>{value}</span>
+                                      </div>
+                                      <div
+                                        key={"div2" + key}
+                                        className="row m-0 text-center"
+                                        style={{ color: "purple" }}
+                                      >
+                                        <span key={value}>{key}</span>
+                                      </div>
+                                    </div>
+                                  ))
+                                : ""
+                              : ""}
+                          </div>
+                          <div
+                            className="text-center mt-2"
+                            style={{ color: "#0d6dfd" }}
+                          >
+                            {instructionDisplayed !== null
+                              ? getCurrentInstruction()[1]
+                              : ""}
+                          </div>
+                        </div>
+                      ) : (
+                        ""
+                      )
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </div>
               </div>
@@ -527,6 +592,8 @@ function App() {
                   executed={executed}
                   cpuState={cpuState}
                   memoryValues={memoryValues}
+                  memoryLines={memoryLines}
+                  setMemoryLines={setMemoryLinesHelper}
                 ></DataMemoryDisplay>
               </div>
             </div>

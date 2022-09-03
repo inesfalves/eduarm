@@ -7,6 +7,8 @@ class PipelineControl extends Component {
 
     this.output = [];
 
+    this.isPipeline = true;
+
     //PipelineControl Inputs
     this.input = super.addInput(json.input, new Data(0, 0));
 
@@ -17,6 +19,10 @@ class PipelineControl extends Component {
   }
 
   execute() {
+    //Do nothing!
+  }
+
+  executePipelineTransfer() {
     for (let i = 0; i < this.output.length; i++) {
       this.output[i].value = this.input.value;
     }

@@ -137,6 +137,7 @@ function ViewTab(props) {
             assemblyCode={props.assemblyCode}
             setAssemblyCode={props.setAssemblyCode}
             setErrorsFound={props.setErrorsFound}
+            setCompiled={props.setCompiled}
           ></Assembly>
         </div>
         <div

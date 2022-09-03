@@ -4,12 +4,11 @@ const sessions = require("express-session");
 const cors = require("cors");
 const port = 3001;
 
-let cpuVersion = "PipelineCPU";
-
 const userSessions = {};
 const UserSession = require("./UserSession.js");
 const RedisStore = require("connect-redis")(sessions);
 const { createClient } = require("redis");
+const CPU = require("./CPU.js");
 let redisClient = createClient({ legacyMode: true });
 redisClient.connect().catch(console.error);
 app.use(
@@ -88,7 +87,7 @@ app.get("/execute", (req, res) => {
   let instructionFlow = [];
   let maxPC =
     userSession.instructionGroup.length +
-    (cpuVersion === "PipelineCPU" ? 4 : 0);
+    (userSession.cpu.cpuVersion === "Pipeline" ? 4 : 0);
   for (let i = 0; i < maxPC; ) {
     instructionFlow.push(i);
     let state = userSession.cpu.executeCPU(userSession.instructionTypeGroup[i]);
@@ -126,6 +125,13 @@ app.post("/sendRegisters", (req, res) => {
   userSession.registers = req.body;
   userSessions[req.session.id] = userSession;
   res.send("Registers");
+});
+
+app.post("/changeCPUVersion", (req, res) => {
+  let userSession = userSessions[req.session.id];
+  userSession.reset();
+  userSession.cpu.cpuVersion = req.body.cpuVer;
+  res.send("CPU Version");
 });
 
 app.post("/readInstruction", (req, res) => {

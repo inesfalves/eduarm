@@ -1984,7 +1984,7 @@ export function DiagramUtils() {
       type: "forwardingUnitNode",
     },
     {
-      id: "MuxReg",
+      id: "PipelineMuxReg",
       position: { x: 723, y: 397 },
       data: {},
       type: "muxNode",
@@ -2401,7 +2401,7 @@ export function DiagramUtils() {
     {
       id: "e20",
       source: "PipeMux2",
-      target: "MuxReg",
+      target: "PipelineMuxReg",
       targetHandle: "a",
       type: "smoothstep",
     },
@@ -2424,7 +2424,7 @@ export function DiagramUtils() {
       id: "e19",
       source: "RegMuxFork2",
       sourceHandle: "b",
-      target: "MuxReg",
+      target: "PipelineMuxReg",
       targetHandle: "b",
       type: "smoothstep",
     },
@@ -2469,7 +2469,7 @@ export function DiagramUtils() {
     },
     {
       id: "e26",
-      source: "MuxReg",
+      source: "PipelineMuxReg",
       targetHandle: "b",
       target: "ALU",
       type: "smoothstep",
@@ -2873,7 +2873,7 @@ export function DiagramUtils() {
     {
       id: "e591",
       source: "ControlEXIDEX",
-      target: "MuxReg",
+      target: "PipelineMuxReg",
       targetHandle: "c",
       type: "smoothstep",
       style: { stroke: "#00ADEE" },

@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 function DataMemoryDisplay(props) {
-  const [memoryLines, setMemoryLines] = useState([]);
-
   useEffect(() => {
     if (props.executed) {
       let dataMemValues = [];
@@ -23,7 +21,7 @@ function DataMemoryDisplay(props) {
           </tr>
         );
       }
-      setMemoryLines(tempMem);
+      props.setMemoryLines(tempMem);
     }
   }, [props.cpuState]);
 
@@ -35,7 +33,7 @@ function DataMemoryDisplay(props) {
           <th scope="col">Memory</th>
         </tr>
       </thead>
-      <tbody>{memoryLines}</tbody>
+      <tbody>{props.memoryLines}</tbody>
     </table>
   );
 }

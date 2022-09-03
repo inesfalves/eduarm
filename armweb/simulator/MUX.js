@@ -17,12 +17,16 @@ class MUX extends Component {
   }
 
   execute() {
-    if (this.id === "MuxReg") {
+    if (this.id === "PipelineMuxReg") {
       this.selector.value = this.selector.value.ALUSrc;
     }
 
     if (this.id === "PipelineMuxMem") {
       this.selector.value = this.selector.value.memToReg;
+      this.muxOut.value = this.selector.value
+        ? this.zero.value
+        : this.one.value;
+    } else if (this.id === "MuxMem") {
       this.muxOut.value = this.selector.value
         ? this.zero.value
         : this.one.value;
