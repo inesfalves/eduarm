@@ -88,7 +88,7 @@ app.get("/execute", (req, res) => {
   let maxPC =
     userSession.instructionGroup.length +
     (userSession.cpu.cpuVersion === "Pipeline" ? 4 : 0);
-  for (let i = 0; i < maxPC; ) {
+  for (let i = 0; i < maxPC && instructionFlow.length <= 200; ) {
     instructionFlow.push(i);
     let state = userSession.cpu.executeCPU(userSession.instructionTypeGroup[i]);
     userSession.relevantLines.push(
