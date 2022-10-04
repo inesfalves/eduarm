@@ -11,7 +11,6 @@ class Component {
     this.isSynchronous = false;
     this.latency = 0;
     this.totalLatency = 0;
-    this.highestLatencyInput = "";
   }
 
   addInput(id, data) {

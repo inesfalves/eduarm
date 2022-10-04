@@ -159,15 +159,15 @@ class CPU {
     return this.cpuComponents;
   }
 
-  recalculateComponentLatency(newLatency, componentID) {
-    for (let i = 0; i < this.cpuComponents.length; i++) {
-      if (this.cpuComponents[i].id === componentID) {
-        this.cpuComponents[i].latency = parseInt(newLatency);
-      }
-      this.cpuComponents[i].calculateLatency();
-    }
-    return this.cpuComponents;
-  }
+  // recalculateComponentLatency(newLatency, componentID) {
+  //   for (let i = 0; i < this.cpuComponents.length; i++) {
+  //     if (this.cpuComponents[i].id === componentID) {
+  //       this.cpuComponents[i].latency = parseInt(newLatency);
+  //     }
+  //     this.cpuComponents[i].calculateLatency();
+  //   }
+  //   return this.cpuComponents;
+  // }
 
   returnCPURelevantLines(instructionType) {
     let relevantLines = [];
@@ -194,8 +194,8 @@ class CPU {
     let criticalPath = [];
     let jsonFile = cpuJsonMap[this.cpuVersion];
     let cpuConnections = jsonFile.cpuConnections;
-    for (let i = 0; i < this.connections.length; i++) {
-      for (let j = 0; j < cpuConnections.length; j++) {
+    for (let j = 0; j < cpuConnections.length; j++) {
+      for (let i = 0; i < this.connections.length; i++) {
         if (
           this.connections[i][1].id === cpuConnections[j].input &&
           this.connections[i][0].id === cpuConnections[j].output

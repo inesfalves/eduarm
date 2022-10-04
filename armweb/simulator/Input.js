@@ -4,7 +4,6 @@ class Input {
     this.component = component;
     this.data = data;
     this.connectedTo = null;
-    this.highestLatency = false;
   }
 
   get value() {

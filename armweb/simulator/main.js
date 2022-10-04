@@ -8,9 +8,9 @@ const userSessions = {};
 const UserSession = require("./UserSession.js");
 const RedisStore = require("connect-redis")(sessions);
 const { createClient } = require("redis");
-const CPU = require("./CPU.js");
 let redisClient = createClient({ legacyMode: true });
 redisClient.connect().catch(console.error);
+
 app.use(
   cors({
     credentials: true,
