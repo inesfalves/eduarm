@@ -25,6 +25,8 @@ class HazardDetection extends Component {
         this.IDEXRd.value == this.IFIDRm.value)
     ) {
       this.controlMuxSel.value = 1;
+    } else {
+      this.controlMuxSel.value = 0;
     }
   }
 }

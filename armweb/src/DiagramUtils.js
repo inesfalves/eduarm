@@ -1144,13 +1144,17 @@ function PipeControlNode({ data }) {
 }
 
 function HazardDetectionNode({ data }) {
+  let styleObject = {};
+  if (data.borderColor !== undefined) {
+    styleObject.borderColor = data.borderColor;
+  }
+
+  if (data.borderWidth !== undefined) {
+    styleObject.borderWidth = data.borderWidth;
+  }
+
   return (
-    <div
-      className="pipeunit-node"
-      style={
-        data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
-      }
-    >
+    <div className="pipeunit-node" style={styleObject}>
       <label htmlFor="text">{data.label}</label>
       <Handle
         type="source"

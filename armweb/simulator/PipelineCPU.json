@@ -65,11 +65,6 @@
         "input": "controlInput",
         "output": ["reg2Loc", "uncondBranch", "branch", "memRead", "memToReg", "ALUOp0", "ALUOp1", "memWrite", "ALUSrc", "regWrite"]
       },
-      "MuxControl": {
-        "componentType": "PipelineControlMux",
-        "input": ["reg2Loc", "uncondBranch", "branch", "memRead", "memToReg", "ALUOp0", "ALUOp1", "memWrite", "ALUSrc", "regWrite", 0, "controlMuxSel"],
-        "output": ["IDEXWB", "IDEXM", "IDEXEX"]
-      },
       "ControlWBIDEX": {
         "componentType": "PipelineControl",
         "input": "controlWBIDEXInput",
@@ -124,6 +119,11 @@
         "componentType": "HazardDetection",
         "input": ["IFIDRn", "IFIDRm", "IDEXRd", "IDEXMemRead"],
         "output": ["PCWrite", "IFIDWrite", "controlMuxSel"]
+      },
+      "MuxControl": {
+        "componentType": "PipelineControlMux",
+        "input": ["reg2Loc", "uncondBranch", "branch", "memRead", "memToReg", "ALUOp0", "ALUOp1", "memWrite", "ALUSrc", "regWrite", 0, "controlMuxSel"],
+        "output": ["IDEXWB", "IDEXM", "IDEXEX"]
       },
       "RegMuxFork2": {
         "componentType": "Fork",

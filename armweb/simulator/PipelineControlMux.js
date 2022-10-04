@@ -35,7 +35,6 @@ class PipelineControlMux extends Component {
     let inputsCopy = this.inputValues.slice();
 
     if (this.selector.value === 1) {
-      console.log("hiii");
       for (let i = 0; i < inputsCopy.length; i++) {
         inputsCopy[i].value = 0;
       }

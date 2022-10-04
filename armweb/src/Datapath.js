@@ -63,9 +63,7 @@ function Datapath(props) {
 
   const checkForHazards = () => {
     let forwardingUnit = props.cpuState.find((x) => x.id === "ForwardingUnit");
-    let forwardingUnitNode = plNodes.find((x) => x.id === "ForwardingUnit");
     let tempNodes = plNodes;
-    console.log(forwardingUnitNode);
     if (
       forwardingUnit["ForwardA"].data.value !== "00" ||
       forwardingUnit["ForwardB"].data.value !== "00"
@@ -82,11 +80,8 @@ function Datapath(props) {
             borderWidth: "3px",
           };
         }
-
         return node;
       });
-
-      setPipeNodes(tempNodes);
     } else {
       tempNodes = tempNodes.map((node) => {
         if (node.id === "ForwardingUnit") {
@@ -100,12 +95,47 @@ function Datapath(props) {
             borderWidth: "1px",
           };
         }
-
         return node;
       });
-
-      setPipeNodes(tempNodes);
     }
+
+    let hazardDetection = props.cpuState.find(
+      (x) => x.id === "HazardDetection"
+    );
+    if (hazardDetection["controlMuxSel"].data.value === 1) {
+      console.log("A");
+      tempNodes = tempNodes.map((node) => {
+        if (node.id === "HazardDetection") {
+          node.style = {
+            ...node.style,
+            borderColor: "purple",
+          };
+          node.data = {
+            ...node.data,
+            borderColor: "purple",
+            borderWidth: "3px",
+          };
+        }
+        return node;
+      });
+    } else {
+      tempNodes = tempNodes.map((node) => {
+        if (node.id === "HazardDetection") {
+          node.style = {
+            ...node.style,
+            borderColor: "#00ADEE",
+          };
+          node.data = {
+            ...node.data,
+            borderColor: "#00ADEE",
+            borderWidth: "1px",
+          };
+        }
+        return node;
+      });
+    }
+
+    setPipeNodes(tempNodes);
   };
 
   const colorLines = (lines, color, overwrite = true) => {
