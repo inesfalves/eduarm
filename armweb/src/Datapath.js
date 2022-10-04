@@ -29,6 +29,9 @@ function Datapath(props) {
   useEffect(() => {
     if (props.executed) {
       colorLines(props.relevantLines, "black");
+      if (props.cpuVer === "Pipeline") {
+        checkForHazards();
+      }
       if (props.perfMode) {
         colorLines(props.criticalPath, "red", false);
       }
@@ -55,6 +58,53 @@ function Datapath(props) {
       if (e.id.includes("Control")) {
         e.style = { stroke: "#00ADEE" };
       }
+    }
+  };
+
+  const checkForHazards = () => {
+    let forwardingUnit = props.cpuState.find((x) => x.id === "ForwardingUnit");
+    let forwardingUnitNode = plNodes.find((x) => x.id === "ForwardingUnit");
+    let tempNodes = plNodes;
+    console.log(forwardingUnitNode);
+    if (
+      forwardingUnit["ForwardA"].data.value !== "00" ||
+      forwardingUnit["ForwardB"].data.value !== "00"
+    ) {
+      tempNodes = tempNodes.map((node) => {
+        if (node.id === "ForwardingUnit") {
+          node.style = {
+            ...node.style,
+            borderColor: "purple",
+          };
+          node.data = {
+            ...node.data,
+            borderColor: "purple",
+            borderWidth: "3px",
+          };
+        }
+
+        return node;
+      });
+
+      setPipeNodes(tempNodes);
+    } else {
+      tempNodes = tempNodes.map((node) => {
+        if (node.id === "ForwardingUnit") {
+          node.style = {
+            ...node.style,
+            borderColor: "#00ADEE",
+          };
+          node.data = {
+            ...node.data,
+            borderColor: "#00ADEE",
+            borderWidth: "1px",
+          };
+        }
+
+        return node;
+      });
+
+      setPipeNodes(tempNodes);
     }
   };
 
