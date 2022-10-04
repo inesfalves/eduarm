@@ -28,8 +28,15 @@ class ProgramCounter extends Component {
   }
 
   executeClockTransition() {
-    //If pipeline, will only this if control signal is active
-    this.auxAddress.value = this.updatedPC.value;
+    if (this.pcWrite !== undefined) {
+      if (this.pcWrite.value !== 1) {
+        this.auxAddress.value = this.updatedPC.value;
+      } else {
+        this.auxAddress.value = this.pcValue.value;
+      }
+    } else {
+      this.auxAddress.value = this.updatedPC.value;
+    }
   }
 
   printValues() {

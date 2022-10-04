@@ -1,5 +1,40 @@
 {
-    "cpuComponents": {
+  "cpuComponents": {
+      "InsDistributor": {
+        "componentType": "Distributor",
+        "input": "distributorInput",
+        "output": [{"id": "dist3121", "from": 31, "to": 21} , {"id": "dist28", "from": 28, "to": 28}, {"id": "dist95", "from": 9, "to": 5}, {"id": "dist2016", "from": 20, "to": 16}, {"id": "dist40", "from": 4, "to": 0}, {"id": "dist310", "from": 31, "to": 0}]
+      },
+      "RnFork": {
+        "componentType": "Fork",
+        "input": "rnForkIn",
+        "output": ["rnForkOut1", "rnForkOut2", "rnForkOut3"]
+      },
+      "MuxIns": {
+        "componentType": "MUX",
+        "input": ["insMuxValue1", "insMuxValue2", "reg2Loc"],
+        "output": "insMuxResult"
+      },
+      "RmFork": {
+        "componentType": "Fork",
+        "input": "rmForkIn",
+        "output": ["rmForkOut1", "rmForkOut2", "rmForkOut3"]
+      },
+      "HazardIDEXFork": {
+        "componentType": "Fork",
+        "input": "hazardIDEXForkInput",
+        "output": ["hazardIDEXForkOutput1", "hazardIDEXForkOutput2"]
+      },
+      "ControlLineFork": {
+        "componentType": "Fork",
+        "input": "controlLineForkInput",
+        "output": ["controlLineForkOutput1", "controlLineForkOutput2"]
+      },
+      "HazardDetection": {
+        "componentType": "HazardDetection",
+        "input": ["IFIDRn", "IFIDRm", "IDEXRd", "IDEXMemRead"],
+        "output": ["PCWrite", "IFIDWrite", "controlMuxSel"]
+      },
       "PC": {
         "componentType": "ProgramCounter",
         "input": ["updatedPC", "PCWrite"],
@@ -29,26 +64,6 @@
         "componentType": "PipelineRegister",
         "input": ["pcValue", "instruction", "IFIDWrite"],
         "output": ["pcValue", "instruction"]
-      },
-      "InsDistributor": {
-        "componentType": "Distributor",
-        "input": "distributorInput",
-        "output": [{"id": "dist3121", "from": 31, "to": 21} , {"id": "dist28", "from": 28, "to": 28}, {"id": "dist95", "from": 9, "to": 5}, {"id": "dist2016", "from": 20, "to": 16}, {"id": "dist40", "from": 4, "to": 0}, {"id": "dist310", "from": 31, "to": 0}]
-      },
-      "MuxIns": {
-        "componentType": "MUX",
-        "input": ["insMuxValue1", "insMuxValue2", "reg2Loc"],
-        "output": "insMuxResult"
-      },
-      "RnFork": {
-        "componentType": "Fork",
-        "input": "rnForkIn",
-        "output": ["rnForkOut1", "rnForkOut2", "rnForkOut3"]
-      },
-      "RmFork": {
-        "componentType": "Fork",
-        "input": "rmForkIn",
-        "output": ["rmForkOut1", "rmForkOut2", "rmForkOut3"]
       },
       "PipeSignExtendDist": {
         "componentType": "Distributor",
@@ -80,11 +95,6 @@
         "input": ["pcValue", "readData1", "readData2", "signExtendOut", "aluControlIn", "rn", "rm", "rd"],
         "output": ["pcValue", "readData1", "readData2", "signExtendOut", "aluControlIn", "rn", "rm", "rd"]
       },
-      "HazardIDEXFork": {
-        "componentType": "Fork",
-        "input": "hazardIDEXForkInput",
-        "output": ["hazardIDEXForkOutput1", "hazardIDEXForkOutput2"]
-      },
       "ControlEXIDEX": {
         "componentType": "PipelineControl",
         "input": "controlEXIDEXInput",
@@ -94,11 +104,6 @@
         "componentType": "PipelineControl",
         "input": "controlMIDEXInput",
         "output": ["controlMIDEXOutput"]
-      },
-      "ControlLineFork": {
-        "componentType": "Fork",
-        "input": "controlLineForkInput",
-        "output": ["controlLineForkOutput1", "controlLineForkOutput2"]
       },
       "ControlMEXMEM": {
         "componentType": "PipelineControl",
@@ -115,11 +120,6 @@
         "input": "readData2",
         "output": ["pipeMux2Value1", "readData2"]
       },   
-      "HazardDetection": {
-        "componentType": "HazardDetection",
-        "input": ["IFIDRn", "IFIDRm", "IDEXRd", "IDEXMemRead"],
-        "output": ["PCWrite", "IFIDWrite", "controlMuxSel"]
-      },
       "MuxControl": {
         "componentType": "PipelineControlMux",
         "input": ["reg2Loc", "uncondBranch", "branch", "memRead", "memToReg", "ALUOp0", "ALUOp1", "memWrite", "ALUSrc", "regWrite", 0, "controlMuxSel"],
@@ -130,7 +130,52 @@
         "input": "regMuxFork2Input",
         "output": ["regMuxFork2Output1", "regMuxFork2Output2"]
       },
-
+      
+      "ForwardEXMEMFork": {
+        "componentType": "Fork",
+        "input": "rd",
+        "output": ["EXMEMRd", "rd"]
+      },
+      "ForwardMEMWBFork": {
+        "componentType": "Fork",
+        "input": "rd",
+        "output": ["MEMWBRd", "writeReg"]
+      },
+      "ALUFork": {
+        "componentType": "Fork",
+        "input": "aluForkInput",
+        "output": ["aluForkOutput1", "aluForkOutput2", "aluForkOutput3"]
+      },
+      "ALUForwardMuxFork": {
+        "componentType": "Fork",
+        "input": "aluResult",
+        "output": ["pipeMux1Value3", "pipeMux2Value3"]
+      },
+      "ControlLineFork2": {
+        "componentType": "Fork",
+        "input": "controlLineFork2Input",
+        "output": ["controlLineFork2Output1", "controlLineFork2Output2"]
+      },
+      "ForwardingUnit": {
+        "componentType": "ForwardingUnit",
+        "input": ["IDEXRn", "IDEXRm", "EXMEMRd", "EXMEMControl", "MEMWBRd", "MEMWBControl"],
+        "output": ["ForwardA", "ForwardB"]
+      },
+      "PipelineMuxMem": {
+        "componentType": "MUX",
+        "input": ["muxMemValue1", "muxMemValue2", "memToReg"],
+        "output": "muxMemResult"
+      },
+      "MemMiddleAuxNode": {
+        "componentType": "Fork",
+        "input": "muxMemResult",
+        "output": ["memMiddleAuxNodeOutput", "writeData"]
+      },
+      "RegMemFork1": {
+        "componentType": "Fork",
+        "input": "memMiddleAuxNodeOutput",
+        "output": ["pipeMux1Value2", "pipeMux2Value2"]
+      },
       "PipeMux1": {
         "componentType": "PipelineMux",
         "input": ["pipeMux1Value1", "pipeMux1Value2", "pipeMux1Value3", "forwardA"],
@@ -172,11 +217,6 @@
         "input": ["addResult", "aluZero", "aluResult", "readData2", "rd"],
         "output": ["addResult", "aluZero", "aluResult", "readData2", "rd"]
       },
-      "ControlLineFork2": {
-        "componentType": "Fork",
-        "input": "controlLineFork2Input",
-        "output": ["controlLineFork2Output1", "controlLineFork2Output2"]
-      },
       "PipelineAnd": {
         "componentType": "And",
         "input": ["andInput1", "andInput2"],
@@ -186,16 +226,6 @@
         "componentType": "MUX",
         "input": ["topMuxValue1", "topMuxValue2", "topMuxControl"],
         "output": "topMuxResult"
-      },
-      "ForwardEXMEMFork": {
-        "componentType": "Fork",
-        "input": "rd",
-        "output": ["EXMEMRd", "rd"]
-      },
-      "ALUFork": {
-        "componentType": "Fork",
-        "input": "aluForkInput",
-        "output": ["aluForkOutput1", "aluForkOutput2", "aluForkOutput3"]
       },
       "PipelineDataMemory": {
         "componentType": "DataMemory",
@@ -211,36 +241,6 @@
         "componentType": "PipelineControl",
         "input": "controlWBMEMWBInput",
         "output": ["controlWBMEMWBOutput1", "controlWBMEMWBOutput2", "controlWBMEMWBOutput3"]
-      },
-      "ForwardMEMWBFork": {
-        "componentType": "Fork",
-        "input": "rd",
-        "output": ["MEMWBRd", "writeReg"]
-      },
-      "ForwardingUnit": {
-        "componentType": "ForwardingUnit",
-        "input": ["IDEXRn", "IDEXRm", "EXMEMRd", "EXMEMControl", "MEMWBRd", "MEMWBControl"],
-        "output": ["ForwardA", "ForwardB"]
-      },
-      "PipelineMuxMem": {
-        "componentType": "MUX",
-        "input": ["muxMemValue1", "muxMemValue2", "memToReg"],
-        "output": "muxMemResult"
-      },
-      "RegMemFork1": {
-        "componentType": "Fork",
-        "input": "memMiddleAuxNodeOutput",
-        "output": ["pipeMux1Value2", "pipeMux2Value2"]
-      },
-      "MemMiddleAuxNode": {
-        "componentType": "Fork",
-        "input": "muxMemResult",
-        "output": ["memMiddleAuxNodeOutput", "writeData"]
-      },
-      "ALUForwardMuxFork": {
-        "componentType": "Fork",
-        "input": "aluResult",
-        "output": ["pipeMux1Value3", "pipeMux2Value3"]
       }
     },
     

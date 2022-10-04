@@ -18,6 +18,13 @@ class PipelineMux extends Component {
   }
 
   execute() {
+    if (this.id === "PipeMux1") {
+      console.log("VALUE1", this.value1.value);
+      console.log("VALUE2", this.value2.value);
+      console.log("VALUE3", this.value3.value);
+      console.log("SELECTOR", this.selector.value);
+    }
+
     switch (this.selector.value) {
       case "00":
         this.muxOut.value = this.value1.value;
@@ -28,6 +35,10 @@ class PipelineMux extends Component {
       case "10":
         this.muxOut.value = this.value3.value;
         break;
+    }
+
+    if (this.id === "PipeMux1") {
+      console.log("MUXOUT", this.muxOut.value);
     }
   }
 }

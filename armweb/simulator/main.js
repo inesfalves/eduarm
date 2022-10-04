@@ -82,13 +82,13 @@ app.use((req, res, next) => {
 
 app.get("/execute", (req, res) => {
   let userSession = userSessions[req.session.id];
+  let isPipeline = userSession.cpu.cpuVersion === "Pipeline";
   userSession.cpu.initializeCPU(userSession.registers, userSession.memory);
   userSession.cpu.setInsMemInstructions(userSession.instructionGroup);
   let instructionFlow = [];
-  let maxPC =
-    userSession.instructionGroup.length +
-    (userSession.cpu.cpuVersion === "Pipeline" ? 4 : 0);
+  let maxPC = userSession.instructionGroup.length + (isPipeline ? 4 : 0);
   for (let i = 0; i < maxPC && instructionFlow.length <= 200; ) {
+    console.log("STEP", i);
     instructionFlow.push(i);
     let state = userSession.cpu.executeCPU(userSession.instructionTypeGroup[i]);
     userSession.relevantLines.push(
@@ -99,7 +99,7 @@ app.get("/execute", (req, res) => {
     userSession.criticalPath.push(
       userSession.cpu.returnCriticalPath(userSession.instructionTypeGroup[i])
     );
-    i = state[0].updatedPC.data.value / 4;
+    i = state[isPipeline ? 7 : 0].updatedPC.data.value / 4;
     userSession.cpuStates.push(JSON.parse(JSON.stringify(state)));
   }
   userSessions[req.session.id] = userSession;
