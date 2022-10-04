@@ -44,6 +44,61 @@ function ForkNode({ data }) {
   );
 }
 
+function ForkNodeThree({ data }) {
+  return (
+    <div
+      className="fork-node"
+      style={
+        data.borderColor !== undefined ? { borderColor: data.borderColor } : {}
+      }
+    >
+      <Handle
+        className="side-node"
+        type="target"
+        position={Position.Left}
+        style={
+          data.borderColor !== undefined
+            ? { backgroundColor: data.borderColor }
+            : { backgroundColor: "#b1b1b7" }
+        }
+      />
+      <Handle
+        className="top-node"
+        type="source"
+        position={Position.Bottom}
+        id="a"
+        style={
+          data.borderColor !== undefined
+            ? { backgroundColor: data.borderColor }
+            : { backgroundColor: "#b1b1b7" }
+        }
+      />
+      <Handle
+        className="side-node"
+        type="source"
+        position={Position.Right}
+        id="b"
+        style={
+          data.borderColor !== undefined
+            ? { backgroundColor: data.borderColor }
+            : { backgroundColor: "#b1b1b7" }
+        }
+      />
+      <Handle
+        className="top-node"
+        type="source"
+        position={Position.Top}
+        id="c"
+        style={
+          data.borderColor !== undefined
+            ? { backgroundColor: data.borderColor }
+            : { backgroundColor: "#b1b1b7" }
+        }
+      />
+    </div>
+  );
+}
+
 function PipePCNode({ data }) {
   return (
     <div
@@ -633,13 +688,13 @@ function PipeDistNode({ data }) {
         type="source"
         position={Position.Right}
         id="d"
-        style={{ top: 60 }}
+        style={{ top: 75 }}
       />
       <Handle
         type="source"
         position={Position.Right}
         id="e"
-        style={{ top: 80 }}
+        style={{ top: 95 }}
       />
       <Handle
         type="source"
@@ -803,18 +858,30 @@ function IDEXNode({ data }) {
         type="target"
         position={Position.Left}
         id="d"
-        style={{ top: 400 }}
+        style={{ top: 370 }}
       />
       <Handle
         type="target"
         position={Position.Left}
         id="e"
-        style={{ top: 450 }}
+        style={{ top: 400 }}
       />
       <Handle
         type="target"
         position={Position.Left}
         id="f"
+        style={{ top: 430 }}
+      />
+      <Handle
+        type="target"
+        position={Position.Left}
+        id="g"
+        style={{ top: 460 }}
+      />
+      <Handle
+        type="target"
+        position={Position.Left}
+        id="h"
         style={{ top: 490 }}
       />
       <Handle
@@ -839,18 +906,30 @@ function IDEXNode({ data }) {
         type="source"
         position={Position.Right}
         id="d"
-        style={{ top: 400 }}
+        style={{ top: 370 }}
       />
       <Handle
         type="source"
         position={Position.Right}
         id="e"
-        style={{ top: 450 }}
+        style={{ top: 400 }}
       />
       <Handle
         type="source"
         position={Position.Right}
         id="f"
+        style={{ top: 430 }}
+      />
+      <Handle
+        type="source"
+        position={Position.Right}
+        id="g"
+        style={{ top: 460 }}
+      />
+      <Handle
+        type="source"
+        position={Position.Right}
+        id="h"
         style={{ top: 490 }}
       />
     </div>
@@ -1626,7 +1705,7 @@ export function DiagramUtils() {
       type: "smoothstep",
     },
     {
-      id: "aluForkOutput2/muxMemValue1",
+      id: "aluForkOutput2/muxMemValue2",
       source: "ALUFork",
       sourceHandle: "b",
       target: "MuxMem",
@@ -1634,7 +1713,7 @@ export function DiagramUtils() {
       type: "smoothstep",
     },
     {
-      id: "readData/muxMemValue2",
+      id: "readData/muxMemValue1",
       source: "DataMemory",
       target: "MuxMem",
       targetHandle: "a",
@@ -1839,32 +1918,8 @@ export function DiagramUtils() {
       type: "forkNodeSecond",
     },
     {
-      id: "HazardFork1",
-      position: { x: 330, y: 151 },
-      data: {},
-      type: "forkNodeSecond",
-    },
-    {
-      id: "HazardFork2",
-      position: { x: 330, y: 70.5 },
-      data: {},
-      type: "forkNodeSecond",
-    },
-    {
       id: "HazardIDEXFork",
       position: { x: 606, y: 625 },
-      data: {},
-      type: "forkNodeSecond",
-    },
-    {
-      id: "ForwardIDEXFork1",
-      position: { x: 663, y: 535 },
-      data: {},
-      type: "forkNodeSecond",
-    },
-    {
-      id: "ForwardIDEXFork2",
-      position: { x: 674, y: 585 },
       data: {},
       type: "forkNodeSecond",
     },
@@ -1934,9 +1989,21 @@ export function DiagramUtils() {
       type: "muxNode",
     },
     {
+      id: "RmFork",
+      position: { x: 396, y: 366 },
+      data: {},
+      type: "forkNodeThree",
+    },
+    {
+      id: "RnFork",
+      position: { x: 360, y: 326.5 },
+      data: {},
+      type: "forkNodeThree",
+    },
+    {
       id: "PipelineRegBank",
       data: { label: "Register Bank" },
-      position: { x: 408, y: 309 },
+      position: { x: 440, y: 309 },
       type: "regBankNode",
     },
     {
@@ -1955,7 +2022,7 @@ export function DiagramUtils() {
     },
     {
       id: "ReadData2Fork",
-      position: { x: 612, y: 504.5 },
+      position: { x: 612, y: 490 },
       data: {},
       type: "forkNode",
     },
@@ -1968,7 +2035,7 @@ export function DiagramUtils() {
     {
       id: "HazardDetection",
       data: { label: "Hazard Detection" },
-      position: { x: 348, y: 28 },
+      position: { x: 405, y: 28 },
       type: "hazardDetectionNode",
     },
     {
@@ -2189,7 +2256,7 @@ export function DiagramUtils() {
     },
     {
       id: "WBLeftAuxNode",
-      position: { x: 457, y: 54 },
+      position: { x: 505, y: 54 },
       data: {},
       type: "pcTopAuxNode",
     },
@@ -2289,35 +2356,21 @@ export function DiagramUtils() {
       id: "e9",
       source: "InsDistributor",
       sourceHandle: "a",
-      target: "HazardFork1",
-      type: "smoothstep",
-    },
-    {
-      id: "e91",
-      source: "HazardFork1",
-      sourceHandle: "a",
-      target: "HazardFork2",
-      type: "smoothstep",
-    },
-    {
-      id: "e92",
-      source: "HazardFork1",
-      sourceHandle: "b",
       target: "Control",
       type: "smoothstep",
     },
     {
       id: "e93",
-      source: "HazardFork2",
-      sourceHandle: "a",
+      source: "RnFork",
+      sourceHandle: "c",
       target: "HazardDetection",
       targetHandle: "a",
       type: "smoothstep",
     },
     {
       id: "e94",
-      source: "HazardFork2",
-      sourceHandle: "b",
+      source: "RmFork",
+      sourceHandle: "c",
       target: "HazardDetection",
       targetHandle: "b",
       type: "smoothstep",
@@ -2341,8 +2394,23 @@ export function DiagramUtils() {
       id: "e10",
       source: "InsDistributor",
       sourceHandle: "c",
+      target: "RnFork",
+      type: "smoothstep",
+    },
+    {
+      id: "e101",
+      source: "RnFork",
+      sourceHandle: "b",
       targetHandle: "a",
       target: "PipelineRegBank",
+      type: "smoothstep",
+    },
+    {
+      id: "e1015",
+      source: "RnFork",
+      sourceHandle: "a",
+      targetHandle: "f",
+      target: "IDEX",
       type: "smoothstep",
     },
     {
@@ -2388,7 +2456,7 @@ export function DiagramUtils() {
       source: "PipeSignExtendDist",
       sourceHandle: "c",
       target: "IDEX",
-      targetHandle: "f",
+      targetHandle: "h",
       type: "smoothstep",
     },
     {
@@ -2611,8 +2679,23 @@ export function DiagramUtils() {
     {
       id: "e33",
       source: "MuxIns",
+      target: "RmFork",
+      type: "smoothstep",
+    },
+    {
+      id: "e331",
+      source: "RmFork",
+      sourceHandle: "b",
       target: "PipelineRegBank",
       targetHandle: "b",
+      type: "smoothstep",
+    },
+    {
+      id: "e332",
+      source: "RmFork",
+      sourceHandle: "a",
+      target: "IDEX",
+      targetHandle: "g",
       type: "smoothstep",
     },
     {
@@ -2689,20 +2772,13 @@ export function DiagramUtils() {
       id: "e45",
       source: "IDEX",
       sourceHandle: "d",
-      target: "ForwardIDEXFork1",
-      type: "smoothstep",
-    },
-    {
-      id: "e452",
-      source: "ForwardIDEXFork1",
-      sourceHandle: "b",
       target: "RegMuxFork2",
       type: "smoothstep",
     },
     {
       id: "e453",
-      source: "ForwardIDEXFork1",
-      sourceHandle: "a",
+      source: "IDEX",
+      sourceHandle: "f",
       target: "ForwardingUnit",
       targetHandle: "a",
       type: "smoothstep",
@@ -2734,20 +2810,13 @@ export function DiagramUtils() {
       id: "e47",
       source: "IDEX",
       sourceHandle: "e",
-      target: "ForwardIDEXFork2",
-      type: "smoothstep",
-    },
-    {
-      id: "e472",
-      source: "ForwardIDEXFork2",
-      sourceHandle: "b",
       target: "PipelineALUControl",
       type: "smoothstep",
     },
     {
       id: "e473",
-      source: "ForwardIDEXFork2",
-      sourceHandle: "a",
+      source: "IDEX",
+      sourceHandle: "g",
       target: "ForwardingUnit",
       targetHandle: "b",
       type: "smoothstep",
@@ -2755,7 +2824,7 @@ export function DiagramUtils() {
     {
       id: "e481",
       source: "IDEX",
-      sourceHandle: "f",
+      sourceHandle: "h",
       target: "HazardIDEXFork",
       type: "smoothstep",
     },
@@ -3067,6 +3136,7 @@ export function DiagramUtils() {
     pipeMuxNode: PipeMuxNode,
     pipePCNode: PipePCNode,
     exMemAuxNode: EXMEMAuxNode,
+    forkNodeThree: ForkNodeThree,
   };
 
   return { nodes, edges, pipelineNodes, pipelineEdges, customNodeTypes };

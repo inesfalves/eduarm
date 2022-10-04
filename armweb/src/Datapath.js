@@ -314,7 +314,6 @@ function Datapath(props) {
               onInit={createTooltips}
               onNodeMouseEnter={showNodeInformation}
               onNodeMouseLeave={hideNodeInformation}
-              onNodeClick={showNodeInf}
               nodesConnectable={false}
               nodesDraggable={false}
               defaultZoom="0.84"

@@ -47,6 +47,7 @@ function App() {
   const [errorsFound, setErrorsFound] = useState(false);
   const [instructions, setInstructions] = useState([]);
   const [memoryLines, setMemoryLines] = useState([]);
+  const [pipeStages, setPipeStages] = useState([]);
 
   let tempReg = [];
   for (let i = 0; i < 32; i++) {
@@ -170,8 +171,14 @@ function App() {
         arr2.push("");
       }
     }
-    return arr2;
+    setPipeStages(arr2);
   };
+
+  useEffect(() => {
+    if (executed && cpuVer === "Pipeline") {
+      getPipelineInstructionArray(cpuIndex);
+    }
+  }, [cpuIndex]);
 
   /*if (instructionFlow !== null) {
     console.log(getPipelineInstructionArray(cpuIndex));
@@ -469,13 +476,13 @@ function App() {
                   <div className="col-3 px-2">{registerList.slice(24, 32)}</div>
                 </div>
                 <div className="container text-center my-2">
-                  <div className="btn-group btn-group w-75" role="group">
+                  <div className="btn-group w-75 mx-auto" role="group">
                     <button
                       onClick={getPrevious}
                       type="button"
-                      className="btn btn-outline-dark col-3 p-1"
+                      className="btn btn-outline-dark col-3 p-0"
                     >
-                      <FontAwesomeIcon icon={faBackward} className="mx-2" />
+                      <FontAwesomeIcon icon={faBackward} className="mx-1" />
                       Previous
                     </button>
                     <button
@@ -496,22 +503,22 @@ function App() {
                     <button
                       onClick={getNext}
                       type="button"
-                      className="btn btn-outline-dark col-3 p-1"
+                      className="btn btn-outline-dark col-3 p-0"
                     >
-                      <FontAwesomeIcon icon={faForward} className="mx-2" />
+                      <FontAwesomeIcon icon={faForward} className="mx-1" />
                       Next
                     </button>
                   </div>
-                  <div className="row justify-content-center py-3 mx-auto">
+                  <div className="row justify-content-center py-2 mx-auto">
                     <button
                       onClick={resetProgram}
                       type="button"
                       className="btn btn-outline-dark col-3 p-0"
                     >
-                      <FontAwesomeIcon icon={faRotateLeft} className="mx-2" />
+                      <FontAwesomeIcon icon={faRotateLeft} className="mx-1" />
                       Reset
                     </button>
-                    <div className="col-3 p-0">
+                    <div className="col-2 p-0">
                       {executed
                         ? cpuIndex + 1 + "/" + savedCPUStates.length
                         : ""}
@@ -519,7 +526,7 @@ function App() {
                     <button
                       onClick={performanceMode}
                       type="button"
-                      className="btn btn-outline-dark col-3 p-0"
+                      className="btn btn-outline-dark col-4 p-0"
                     >
                       <FontAwesomeIcon
                         icon={faGaugeSimpleHigh}
@@ -528,9 +535,9 @@ function App() {
                       Performance
                     </button>
                   </div>
-                  <div className="container my-1">
-                    {cpuVer === "Unicycle" ? (
-                      executed ? (
+                  {cpuVer === "Unicycle" ? (
+                    <div className="container my-1">
+                      {executed ? (
                         <div>
                           <div className="text-center mt-1 row">
                             {instructionDisplayed !== null
@@ -574,13 +581,54 @@ function App() {
                         </div>
                       ) : (
                         ""
-                      )
-                    ) : (
-                      ""
-                    )}
-                  </div>
+                      )}
+                    </div>
+                  ) : executed ? (
+                    <div className="container mt-2 w-50">
+                      <div className="text-center mt-1 row">
+                        <ul className="m-0 p-0">
+                          <li className="stage row m-0 text-center">
+                            <span className="col-3" style={{ color: "purple" }}>
+                              IF
+                            </span>
+                            <span className="col-9"> {pipeStages[0]} </span>
+                          </li>
+                          <li className="stage row m-0 text-center">
+                            <span className="col-3" style={{ color: "purple" }}>
+                              ID
+                            </span>
+                            <span className="col-9"> {pipeStages[1]} </span>
+                          </li>
+                          <li className="stage row m-0 text-center">
+                            <span className="col-3" style={{ color: "purple" }}>
+                              EX
+                            </span>
+                            <span className="col-9"> {pipeStages[2]} </span>
+                          </li>
+                          <li className="stage row m-0 text-center">
+                            <span
+                              className="text-center col-3"
+                              style={{ color: "purple" }}
+                            >
+                              MEM
+                            </span>
+                            <span className="col-9"> {pipeStages[3]} </span>
+                          </li>
+                          <li className="stage row m-0 text-center">
+                            <span className="col-3" style={{ color: "purple" }}>
+                              WB
+                            </span>
+                            <span className="col-9"> {pipeStages[4]} </span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  ) : (
+                    ""
+                  )}
                 </div>
               </div>
+
               <div
                 className="tab-pane fade"
                 id="memory"
