@@ -103,7 +103,6 @@ function Datapath(props) {
       (x) => x.id === "HazardDetection"
     );
     if (hazardDetection["controlMuxSel"].data.value === 1) {
-      console.log("A");
       tempNodes = tempNodes.map((node) => {
         if (node.id === "HazardDetection") {
           node.style = {
@@ -144,12 +143,14 @@ function Datapath(props) {
       if (e.id.includes("Control")) {
         defaultColor = "#00ADEE";
       }
+
       let splitID = e.id.split("/");
 
       let tempNodes = nodes;
       for (let l of lines) {
         if (splitID[0] === l[0].id && splitID[1] === l[1].id) {
           defaultColor = color;
+
           if (defaultColor !== "#b1b1b7" || overwrite) {
             let currentNode = nodes.find((x) => x.id === l[1].component);
             tempNodes = tempNodes.map((node) => {

@@ -87,15 +87,38 @@ app.get("/execute", (req, res) => {
   userSession.cpu.setInsMemInstructions(userSession.instructionGroup);
   let instructionFlow = [];
   let maxPC = userSession.instructionGroup.length + (isPipeline ? 4 : 0);
+  let pipelineIns = [];
+  let previousPipelineIns = null;
+  let insertBubble = false;
   for (let i = 0; i < maxPC && instructionFlow.length <= 200; ) {
-    console.log("STEP", i);
     instructionFlow.push(i);
     let state = userSession.cpu.executeCPU(userSession.instructionTypeGroup[i]);
+
+    if (isPipeline) {
+      if (previousPipelineIns === null) {
+        previousPipelineIns = [i, -1, -1, -1, -1];
+      } else {
+        previousPipelineIns = previousPipelineIns.slice();
+
+        if (insertBubble) {
+          previousPipelineIns.splice(2, 0, -1);
+        } else {
+          previousPipelineIns.unshift(
+            i < userSession.instructionGroup.length ? i : -1
+          );
+        }
+        previousPipelineIns.pop();
+      }
+      pipelineIns.push(previousPipelineIns);
+      insertBubble = state[7].pcWrite.data.value === 1;
+    }
+
     userSession.relevantLines.push(
       userSession.cpu.returnCPURelevantLines(
         userSession.instructionTypeGroup[i]
       )
     );
+
     userSession.criticalPath.push(
       userSession.cpu.returnCriticalPath(userSession.instructionTypeGroup[i])
     );
@@ -109,6 +132,7 @@ app.get("/execute", (req, res) => {
     instructionFlow: instructionFlow,
     relevantLines: userSession.relevantLines,
     criticalPath: userSession.criticalPath,
+    pipelineIns: pipelineIns,
   });
 });
 

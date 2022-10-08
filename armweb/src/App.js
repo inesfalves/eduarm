@@ -48,6 +48,7 @@ function App() {
   const [instructions, setInstructions] = useState([]);
   const [memoryLines, setMemoryLines] = useState([]);
   const [pipeStages, setPipeStages] = useState([]);
+  const [pipeInstructions, setPipeInstructions] = useState([]);
 
   let tempReg = [];
   for (let i = 0; i < 32; i++) {
@@ -154,35 +155,21 @@ function App() {
     }
   };
 
-  const getPipelineInstructionArray = (num) => {
-    let arr1 = instructionFlow
-      .slice()
-      .splice(Math.max(0, num - 4), Math.min(num + 1, 5));
-    arr1.reverse();
-    let arr2 = [];
-    for (let i = 0; i < 5; i++) {
-      if (i < arr1.length) {
-        if (arr1[i] < instructions.length) {
-          arr2.push(instructions[arr1[i]]);
-        } else {
-          arr2.push("");
-        }
-      } else {
-        arr2.push("");
-      }
-    }
-    setPipeStages(arr2);
-  };
-
   useEffect(() => {
-    if (executed && cpuVer === "Pipeline") {
-      getPipelineInstructionArray(cpuIndex);
+    if (executed && cpuVer === "Pipeline" && pipeInstructions.length > 0) {
+      let instructionIndexes = pipeInstructions[cpuIndex];
+      let newPipeStages = instructionIndexes.map((instructionIndex) => {
+        if (instructionIndex === -1) {
+          return "";
+        } else {
+          console.log(instructionIndex);
+          console.log(instructions);
+          return instructions[instructionIndex];
+        }
+      });
+      setPipeStages(newPipeStages);
     }
-  }, [cpuIndex]);
-
-  /*if (instructionFlow !== null) {
-    console.log(getPipelineInstructionArray(cpuIndex));
-  }*/
+  }, [cpuIndex, pipeInstructions]);
 
   useEffect(() => {
     let tempIns = assemblyCode.split("\n");
@@ -217,6 +204,7 @@ function App() {
               setSavedCriticalPath(res.data.criticalPath);
               setCpuState(res.data.cpuStates[res.data.cpuStates.length - 1]);
               setCpuIndex(res.data.cpuStates.length - 1);
+              setPipeInstructions(res.data.pipelineIns);
               setRelevantLines(
                 res.data.relevantLines[res.data.cpuStates.length - 1]
               );

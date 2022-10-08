@@ -108,7 +108,7 @@
       "ControlMEXMEM": {
         "componentType": "PipelineControl",
         "input": "controlMEXMEMInput",
-        "output": ["controlMEXMEMOutput1", "controlMEXMEMOutput2", "controlMEXMEMOutput3"]
+        "output": ["controlMEXMEMOutput1", "controlMEXMEMOutput2", "controlMEXMEMOutput3", "controlMEXMEMOutput4"]
       },
       "ControlWBEXMEM": {
         "componentType": "PipelineControl",
@@ -222,6 +222,11 @@
         "input": ["andInput1", "andInput2"],
         "output": "andResult"
       },
+      "PipelineOr": {
+        "componentType": "Or",
+        "input": ["orInput1", "orInput2"],
+        "output": "orResult"
+      },
       "MuxTop": {
         "componentType": "MUX",
         "input": ["topMuxValue1", "topMuxValue2", "topMuxControl"],
@@ -331,6 +336,7 @@
         {"origin": "ControlMEXMEM", "dest": "PipelineAnd", "output": "controlMEXMEMOutput1", "input": "andInput1"},
         {"origin": "ControlMEXMEM", "dest": "PipelineDataMemory", "output": "controlMEXMEMOutput2", "input": "memRead"},
         {"origin": "ControlMEXMEM", "dest": "PipelineDataMemory", "output": "controlMEXMEMOutput3", "input": "memWrite"},
+        {"origin": "ControlMEXMEM", "dest": "PipelineOr", "output": "controlMEXMEMOutput4", "input": "orInput1"},
         {"origin": "ReadData2Fork", "dest": "EXMEM", "output": "readData2", "input": "readData2"},
         {"origin": "IDEX", "dest": "PipeMux1", "output": "readData1", "input": "pipeMux1Value1"},
         {"origin": "IDEX", "dest": "ReadData2Fork", "output": "readData2", "input": "readData2"},
@@ -351,7 +357,8 @@
         {"origin": "ShiftLeft", "dest": "AddBranch", "output": "shiftLeftOutput", "input": "addBranchValue2"},
         {"origin": "PipelineMuxReg", "dest": "ALU", "output": "regMuxResult", "input": "ALUInput2"},
         {"origin": "ALUFork", "dest": "PipelineDataMemory", "output": "aluForkOutput1", "input": "memoryAddress"},
-        {"origin": "PipelineAnd", "dest": "MuxTop", "output": "andResult", "input": "topMuxControl"},
+        {"origin": "PipelineAnd", "dest": "PipelineOr", "output": "andResult", "input": "orInput2"},
+        {"origin": "PipelineOr", "dest": "MuxTop", "output": "orResult", "input": "topMuxControl"},
         {"origin": "PipelineALUControl", "dest": "ALU", "output": "ctrlALU", "input": "ctrlALU"},
         {"origin": "ForwardingUnit", "dest": "PipeMux1", "output": "ForwardA", "input": "forwardA"},
         {"origin": "ForwardingUnit", "dest": "PipeMux2", "output": "ForwardB", "input": "forwardB"}

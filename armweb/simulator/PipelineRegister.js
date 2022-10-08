@@ -27,9 +27,7 @@ class PipelineRegister extends Component {
 
   executePipelineTransfer() {
     if (this.id === "IFID") {
-      console.log(this.input[2].value);
       if (this.input[2].value === 1) {
-        console.log("NAURRRR");
         return;
       }
     }

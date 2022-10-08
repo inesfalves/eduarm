@@ -16,6 +16,9 @@ class Or extends Component {
   }
 
   execute() {
+    if (this.id === "PipelineOr") {
+      this.value1.value = this.value1.value.uncondBranch;
+    }
     this.result.value = this.value1.value || this.value2.value;
   }
 
