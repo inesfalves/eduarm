@@ -1747,13 +1747,12 @@ export function DiagramUtils() {
       type: "smoothstep",
     },
     {
-      id: "e32",
+      id: "e32Control",
       source: "Control",
       sourceHandle: "a",
       targetHandle: "c",
       target: "MuxIns",
       type: "smoothstep",
-      style: { stroke: "red" },
     },
     {
       id: "insMuxResult/readReg2",
