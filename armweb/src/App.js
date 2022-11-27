@@ -162,8 +162,6 @@ function App() {
         if (instructionIndex === -1) {
           return "";
         } else {
-          console.log(instructionIndex);
-          console.log(instructions);
           return instructions[instructionIndex];
         }
       });

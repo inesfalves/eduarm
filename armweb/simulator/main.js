@@ -26,8 +26,8 @@ let store = new RedisStore({
 app.use(express.json());
 app.use(
   sessions({
-    secret: "gaming",
-    name: "gaming",
+    secret: "eduarm",
+    name: "eduarm",
     cookie: { maxAge: 3600 * 1000 * 4 },
     saveUninitialized: true,
     resave: true,
